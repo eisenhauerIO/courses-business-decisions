@@ -13,3 +13,6 @@ templates_path = ['_templates']
 exclude_patterns = ['_build']
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+# Copy the `lectures` directory (notebooks) into the built HTML so users can download
+# the .ipynb files directly from the site.
+html_extra_path = ['lectures']
