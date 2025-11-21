@@ -1,14 +1,15 @@
-.. Business Decisions documentation master file
-   =============================================
+Business Decisions documentation master file
+============================================
 
 Welcome to Business Decisions course documentation!
-===============================================
+=================================================
 
 .. toctree::
    :maxdepth: 2
 
    introduction
    syllabus
+   lectures/index.rst
 
 Indices and tables
 ==================

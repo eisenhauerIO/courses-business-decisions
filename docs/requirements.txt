@@ -1,3 +1,6 @@
 sphinx>=6.0
 sphinx-rtd-theme
 myst-parser
+
+# For rendering Jupyter notebooks
+nbsphinx

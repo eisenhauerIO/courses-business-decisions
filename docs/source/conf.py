@@ -8,11 +8,16 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'myst_parser',
+    'nbsphinx',
 ]
 templates_path = ['_templates']
 exclude_patterns = ['_build']
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
-# Copy the `lectures` directory (notebooks) into the built HTML so users can download
-# the .ipynb files directly from the site.
-html_extra_path = ['lectures']
+# Do not list `lectures` in `html_extra_path` so notebooks are processed by nbsphinx
+# (they will be rendered into HTML). If you also want raw `.ipynb` files copied
+# for direct download, add a separate copy step or an alternate path.
+html_extra_path = []
+
+# nbsphinx settings: allow notebooks with execution errors to build the docs
+nbsphinx_allow_errors = True
