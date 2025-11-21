@@ -4,3 +4,6 @@ myst-parser
 
 # For rendering Jupyter notebooks
 nbsphinx
+
+ # If pandoc isn't installed on the system, pypandoc can download a binary
+ pypandoc
