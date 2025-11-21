@@ -18,5 +18,4 @@ handouts/index
 problem_sets/index
 partners/index
 iterations/index
-TODO
 ```

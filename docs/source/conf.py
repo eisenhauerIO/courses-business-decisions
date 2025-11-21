@@ -17,11 +17,6 @@ source_suffix = {
 }
 templates_path = ['_templates']
 exclude_patterns = ['build']
-
-# Conditionally exclude TODO.rst unless INCLUDE_TODO environment variable is set
-if os.environ.get('INCLUDE_TODO') != '1':
-    exclude_patterns.append('TODO.rst')
-
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 # Do not list `lectures` in `html_extra_path` so notebooks are processed by nbsphinx
