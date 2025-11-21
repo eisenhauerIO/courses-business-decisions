@@ -1,20 +1,30 @@
 # Docs for Business Decisions course
 
-Build locally (pip venv):
+This project uses [Hatch](https://hatch.pypa.io/) for environment and dependency management.
 
+## Building Documentation
+
+Build the Sphinx documentation:
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r docs/requirements.txt
-sphinx-build -b html docs/source docs/_build/html
+hatch run build
 ```
 
-Or using conda (recommended for reproducibility):
+The built documentation will be in `docs/build/html/`.
 
+## Serving Documentation Locally
+
+Serve the documentation on `http://localhost:8000`:
 ```bash
-conda env create -f environment.yml
-conda activate business-decisions-docs
-sphinx-build -b html docs/source docs/_build/html
+hatch run serve
 ```
+
+## Cleaning Build Artifacts
+
+Remove the build directory:
+```bash
+hatch run clean
+```
+
+---
 
 This repo uses `docs/source/conf.py` as the Sphinx configuration. Read the `.readthedocs.yaml` at the repo root for RTD configuration.

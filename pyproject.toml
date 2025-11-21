@@ -1,0 +1,21 @@
+[project]
+name = "business-decisions-docs"
+version = "0.1.0"
+description = "Business Decisions Course Documentation"
+requires-python = ">=3.11"
+
+[tool.hatch.envs.default]
+dependencies = [
+    "sphinx>=6.0",
+    "sphinx-rtd-theme",
+    "myst-parser",
+    "nbsphinx",
+    "pypandoc",
+    "pandas",
+    "ipykernel",
+]
+
+[tool.hatch.envs.default.scripts]
+build = "sphinx-build -b html docs/source docs/build/html"
+serve = "python -m http.server -d docs/build/html 8000"
+clean = "rm -rf docs/build"
