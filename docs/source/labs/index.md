@@ -1,10 +1,10 @@
 Labs
 ====
 
-This section contains the course lecture notebooks. Click a lecture to view it in the documentation (rendered from the original Jupyter notebook).
+This section contains the course lab notebooks. Click a lab to view it in the documentation (rendered from the original Jupyter notebook).
 
 ```{toctree}
 :maxdepth: 1
 
-01_lecture.ipynb
+01_labs.ipynb
 ```

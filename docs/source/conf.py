@@ -16,7 +16,12 @@ source_suffix = {
     '.md': 'markdown',
 }
 templates_path = ['_templates']
-exclude_patterns = ['_build']
+exclude_patterns = ['build']
+
+# Conditionally exclude TODO.rst unless INCLUDE_TODO environment variable is set
+if os.environ.get('INCLUDE_TODO') != '1':
+    exclude_patterns.append('TODO.rst')
+
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 # Do not list `lectures` in `html_extra_path` so notebooks are processed by nbsphinx
@@ -24,5 +29,6 @@ html_static_path = ['_static']
 # for direct download, add a separate copy step or an alternate path.
 html_extra_path = []
 
-# nbsphinx settings: allow notebooks with execution errors to build the docs
-nbsphinx_allow_errors = True
+# nbsphinx settings: execute notebooks during build
+nbsphinx_execute = 'always'
+nbsphinx_allow_errors = False

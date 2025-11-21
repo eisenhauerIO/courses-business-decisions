@@ -1,6 +1,6 @@
 SPHINXBUILD   = sphinx-build
 SOURCEDIR     = source
-BUILDDIR      = _build
+BUILDDIR      = build
 
 html:
 	$(SPHINXBUILD) -b html $(SOURCEDIR) $(BUILDDIR)/html
