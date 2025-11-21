@@ -39,6 +39,11 @@ extensions = [
     'myst_parser',
     'nbsphinx',
 ]
+# Accept Markdown files as source as well as reStructuredText
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
 templates_path = ['_templates']
 exclude_patterns = ['_build']
 html_theme = 'sphinx_rtd_theme'
