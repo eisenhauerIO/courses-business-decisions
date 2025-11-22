@@ -22,6 +22,7 @@ handouts/index
 problem_sets/index
 partners/index
 iterations/index
+tooling/index
 resources/index
 references
 ```
