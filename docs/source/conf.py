@@ -9,7 +9,11 @@ extensions = [
     'sphinx.ext.napoleon',
     'myst_parser',
     'nbsphinx',
+    'sphinxcontrib.bibtex',
 ]
+
+# Bibliography configuration
+bibtex_bibfiles = ['references.bib']
 # Accept Markdown files as source as well as reStructuredText
 source_suffix = {
     '.rst': 'restructuredtext',
