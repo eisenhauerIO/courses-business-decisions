@@ -7,10 +7,14 @@ author = 'eisenhauerIO'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
+    'sphinx.ext.todo',
     'myst_parser',
     'nbsphinx',
     'sphinxcontrib.bibtex',
 ]
+
+# Show TODO items only in dev mode
+todo_include_todos = os.environ.get('SPHINX_DEV', '0') == '1'
 
 # Bibliography configuration
 bibtex_bibfiles = ['references.bib']

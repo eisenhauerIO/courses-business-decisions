@@ -18,5 +18,6 @@ dependencies = [
 
 [tool.hatch.envs.default.scripts]
 build = "sphinx-build -b html docs/source docs/build/html"
+build-dev = "SPHINX_DEV=1 sphinx-build -b html docs/source docs/build/html"
 serve = "python -m http.server -d docs/build/html 8000"
 clean = "rm -rf docs/build"
