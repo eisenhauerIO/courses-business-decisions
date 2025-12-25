@@ -10,7 +10,3 @@
 *...sharpening the mind and building the tools to drive better decisions*
 
 Welcome to the Impact-Driven Business Decisions course. This course explores how to leverage AI and data-driven approaches to make better business decisions.
-
-```{todo}
-Add more detailed course overview and learning objectives.
-```
