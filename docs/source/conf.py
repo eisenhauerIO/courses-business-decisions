@@ -1,39 +1,40 @@
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
 
-project = 'Business Decisions — Course'
-author = 'eisenhauerIO'
+sys.path.insert(0, os.path.abspath(".."))
+
+project = "Business Decisions — Course"
+author = "eisenhauerIO"
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.todo',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.extlinks',
-    'myst_parser',
-    'nbsphinx',
-    'sphinxcontrib.bibtex',
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.todo",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.extlinks",
+    "myst_parser",
+    "nbsphinx",
+    "sphinxcontrib.bibtex",
 ]
 
 # External links shortcuts
 extlinks = {
-    'repo': ('https://github.com/eisenhauerIO/courses-business-decisions/%s', '%s'),
+    "repo": ("https://github.com/eisenhauerIO/courses-business-decisions/%s", "%s"),
 }
 
 # Show TODO items locally, hide in production builds
-todo_include_todos = os.environ.get('SPHINX_PROD', '0') != '1'
+todo_include_todos = os.environ.get("SPHINX_PROD", "0") != "1"
 
 # Bibliography configuration
-bibtex_bibfiles = ['references.bib']
+bibtex_bibfiles = ["references.bib"]
 # Accept Markdown files as source as well as reStructuredText
 source_suffix = {
-    '.rst': 'restructuredtext',
-    '.md': 'markdown',
+    ".rst": "restructuredtext",
+    ".md": "markdown",
 }
-templates_path = ['_templates']
-exclude_patterns = ['build']
-html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+templates_path = ["_templates"]
+exclude_patterns = ["build"]
+html_theme = "sphinx_rtd_theme"
+html_static_path = ["_static"]
 
 # Enable "Edit on GitHub" link in RTD theme
 html_context = {
@@ -49,7 +50,7 @@ html_context = {
 html_extra_path = []
 
 # nbsphinx settings: execute notebooks during build
-nbsphinx_execute = 'always'
+nbsphinx_execute = "always"
 nbsphinx_allow_errors = False
 
 # Add notebook info bar (applies to all notebooks)
