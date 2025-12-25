@@ -21,6 +21,4 @@ repos:
     hooks:
       - id: nbqa-ruff
         args: [--fix]
-      - id: nbqa-ruff
-        args: [--format]
-        entry: nbqa ruff --format
+      - id: nbqa-ruff-format
