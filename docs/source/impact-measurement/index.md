@@ -23,13 +23,6 @@ We present the generalized Roy model as a unifying framework for understanding s
 
 [Notebook](01_generalized_roy_model.ipynb)
 
-```{toctree}
-:hidden:
-:maxdepth: 1
-
-01_generalized_roy_model
-```
-
 ## Selection on Observables
 
 ### Matching & Propensity Scores
