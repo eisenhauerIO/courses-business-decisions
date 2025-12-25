@@ -7,6 +7,7 @@
 
 introduction
 impact-measurement/index
+portfolio-allocation/index
 software-development/index
 partners/index
 tooling/index

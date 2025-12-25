@@ -12,6 +12,12 @@ A tool for causal inference and analysis in business decision contexts.
 
 A tool for generating and managing data catalogs for business analytics.
 
+## Portfolio Allocation
+
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue.svg?logo=github)](https://github.com/eisenhauerIO/tools-portfolio-allocation)
+
+A tool for portfolio allocation and resource optimization in business decision contexts.
+
 ## Kiro
 
 [![Website](https://img.shields.io/badge/Website-kiro.dev-blue.svg)](https://kiro.dev/)
