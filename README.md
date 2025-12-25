@@ -13,12 +13,3 @@ Welcome to the AI-Driven Business Decisions course. This course explores how to 
 ```{todo}
 Add more detailed course overview and learning objectives.
 ```
-
----
-
-## License
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-
-This project uses a dual-license approach: **MIT License** for code and **CC BY 4.0** for educational content. See [LICENSE.md](https://github.com/eisenhauerIO/courses-business-decisions/blob/main/LICENSE.md) for details.

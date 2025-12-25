@@ -36,6 +36,9 @@ exclude_patterns = ["build"]
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
+# Footer with license information
+copyright = "eisenhauerIO — MIT License (code) | CC BY 4.0 (content)"
+
 # Enable "Edit on GitHub" link in RTD theme
 html_context = {
     "display_github": True,
