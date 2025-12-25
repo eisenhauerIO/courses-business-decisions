@@ -6,6 +6,7 @@
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-blue.svg?logo=github)](https://github.com/eisenhauerIO/courses-business-decisions)
 [![CI](https://github.com/eisenhauerIO/courses-business-decisions/actions/workflows/ci.yml/badge.svg)](https://github.com/eisenhauerIO/courses-business-decisions/actions/workflows/ci.yml)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Slack](https://img.shields.io/badge/Slack-Join%20Us-4A154B?logo=slack)](https://join.slack.com/t/eisenhauerioworkspace/shared_invite/zt-3lxtc370j-XLdokfTkno54wfhHVxvEfA)
 
 Welcome to the AI-Driven Business Decisions course. This course explores how to leverage AI and data-driven approaches to make better business decisions.
 
