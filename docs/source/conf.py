@@ -8,13 +8,20 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.extlinks',
     'myst_parser',
     'nbsphinx',
     'sphinxcontrib.bibtex',
 ]
 
-# Show TODO items only in dev mode
-todo_include_todos = os.environ.get('SPHINX_DEV', '0') == '1'
+# External links shortcuts
+extlinks = {
+    'repo': ('https://github.com/eisenhauerIO/courses-business-decisions/%s', '%s'),
+}
+
+# Show TODO items locally, hide in production builds
+todo_include_todos = os.environ.get('SPHINX_PROD', '0') != '1'
 
 # Bibliography configuration
 bibtex_bibfiles = ['references.bib']
@@ -35,3 +42,12 @@ html_extra_path = []
 # nbsphinx settings: execute notebooks during build
 nbsphinx_execute = 'always'
 nbsphinx_allow_errors = False
+
+# Add Colab badge to notebooks
+nbsphinx_prolog = """
+.. raw:: html
+
+    <a href="https://colab.research.google.com/github/eisenhauerIO/courses-business-decisions/blob/main/docs/source/{{ env.doc2path(env.docname, base=None) }}">
+        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+    </a>
+"""

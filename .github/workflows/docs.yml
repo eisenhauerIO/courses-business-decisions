@@ -38,4 +38,4 @@ jobs:
     
     - name: Build documentation
       run: |
-        hatch run build
+        SPHINX_PROD=1 hatch run build
