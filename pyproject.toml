@@ -11,7 +11,9 @@ dependencies = [
     "myst-parser",
     "nbsphinx",
     "pypandoc",
+    "numpy",
     "pandas",
+    "matplotlib",
     "ipykernel",
     "sphinxcontrib-bibtex",
 ]

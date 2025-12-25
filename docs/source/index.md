@@ -19,15 +19,10 @@ Add more detailed course overview and learning objectives.
 :caption: Contents
 
 introduction
-syllabus
-lectures/index
-labs/index
-handouts/index
-problem_sets/index
+impact-measurement/index
+software-development/index
 partners/index
-iterations/index
 tooling/index
-resources/index
 references
 ```
 
