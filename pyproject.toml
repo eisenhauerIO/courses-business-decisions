@@ -18,6 +18,7 @@ dependencies = [
     "sphinxcontrib-bibtex",
     "nbqa",
     "nbconvert",
+    "ruff",
 ]
 
 [tool.hatch.envs.default.scripts]
