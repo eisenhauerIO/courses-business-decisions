@@ -8,8 +8,8 @@
 introduction
 impact-measurement/index
 portfolio-allocation/index
-software-development/index
 decision-implementation/index
+software-development/index
 partners/index
 tooling/index
 references
