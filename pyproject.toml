@@ -16,6 +16,7 @@ dependencies = [
     "matplotlib",
     "ipykernel",
     "sphinxcontrib-bibtex",
+    "sphinxcontrib-mermaid",
     "nbqa",
     "nbconvert",
     "ruff",
@@ -23,8 +24,6 @@ dependencies = [
 
 [tool.hatch.envs.default.scripts]
 build = "sphinx-build -b html docs/source docs/build/html"
-serve = "python -m http.server -d docs/build/html 8000"
-clean = "rm -rf docs/build"
 notebook = "jupyter nbconvert --to notebook --execute --inplace {args}"
 notebooks = "jupyter nbconvert --to notebook --execute --inplace docs/source/**/*.ipynb"
 

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 280">
+  <defs>
+    <style>
+      .outer-box { fill: #fef3c7; stroke: #f59e0b; stroke-width: 2; rx: 12; }
+      .outer-label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 600; fill: #b45309; text-transform: uppercase; letter-spacing: 0.05em; }
+      .mid-box { fill: #f0fdf4; stroke: #22c55e; stroke-width: 2; rx: 10; }
+      .mid-label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; font-weight: 600; fill: #15803d; text-transform: uppercase; letter-spacing: 0.05em; }
+      .box { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 2; rx: 8; }
+      .box-measure { stroke: #3b82f6; }
+      .box-allocate { stroke: #8b5cf6; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; font-weight: 600; fill: #1a1a2e; }
+      .question { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; fill: #6b7280; font-style: italic; }
+      .output { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11px; fill: #9ca3af; }
+      .arrow { fill: none; stroke: #cbd5e1; stroke-width: 2; }
+      .arrow-head { fill: #cbd5e1; }
+      .number { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11px; font-weight: 600; fill: white; }
+      .circle-measure { fill: #3b82f6; }
+      .circle-allocate { fill: #8b5cf6; }
+    </style>
+  </defs>
+
+  <!-- Outer container: Drive Actions -->
+  <rect x="20" y="20" width="640" height="240" class="outer-box"/>
+  <text x="340" y="48" text-anchor="middle" class="outer-label">Drive Actions</text>
+
+  <!-- Middle container: Build Tools -->
+  <rect x="50" y="65" width="580" height="175" class="mid-box"/>
+  <text x="340" y="90" text-anchor="middle" class="mid-label">Build Tools</text>
+
+  <!-- Box 1: Measure Impact -->
+  <rect x="90" y="110" width="220" height="100" class="box box-measure"/>
+  <circle cx="115" cy="135" r="12" class="circle-measure"/>
+  <text x="115" y="139" text-anchor="middle" class="number">1</text>
+  <text x="135" y="140" class="title">Measure Impact</text>
+  <text x="110" y="165" class="question">"What is true?"</text>
+  <text x="110" y="190" class="output">→ Causal Inference</text>
+
+  <!-- Arrow: Measure → Allocate -->
+  <path d="M 310 160 L 360 160" class="arrow"/>
+  <polygon points="360,155 370,160 360,165" class="arrow-head"/>
+
+  <!-- Box 2: Allocate Resources -->
+  <rect x="370" y="110" width="220" height="100" class="box box-allocate"/>
+  <circle cx="395" cy="135" r="12" class="circle-allocate"/>
+  <text x="395" y="139" text-anchor="middle" class="number">2</text>
+  <text x="415" y="140" class="title">Allocate Resources</text>
+  <text x="390" y="165" class="question">"What to do?"</text>
+  <text x="390" y="190" class="output">→ Decision Theory</text>
+</svg>

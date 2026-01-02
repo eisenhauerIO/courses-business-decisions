@@ -1,6 +1,12 @@
-# Impact Measurement
+# Measure Impact
 
 We provide a set of lectures as Jupyter Notebooks.
+
+```{toctree}
+:hidden:
+
+01_generalized_roy_model
+```
 
 ## Foundations
 

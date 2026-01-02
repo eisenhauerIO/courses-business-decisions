@@ -14,6 +14,7 @@ extensions = [
     "myst_parser",
     "nbsphinx",
     "sphinxcontrib.bibtex",
+    "sphinxcontrib.mermaid",
 ]
 
 # External links shortcuts
