@@ -6,6 +6,7 @@
 :caption: Contents
 
 overview
+understand-domain/index
 measure-impact/index
 allocate-resources/index
 drive-actions/index

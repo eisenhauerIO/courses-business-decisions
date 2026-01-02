@@ -1,5 +1,7 @@
 # Build Tools
 
+We use Kiro as our AI coding assistant throughout.
+
 | Week | Topic | Notebook |
 |------|-------|----------|
 | | **Basics** | |

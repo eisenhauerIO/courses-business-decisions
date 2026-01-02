@@ -8,6 +8,8 @@ We provide a set of lectures as Jupyter Notebooks.
 01_generalized_roy_model
 ```
 
+ The [Generalized Roy Model](https://github.com/eisenhauerIO/tools-generalized-roy) provides a unified framework that reveals how selection problems arise and which methods address which assumptions. The [Causal Engine](https://github.com/eisenhauerIO/tools-causal-engine) puts these methods into practice.
+
 ## Foundations
 
 ### Potential Outcomes Model
