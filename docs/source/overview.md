@@ -10,7 +10,7 @@ Software engineering enables implementation. You need tools to measure impact re
 :alt: Drive Action Framework
 :align: center
 
-Learn - Decide - Repeat: From Evidence to Action (and back)
+***Course Framework***
 ```
 
 ***Measure Impact.***  What is true? Before allocating resources, you must understand what actually works. This stage teaches causal inference methods—from randomized experiments to observational techniques—that distinguish correlation from causation and establish genuine cause and effect.
@@ -21,4 +21,4 @@ Learn - Decide - Repeat: From Evidence to Action (and back)
 
 ***Drive Actions.*** How does this change outcomes? Evidence, priorities, and systems only matter if they shape real behavior. This stage teaches how to translate insights into decisions that are actually implemented. The goal is not understanding—it is impact.
 
-This course teaches you to build and operate the Learn - Decide - Repeat loop. You'll learn causal inference, decision theory, software engineering, and implementation strategies that turn analysis into outcomes. Throughout the course, we use a single running example to connect theory and practice: the [Catalog Generator](https://github.com/eisenhauerIO/tools-catalog-generator), a system that enriches product catalogs with AI-generated attributes. This concrete problem—improving product data quality at scale—provides the context for every method, tool, and decision you'll learn.
+This course teaches you to build and operate the <img src="_static/learn-decide-repeat.png" alt="LDR" style="height: 1em; vertical-align: middle;"> ***Learn - Decide - Repeat*** loop. You'll learn causal inference, decision theory, software engineering, and implementation strategies that turn analysis into outcomes. Throughout the course, we use a single running example to connect theory and practice: the [Catalog Generator](https://github.com/eisenhauerIO/tools-catalog-generator), a system that enriches product catalogs with AI-generated attributes. This concrete problem—improving product data quality at scale—provides the context for every method, tool, and decision you'll learn.

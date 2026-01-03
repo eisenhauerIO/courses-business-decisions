@@ -1,6 +1,6 @@
 # Understand Domain
 
-Decisions are not made in a vacuum. Causal inference, decision theory, and software systems only create value when tailored to the domain in which real decisions are made. Domain knowledge shapes which questions are meaningful, which signals are trustworthy, which constraints are binding, and which mistakes are costly. Without it, even technically correct analyses can lead to irrelevant conclusions or harmful decisions. This course therefore begins with domain understanding—not as background context, but as a core input to building effective *Learn · Decide · Repeat* systems.
+Decisions are not made in a vacuum. Causal inference, decision theory, and software systems only create value when tailored to the domain in which real decisions are made. Domain knowledge shapes which questions are meaningful, which signals are trustworthy, which constraints are binding, and which mistakes are costly. Without it, even technically correct analyses can lead to irrelevant conclusions or harmful decisions. This course therefore begins with domain understanding—not as background context, but as a core input to building effective <img src="../_static/learn-decide-repeat.png" alt="LDR" style="height: 1em; vertical-align: middle;"> ***Learn · Decide · Repeat*** systems.
 
 ## Product Data Improvements
 

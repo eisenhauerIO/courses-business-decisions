@@ -7,6 +7,12 @@
 
 # Impact-Driven Business Decisions
 
-*...developing causal thinking and building the tools to drive better decisions*
+*Developing causal thinking and building systems that turn evidence into action*
 
-Welcome to the Impact-Driven Business Decisions course. This course explores how to leverage AI and data-driven approaches to make better business decisions.
+Most organizations generate data and run analyses, but struggle to translate evidence into sustained impact. Insights remain disconnected from decisions, and decisions fail to produce learning. This course addresses that gap by focusing on a single organizing principle: ***Learn · Decide · Repeat***.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/eisenhauerIO/courses-business-decisions/main/docs/source/_static/learn-decide-repeat.png" alt="Learn · Decide · Repeat" width="50%">
+</p>
+
+Rather than treating analytics, AI, or decision-making in isolation, the course shows how to connect evidence to action in a way that compounds over time. The goal is not better analysis in isolation, but better decisions over time.
