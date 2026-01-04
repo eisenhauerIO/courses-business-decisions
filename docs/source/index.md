@@ -5,12 +5,12 @@
 :maxdepth: 1
 :caption: Contents
 
-overview
+overview/index
 understand-domain/index
 measure-impact/index
 allocate-resources/index
-drive-actions/index
-build-tools/index
+improve-decisions/index
+build-systems/index
 tooling/index
 partners/index
 references

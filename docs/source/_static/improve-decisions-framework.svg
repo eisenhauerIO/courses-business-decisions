@@ -19,13 +19,13 @@
     </style>
   </defs>
 
-  <!-- Outer container: Drive Actions -->
+  <!-- Outer container: Improve Decisions -->
   <rect x="20" y="20" width="640" height="240" class="outer-box"/>
-  <text x="340" y="48" text-anchor="middle" class="outer-label">Drive Actions</text>
+  <text x="340" y="48" text-anchor="middle" class="outer-label">Improve Decisions</text>
 
-  <!-- Middle container: Build Tools -->
+  <!-- Middle container: Build Systems -->
   <rect x="50" y="65" width="580" height="175" class="mid-box"/>
-  <text x="340" y="90" text-anchor="middle" class="mid-label">Build Tools</text>
+  <text x="340" y="90" text-anchor="middle" class="mid-label">Build Systems</text>
 
   <!-- Box 1: Measure Impact -->
   <rect x="90" y="110" width="220" height="100" class="box box-measure"/>

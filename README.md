@@ -12,7 +12,8 @@
 Most organizations generate data and run analyses, but struggle to translate evidence into sustained impact. Insights remain disconnected from decisions, and decisions fail to produce learning. This course addresses that gap by focusing on a single organizing principle: ***Learn · Decide · Repeat***.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/eisenhauerIO/courses-business-decisions/main/docs/source/_static/learn-decide-repeat.png" alt="Learn · Decide · Repeat" width="50%">
+  <img src="https://raw.githubusercontent.com/eisenhauerIO/courses-business-decisions/main/docs/source/_static/learn-decide-repeat.png" alt="Learn · Decide · Repeat" width="50%"><br>
+  <em><strong>The Learn · Decide · Repeat Decision Loop</strong></em>
 </p>
 
-Rather than treating analytics, AI, or decision-making in isolation, the course shows how to connect evidence to action in a way that compounds over time. The goal is not better analysis in isolation, but better decisions over time.
+Rather than treating analytics, AI, or decision-making in isolation, the course shows how to connect evidence to action in a way that compounds over time. You will learn how to design systems that measure impact, inform decisions under uncertainty, and turn those decisions into outcomes that generate new evidence. The goal is not better analysis in isolation, but better decisions over time.

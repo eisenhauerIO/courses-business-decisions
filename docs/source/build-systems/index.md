@@ -1,4 +1,4 @@
-# Build Tools
+# Build Systems
 
 We use Kiro as our AI coding assistant throughout.
 
