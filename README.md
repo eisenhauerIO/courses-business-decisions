@@ -9,7 +9,7 @@
 
 *Developing causal thinking and building the tools that turn analysis into action at scale*
 
-Most organizations generate data and run analyses, but struggle to translate analysis into sustained impact. Insights remain disconnected from decisions, and decisions fail to produce learning at scale. This course addresses that gap by focusing on a single organizing principle:***Learn · Decide · Repeat***.
+Most organizations generate data and run analyses, but struggle to translate analysis into sustained impact. Insights remain disconnected from decisions, and decisions fail to produce learning at scale. This course addresses that gap by focusing on a single organizing principle: ***Learn · Decide · Repeat***.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/eisenhauerIO/courses-business-decisions/main/docs/source/_static/learn-decide-repeat.png" alt="Learn · Decide · Repeat" width="50%"><br>
