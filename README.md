@@ -7,7 +7,7 @@
 
 # Impact-Driven Business Decisions
 
-*Developing causal thinking and building the tools that turn analysis into action at scale*
+*Developing causal thinking and building tools to improve decisions at scale*
 
 Most organizations generate data and run analyses, but struggle to translate analysis into sustained impact. Insights remain disconnected from decisions, and decisions fail to produce learning at scale. This course addresses that gap by focusing on a single organizing principle: ***Learn · Decide · Repeat***.
 
