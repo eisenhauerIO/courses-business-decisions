@@ -11,8 +11,8 @@ measure-impact/index
 allocate-resources/index
 build-systems/index
 improve-decisions/index
-tooling/index
-partners/index
+guest-lecturers/index
+software/index
 references
 ```
 
