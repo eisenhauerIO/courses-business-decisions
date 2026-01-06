@@ -26,8 +26,6 @@ Add notebook link
 
 We introduce directed acyclic graphs (DAGs) as a complementary representation of causal assumptions. DAGs provide a visual and formal tool for reasoning about identification, making explicit the roles of confounders, mediators, and colliders. This section emphasizes how graphical structure encodes assumptions rather than estimates.
 
-[Notebook](01_generalized_roy_model.ipynb)
-
 ```{todo}
 Add notebook link
 ```
