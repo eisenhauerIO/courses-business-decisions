@@ -1,3 +1,7 @@
 # Improve Decisions
 
-This pillar focuses on translating insights from impact measurement, portfolio allocation, and software development into real-world action. You have the tools - now drive decisions.
+Reliable impact measurement and thoughtful resource allocation are prerequisites, not endpoints. This pillar focuses on translating those foundations into consistent decision-making in practice. The emphasis is on how measurement and allocation outputs are consumed by software systems and organizational processes to support real-world action.
+
+```{warning}
+This section is under construction.
+```
