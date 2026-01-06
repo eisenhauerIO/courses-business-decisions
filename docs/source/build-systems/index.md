@@ -1,19 +1,3 @@
 # Build Systems
 
-We use Kiro as our AI coding assistant throughout.
-
-| Week | Topic | Notebook |
-|------|-------|----------|
-| | **Basics** | |
-| 1 | Python | TBD |
-| 2 | Git | TBD |
-| 3 | VS Code | TBD |
-| | **AI-Assisted Software Engineering** | |
-| 4 | TBD | TBD |
-| 5 | TBD | TBD |
-| 6 | TBD | TBD |
-| | **Production** | |
-| 7 | TBD | TBD |
-| 8 | TBD | TBD |
-| 9 | TBD | TBD |
-| 10 | TBD | TBD |
+Effective decision-making systems require reliable software foundations. This section introduces the core software engineering practices needed to implement, operate, and iteratively improve systems for measuring impact and allocating resources. The focus is on practical skills—such as [Python](https://www.python.org/) development, version control with [Git](https://git-scm.com/), continuous integration using [GitHub](https://github.com/) workflows, AI-assisted development with tools like [Kiro](https://kiro.dev/), and integrated development environments such as [VS Code](https://code.visualstudio.com/)—that enable analytical insights to be embedded in durable, extensible software rather than remaining isolated analyses.

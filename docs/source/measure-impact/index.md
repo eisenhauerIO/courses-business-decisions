@@ -24,7 +24,7 @@ Add notebook link
 
 ### Generalized Roy Model
 
-We introduce directed acyclic graphs (DAGs) as a complementary representation of causal assumptions. DAGs provide a visual and formal tool for reasoning about identification, making explicit the roles of confounders, mediators, and colliders. This section emphasizes how graphical structure encodes assumptions rather than estimates.
+We introduce the Generalized Roy Model as a unifying framework for causal inference under selection. The model makes selection mechanisms explicit and provides a common structure for understanding treatment effect heterogeneity, self-selection, and policy evaluation. Within this framework, many standard causal methods can be interpreted as imposing different assumptions on potential outcomes and selection rules.
 
 ```{todo}
 Add notebook link
