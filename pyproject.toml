@@ -14,6 +14,7 @@ dependencies = [
     "numpy",
     "pandas",
     "matplotlib",
+    "seaborn",
     "ipykernel",
     "sphinxcontrib-bibtex",
     "sphinxcontrib-mermaid",
