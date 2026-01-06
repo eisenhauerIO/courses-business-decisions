@@ -9,8 +9,8 @@ overview/index
 understand-domain/index
 measure-impact/index
 allocate-resources/index
-improve-decisions/index
 build-systems/index
+improve-decisions/index
 tooling/index
 partners/index
 references
