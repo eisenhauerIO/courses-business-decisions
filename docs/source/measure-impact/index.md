@@ -1,6 +1,6 @@
 # Measure Impact
 
-Lectures are provided as [Jupyter Notebooks](https://jupyter.org/). Throughout the course, we use the [Generalized Roy Model](https://github.com/eisenhauerIO/tools-generalized-roy) as a unifying framework for understanding the statistical assumptions underlying different causal methods and their economic implications. The [Impact Engine](https://github.com/eisenhauerIO/tools-causal-engine) allows us then to put these methods into practice.
+Lectures are provided as [Jupyter Notebooks](https://jupyter.org/). Throughout the course, we use the [Generalized Roy Model](https://github.com/eisenhauerIO/tools-generalized-roy) as a unifying framework for understanding the statistical assumptions underlying different causal methods and their economic implications. The [Impact Engine](https://github.com/eisenhauerIO/tools-impact-engine) allows us then to put these methods into practice.
 
 The material is organized in three parts. We begin with foundational causal models that clarify what causal effects mean and under which assumptions they are identified. We then study methods that rely on selection on observables, followed by methods designed to address selection on unobservables.
 

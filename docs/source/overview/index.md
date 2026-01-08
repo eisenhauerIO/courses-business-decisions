@@ -23,4 +23,4 @@ Software engineering enables implementation. You need tools to measure impact re
 
 This course teaches you to build and operate <img src="../_static/learn-decide-repeat.png" alt="LDR" style="height: 1em; vertical-align: middle;"> ***Learn · Decide · Repeat*** systems. You will learn causal inference, decision theory, software engineering, and implementation strategies that turn analysis into systematically improved decisions.
 
-Throughout the course, we ground these ideas in a single, concrete decision context drawn from large-scale online retail. The problem of improving product data quality at scale provides the domain in which every method, system, and decision is introduced
+Throughout the course, we ground these ideas in a single, concrete decision context drawn from large-scale online retail. The problem of improving product data quality at scale provides the domain in which every method, system, and decision is introduced.

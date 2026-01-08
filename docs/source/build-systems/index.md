@@ -58,3 +58,4 @@ Python is the primary programming language for this course. We use it for data a
 **Resources**
 
 - [Kiro Documentation](https://kiro.dev/docs/) — Official guides and tutorials
+- [Kiro Getting Started](https://kiro.dev/docs/getting-started/installation/) — Installation and setup
