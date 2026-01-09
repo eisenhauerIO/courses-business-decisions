@@ -1,6 +1,6 @@
 # Build Systems
 
-Effective decision-making systems require reliable software foundations. This section introduces the core practices needed to implement, operate, and iteratively improve systems for measuring impact and allocating resources. We cover programming with [Python](https://www.python.org/), [Jupyter](https://jupyter.org/) notebooks, and [VS Code](https://code.visualstudio.com/), as well as software engineering practices including version control with [Git](https://git-scm.com/), collaboration on [GitHub](https://github.com/), automated testing and linting, and AI-assisted development with [Kiro](https://kiro.dev/). These skills enable analytical insights to be embedded in durable, extensible software rather than remaining isolated analyses.
+Effective decision-making systems require reliable software foundations. This section introduces the core practices needed to implement, operate, and iteratively improve systems for measuring impact and allocating resources. We cover programming with [Python](https://www.python.org/), [Jupyter](https://jupyter.org/) notebooks, and [VS Code](https://code.visualstudio.com/), as well as software engineering practices including version control with [Git](https://git-scm.com/), collaboration on [GitHub](https://github.com/), automated testing and linting, and AI-assisted development with [Kiro](https://kiro.dev/). These skills enable analytical insights to be embedded in durable, extensible software rather than remaining isolated analyses
 
 ## Programming
 
