@@ -31,6 +31,12 @@ notebooks = "jupyter nbconvert --to notebook --execute --inplace docs/source/**/
 [tool.ruff]
 extend-exclude = ["_external"]
 
+[tool.ruff.lint]
+select = ["D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
 [tool.ruff.lint.per-file-ignores]
 "*.ipynb" = ["E402"]
 
