@@ -23,18 +23,18 @@ Improving product data quality at scale therefore means learning not just which 
 
 We explore the Online Retail Simulator, covering product characteristics simulation, sales metrics with conversion funnels, and treatment effects through enrichment.
 
-[Online Retail Simulator](01_online_retail_simulator.ipynb)
+[Online Retail Simulator](01-online-retail-simulator/lecture.ipynb)
 
 ## AI-Powered Product Catalogs
 
 We implement the Catalog AI system using LLM-generated product details with custom prompts, and visualize causal impact through diverging treatment effect plots.
 
-[AI-Powered Product Catalogs](02_catalog_ai.ipynb)
+[AI-Powered Product Catalogs](02-catalog-ai/lecture.ipynb)
 
 ```{toctree}
 :maxdepth: 2
 :hidden:
 
-01_online_retail_simulator
-02_catalog_ai
+01-online-retail-simulator/lecture
+02-catalog-ai/lecture
 ```

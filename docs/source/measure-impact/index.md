@@ -13,7 +13,7 @@ We introduce the potential outcomes framework as the foundational model for caus
 ```{toctree}
 :maxdepth: 1
 
-01_potential_outcome_model
+01-potential-outcome-model/lecture
 ```
 
 ### Causal Graphical Models
