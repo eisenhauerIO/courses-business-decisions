@@ -10,7 +10,7 @@ The course is grounded in challenges observed in **large-scale generative AI sys
 
 A concrete way to grasp this domain is to look at a real product page, such as [*Keurig K-Express Single Serve Coffee Maker*](https://www.amazon.com/Keurig-K-Express-Coffee-Single-Brewer/dp/B09715G57M?th=1) on Amazon. What consumers see as a simple product listing belies a rich set of underlying data decisions: the title, structured attributes, images, pricing context, badges, and descriptive text all shape discovery, interpretation, and trust. In modern e-commerce systems, many of these elements are proposed or modified by AI, and each such change represents a hypothesis about customer behavior that must be evaluated.
 
-```{figure} ../_static/product-data.png
+```{figure} product-data.png
 :alt: Product Data Example
 :align: center
 
