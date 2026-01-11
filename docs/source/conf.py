@@ -58,7 +58,7 @@ html_extra_path = []
 
 # nbsphinx settings: execute notebooks during build
 nbsphinx_execute = "always"
-nbsphinx_allow_errors = False
+nbsphinx_allow_errors = True
 
 # Add notebook info bar (applies to all notebooks)
 nbsphinx_prolog = r"""

@@ -1,0 +1,129 @@
+"""Support functions for the Online Retail Simulator notebook."""
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+def print_data_summary(sales):
+    """Print formatted summary of sales data."""
+    print(
+        f"What is the date range?       {sales['date'].min()} to {sales['date'].max()}"
+    )
+    print(f"How many categories?          {sales['category'].nunique()}")
+    print(f"What is the total revenue?    ${sales['revenue'].sum():,.2f}")
+
+
+def plot_revenue_by_category(category_revenue):
+    """Plot horizontal bar chart of revenue by category."""
+    fig, ax = plt.subplots(figsize=(10, 6))
+    category_revenue.plot(
+        kind="barh", ax=ax, color=sns.color_palette("viridis", len(category_revenue))
+    )
+    ax.set_xlabel("Revenue ($)")
+    ax.set_ylabel("Category")
+    ax.set_title("Total Revenue by Category")
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"${x:,.0f}"))
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_daily_sales_trend(daily_sales):
+    """Plot daily revenue trend line chart."""
+    fig, ax = plt.subplots(figsize=(12, 5))
+    ax.plot(
+        daily_sales["date"],
+        daily_sales["revenue"],
+        marker="o",
+        linewidth=2,
+        markersize=4,
+    )
+    ax.fill_between(daily_sales["date"], daily_sales["revenue"], alpha=0.3)
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Revenue ($)")
+    ax.set_title("Daily Revenue Trend")
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"${x:,.0f}"))
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_conversion_funnel(funnel_data):
+    """Plot customer journey conversion funnel."""
+    stages = list(funnel_data.keys())
+    values = list(funnel_data.values())
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    colors = sns.color_palette("Blues_r", len(stages))
+    bars = ax.barh(stages[::-1], values[::-1], color=colors)
+    ax.set_xlabel("Count")
+    ax.set_title("Customer Journey Funnel")
+
+    for bar, val in zip(bars, values[::-1]):
+        ax.text(
+            val + max(values) * 0.01,
+            bar.get_y() + bar.get_height() / 2,
+            f"{val:,}",
+            va="center",
+            fontsize=10,
+        )
+
+    plt.tight_layout()
+    plt.show()
+
+
+def print_product_details(products, label=None):
+    """Print formatted product details from LLM-generated output."""
+    if label:
+        print(f"\n{'='*70}")
+        print(f"{label.upper()}")
+        print(f"{'='*70}")
+    for _, row in products.iterrows():
+        print(f"\n  Title: {row['title']}")
+        print(f"  Brand: {row['brand']}")
+        print(f"  Description: {row['description']}")
+
+
+def plot_treatment_effect(sales, enriched, enrichment_start):
+    """Plot daily revenue comparing original vs enriched data."""
+    import pandas as pd
+
+    daily_original = sales.groupby("date")["revenue"].sum().reset_index()
+    daily_original["date"] = pd.to_datetime(daily_original["date"])
+
+    daily_enriched = enriched.groupby("date")["revenue"].sum().reset_index()
+    daily_enriched["date"] = pd.to_datetime(daily_enriched["date"])
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+    ax.plot(
+        daily_original["date"],
+        daily_original["revenue"],
+        marker="o",
+        linewidth=2,
+        markersize=4,
+        label="Original",
+        color="#1f77b4",
+    )
+    ax.plot(
+        daily_enriched["date"],
+        daily_enriched["revenue"],
+        marker="s",
+        linewidth=2,
+        markersize=4,
+        label="Enriched",
+        color="#2ca02c",
+    )
+    ax.axvline(
+        pd.to_datetime(enrichment_start),
+        color="red",
+        linestyle="--",
+        alpha=0.7,
+        label="Treatment Start",
+    )
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Revenue ($)")
+    ax.set_title("Treatment Effect: Daily Revenue")
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"${x:,.0f}"))
+    ax.legend()
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
