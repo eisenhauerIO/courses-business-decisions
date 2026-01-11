@@ -17,3 +17,13 @@ repos:
         types_or: [python, jupyter]
       - id: ruff-format
         types_or: [python, jupyter]
+
+  - repo: local
+    hooks:
+      - id: nbmake
+        name: nbmake (notebook execution)
+        entry: pytest --nbmake
+        language: system
+        files: ^docs/source/.*\.ipynb$
+        pass_filenames: true
+        types: [jupyter]
