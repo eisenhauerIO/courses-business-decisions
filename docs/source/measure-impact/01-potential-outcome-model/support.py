@@ -25,7 +25,7 @@ def generate_quality_score(revenue, seed=42, noise_std=0.5):
     numpy.ndarray
         Quality scores in range [1, 5].
     """
-    np.random.seed(seed)
+    rng = np.random.default_rng(seed)
 
     # Normalize revenue to 0-1 range
     revenue_min = revenue.min()
@@ -33,7 +33,7 @@ def generate_quality_score(revenue, seed=42, noise_std=0.5):
     revenue_normalized = (revenue - revenue_min) / (revenue_max - revenue_min + 1e-6)
 
     # Map to 1-5 scale with noise
-    quality = 1 + 4 * revenue_normalized + np.random.normal(0, noise_std, len(revenue))
+    quality = 1 + 4 * revenue_normalized + rng.normal(0, noise_std, len(revenue))
 
     return np.clip(quality, 1, 5).round(1)
 
@@ -121,9 +121,7 @@ def plot_treatment_parameters(ate, att, atc, title=None):
     plt.show()
 
 
-def plot_bias_decomposition(
-    ate, baseline_bias, naive_estimate, selection_on_gains=None, title=None
-):
+def plot_bias_decomposition(ate, baseline_bias, naive_estimate, selection_on_gains=None, title=None):
     """
     Create bar chart showing bias decomposition.
 
@@ -164,9 +162,7 @@ def plot_bias_decomposition(
 
     for bar, (name, value) in zip(bars, components.items()):
         y_offset = max(abs(v) for v in components.values()) * 0.02
-        y_pos = (
-            bar.get_height() + y_offset if value >= 0 else bar.get_height() - y_offset
-        )
+        y_pos = bar.get_height() + y_offset if value >= 0 else bar.get_height() - y_offset
         va = "bottom" if value >= 0 else "top"
         ax.text(
             bar.get_x() + bar.get_width() / 2,
@@ -203,9 +199,7 @@ def plot_randomization_comparison(random_estimates, biased_estimates, true_ate):
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
     # Random selection (unbiased)
-    axes[0].hist(
-        random_estimates, bins=30, alpha=0.7, color="#2ecc71", edgecolor="black"
-    )
+    axes[0].hist(random_estimates, bins=30, alpha=0.7, color="#2ecc71", edgecolor="black")
     axes[0].axvline(
         true_ate,
         color="red",
@@ -226,9 +220,7 @@ def plot_randomization_comparison(random_estimates, biased_estimates, true_ate):
     axes[0].legend()
 
     # Biased selection
-    axes[1].hist(
-        biased_estimates, bins=30, alpha=0.7, color="#e74c3c", edgecolor="black"
-    )
+    axes[1].hist(biased_estimates, bins=30, alpha=0.7, color="#e74c3c", edgecolor="black")
     axes[1].axvline(
         true_ate,
         color="red",
@@ -448,9 +440,7 @@ def plot_balance_check(df, covariates, treatment_col="D", title=None):
         ctrl_mean = control[cov].mean()
         treat_mean = treated[cov].mean()
         diff = treat_mean - ctrl_mean
-        print(
-            f"{cov:20s}: Control={ctrl_mean:8.2f}, Treated={treat_mean:8.2f}, Diff={diff:+8.2f}"
-        )
+        print(f"{cov:20s}: Control={ctrl_mean:8.2f}, Treated={treat_mean:8.2f}, Diff={diff:+8.2f}")
 
 
 def plot_fundamental_problem_table(df, n_rows=10):

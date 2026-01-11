@@ -1,6 +1,7 @@
 """Support functions for the Online Retail Simulator notebook."""
 
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 
 
@@ -13,9 +14,7 @@ def print_data_summary(sales):
     sales : pandas.DataFrame
         Sales DataFrame with columns 'date', 'category', and 'revenue'.
     """
-    print(
-        f"What is the date range?       {sales['date'].min()} to {sales['date'].max()}"
-    )
+    print(f"What is the date range?       {sales['date'].min()} to {sales['date'].max()}")
     print(f"How many categories?          {sales['category'].nunique()}")
     print(f"What is the total revenue?    ${sales['revenue'].sum():,.2f}")
 
@@ -30,9 +29,7 @@ def plot_revenue_by_category(category_revenue):
         Series with category names as index and revenue values.
     """
     fig, ax = plt.subplots(figsize=(10, 6))
-    category_revenue.plot(
-        kind="barh", ax=ax, color=sns.color_palette("viridis", len(category_revenue))
-    )
+    category_revenue.plot(kind="barh", ax=ax, color=sns.color_palette("viridis", len(category_revenue)))
     ax.set_xlabel("Revenue ($)")
     ax.set_ylabel("Category")
     ax.set_title("Total Revenue by Category")
@@ -113,8 +110,6 @@ def plot_treatment_effect(sales, enriched, enrichment_start):
     enrichment_start : str
         Date string (YYYY-MM-DD) when enrichment treatment began.
     """
-    import pandas as pd
-
     daily_original = sales.groupby("date")["revenue"].sum().reset_index()
     daily_original["date"] = pd.to_datetime(daily_original["date"])
 

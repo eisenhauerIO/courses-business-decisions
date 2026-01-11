@@ -63,15 +63,17 @@ nbsphinx_execute = "always"
 nbsphinx_allow_errors = True
 
 # Add notebook info bar (applies to all notebooks)
-nbsphinx_prolog = r"""
-{% set docname = env.doc2path(env.docname, base=None) %}
+_gh_repo = "https://github.com/eisenhauerIO/courses-business-decisions"
+_colab = "https://colab.research.google.com/github/eisenhauerIO/courses-business-decisions"
+nbsphinx_prolog = rf"""
+{{% set docname = env.doc2path(env.docname, base=None) %}}
 .. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
-    :target: https://colab.research.google.com/github/eisenhauerIO/courses-business-decisions/blob/main/docs/source/{{ docname }}
+    :target: {_colab}/blob/main/docs/source/{{{{ docname }}}}
 
 .. only:: html
 
     .. nbinfo::
-        Download the notebook `here <https://github.com/eisenhauerIO/courses-business-decisions/blob/main/docs/source/{{ docname }}>`__!
+        Download the notebook `here <{_gh_repo}/blob/main/docs/source/{{{{ docname }}}}>`__!
         Interactive online version: |colab|
 
 """

@@ -30,15 +30,16 @@ notebooks = "jupyter nbconvert --to notebook --execute --inplace docs/source/**/
 
 [tool.ruff]
 extend-exclude = ["_external"]
+line-length = 120
 
 [tool.ruff.lint]
-select = ["D"]
+select = ["D", "E", "F", "I"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
 
 [tool.ruff.lint.per-file-ignores]
-"*.ipynb" = ["E402"]
+"*.ipynb" = ["D", "E402", "F", "I"]
 
 [tool.nbqa.exclude]
 ruff = "_external"
