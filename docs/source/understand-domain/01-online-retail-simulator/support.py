@@ -38,24 +38,24 @@ def plot_revenue_by_category(category_revenue):
     plt.show()
 
 
-def plot_daily_sales_trend(daily_sales):
+def plot_daily_metrics_trend(daily_metrics):
     """
     Plot daily revenue trend line chart.
 
     Parameters
     ----------
-    daily_sales : pandas.DataFrame
+    daily_metrics : pandas.DataFrame
         DataFrame with 'date' and 'revenue' columns.
     """
     fig, ax = plt.subplots(figsize=(12, 5))
     ax.plot(
-        daily_sales["date"],
-        daily_sales["revenue"],
+        daily_metrics["date"],
+        daily_metrics["revenue"],
         marker="o",
         linewidth=2,
         markersize=4,
     )
-    ax.fill_between(daily_sales["date"], daily_sales["revenue"], alpha=0.3)
+    ax.fill_between(daily_metrics["date"], daily_metrics["revenue"], alpha=0.3)
     ax.set_xlabel("Date")
     ax.set_ylabel("Revenue ($)")
     ax.set_title("Daily Revenue Trend")
@@ -97,20 +97,20 @@ def plot_conversion_funnel(funnel_data):
     plt.show()
 
 
-def plot_treatment_effect(sales, enriched, enrichment_start):
+def plot_treatment_effect(metrics, enriched, enrichment_start):
     """
     Plot daily revenue comparing original vs enriched data.
 
     Parameters
     ----------
-    sales : pandas.DataFrame
-        Original sales DataFrame with 'date' and 'revenue' columns.
+    metrics : pandas.DataFrame
+        Original metrics DataFrame with 'date' and 'revenue' columns.
     enriched : pandas.DataFrame
-        Enriched sales DataFrame with 'date' and 'revenue' columns.
+        Enriched metrics DataFrame with 'date' and 'revenue' columns.
     enrichment_start : str
         Date string (YYYY-MM-DD) when enrichment treatment began.
     """
-    daily_original = sales.groupby("date")["revenue"].sum().reset_index()
+    daily_original = metrics.groupby("date")["revenue"].sum().reset_index()
     daily_original["date"] = pd.to_datetime(daily_original["date"])
 
     daily_enriched = enriched.groupby("date")["revenue"].sum().reset_index()

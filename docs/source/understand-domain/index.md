@@ -21,7 +21,7 @@ Improving product data quality at scale therefore means learning not just which 
 
 ## Online Retail Simulator
 
-We explore the Online Retail Simulator, covering product characteristics simulation, sales metrics with conversion funnels, and treatment effects through enrichment.
+We explore the [Online Retail Simulator](https://github.com/eisenhauerIO/tools-catalog-generator), covering product characteristics simulation, sales metrics with conversion funnels, and treatment effects through enrichment.
 
 [Online Retail Simulator](01-online-retail-simulator/lecture.ipynb)
 
