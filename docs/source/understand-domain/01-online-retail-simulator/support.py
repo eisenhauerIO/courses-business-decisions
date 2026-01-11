@@ -5,7 +5,14 @@ import seaborn as sns
 
 
 def print_data_summary(sales):
-    """Print formatted summary of sales data."""
+    """
+    Print formatted summary of sales data.
+
+    Parameters
+    ----------
+    sales : pandas.DataFrame
+        Sales DataFrame with columns 'date', 'category', and 'revenue'.
+    """
     print(
         f"What is the date range?       {sales['date'].min()} to {sales['date'].max()}"
     )
@@ -14,7 +21,14 @@ def print_data_summary(sales):
 
 
 def plot_revenue_by_category(category_revenue):
-    """Plot horizontal bar chart of revenue by category."""
+    """
+    Plot horizontal bar chart of revenue by category.
+
+    Parameters
+    ----------
+    category_revenue : pandas.Series
+        Series with category names as index and revenue values.
+    """
     fig, ax = plt.subplots(figsize=(10, 6))
     category_revenue.plot(
         kind="barh", ax=ax, color=sns.color_palette("viridis", len(category_revenue))
@@ -28,7 +42,14 @@ def plot_revenue_by_category(category_revenue):
 
 
 def plot_daily_sales_trend(daily_sales):
-    """Plot daily revenue trend line chart."""
+    """
+    Plot daily revenue trend line chart.
+
+    Parameters
+    ----------
+    daily_sales : pandas.DataFrame
+        DataFrame with 'date' and 'revenue' columns.
+    """
     fig, ax = plt.subplots(figsize=(12, 5))
     ax.plot(
         daily_sales["date"],
@@ -48,7 +69,15 @@ def plot_daily_sales_trend(daily_sales):
 
 
 def plot_conversion_funnel(funnel_data):
-    """Plot customer journey conversion funnel."""
+    """
+    Plot customer journey conversion funnel.
+
+    Parameters
+    ----------
+    funnel_data : dict
+        Dictionary mapping stage names to counts (e.g., {'Impressions': 1000,
+        'Visits': 500, 'Cart Adds': 100, 'Orders': 50}).
+    """
     stages = list(funnel_data.keys())
     values = list(funnel_data.values())
 
@@ -72,7 +101,18 @@ def plot_conversion_funnel(funnel_data):
 
 
 def plot_treatment_effect(sales, enriched, enrichment_start):
-    """Plot daily revenue comparing original vs enriched data."""
+    """
+    Plot daily revenue comparing original vs enriched data.
+
+    Parameters
+    ----------
+    sales : pandas.DataFrame
+        Original sales DataFrame with 'date' and 'revenue' columns.
+    enriched : pandas.DataFrame
+        Enriched sales DataFrame with 'date' and 'revenue' columns.
+    enrichment_start : str
+        Date string (YYYY-MM-DD) when enrichment treatment began.
+    """
     import pandas as pd
 
     daily_original = sales.groupby("date")["revenue"].sum().reset_index()

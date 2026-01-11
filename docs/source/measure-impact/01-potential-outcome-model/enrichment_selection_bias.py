@@ -6,31 +6,48 @@ score, creating selection bias for pedagogical demonstrations.
 """
 
 import copy
-from typing import Dict, List
+from typing import Dict, List, Set
+
+import pandas as pd
 
 
 def quality_selection_boost(sales: List[Dict], **kwargs) -> List[Dict]:
     """
-    Treatment with QUALITY-BASED selection and HETEROGENEOUS effects.
+    Apply treatment with quality-based selection and heterogeneous effects.
 
-    Selects HIGH quality products for treatment (mimicking business behavior
-    of optimizing best content first). Effect is SMALLER for high quality
+    Select high quality products for treatment (mimicking business behavior
+    of optimizing best content first). Effect is smaller for high quality
     products (less room to improve).
 
     This creates selection bias where:
+
     - Baseline bias > 0 (treated have higher Y^0)
     - Selection on gains < 0 (treated have smaller delta)
     - Net effect: overestimation if baseline bias dominates
 
-    Args:
-        sales: List of sale transaction dictionaries
-        **kwargs: Parameters including:
-            - effect_size: Base treatment effect magnitude (default: 0.5)
-            - enrichment_fraction: Fraction of products to treat (default: 0.3)
-            - products_df: DataFrame with product info including quality_score
+    Parameters
+    ----------
+    sales : list of dict
+        Sale transaction dictionaries.
+    **kwargs : dict
+        Additional parameters:
 
-    Returns:
-        List of modified sale dictionaries with treatment applied
+        - effect_size : float, default 0.5
+            Base treatment effect magnitude.
+        - enrichment_fraction : float, default 0.3
+            Fraction of products to treat.
+        - products_df : pandas.DataFrame
+            DataFrame with product info including quality_score.
+
+    Returns
+    -------
+    list of dict
+        Modified sale dictionaries with treatment applied.
+
+    Raises
+    ------
+    ValueError
+        If products_df is not provided.
     """
     effect_size = kwargs.get("effect_size", 0.5)
     enrichment_fraction = kwargs.get("enrichment_fraction", 0.3)
@@ -74,20 +91,25 @@ def quality_selection_boost(sales: List[Dict], **kwargs) -> List[Dict]:
 
 
 def get_treated_products_by_quality(
-    products_df, enrichment_fraction: float = 0.3
-) -> set:
+    products_df: pd.DataFrame, enrichment_fraction: float = 0.3
+) -> Set[str]:
     """
-    Helper function to get the set of treated product IDs.
+    Get the set of treated product IDs based on quality selection.
 
-    Uses the same selection logic as quality_selection_boost to identify
+    Use the same selection logic as quality_selection_boost to identify
     which products would be treated (top quality products).
 
-    Args:
-        products_df: DataFrame with product info including quality_score
-        enrichment_fraction: Fraction of products to treat
+    Parameters
+    ----------
+    products_df : pandas.DataFrame
+        DataFrame with product info including quality_score.
+    enrichment_fraction : float, optional
+        Fraction of products to treat. Default is 0.3.
 
-    Returns:
-        Set of product IDs that are in the treatment group
+    Returns
+    -------
+    set of str
+        Product IDs in the treatment group.
     """
     quality_map = {}
     for _, row in products_df.iterrows():

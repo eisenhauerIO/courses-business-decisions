@@ -1,3 +1,5 @@
+"""Sphinx configuration for Business Decisions course documentation."""
+
 import os
 import sys
 

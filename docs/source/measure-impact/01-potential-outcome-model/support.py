@@ -11,13 +11,19 @@ def generate_quality_score(revenue, seed=42, noise_std=0.5):
     Higher revenue products get higher quality scores (realistic assumption:
     good content quality drives higher sales).
 
-    Args:
-        revenue: Series or array of baseline revenue values
-        seed: Random seed for reproducibility
-        noise_std: Standard deviation of noise (default 0.5)
+    Parameters
+    ----------
+    revenue : pandas.Series or numpy.ndarray
+        Baseline revenue values.
+    seed : int, optional
+        Random seed for reproducibility. Default is 42.
+    noise_std : float, optional
+        Standard deviation of noise. Default is 0.5.
 
-    Returns:
-        Array of quality scores in range [1, 5]
+    Returns
+    -------
+    numpy.ndarray
+        Quality scores in range [1, 5].
     """
     np.random.seed(seed)
 
@@ -33,12 +39,17 @@ def generate_quality_score(revenue, seed=42, noise_std=0.5):
 
 
 def plot_individual_effects_distribution(effects, true_effect=None, title=None):
-    """Plot histogram of individual treatment effects.
+    """
+    Plot histogram of individual treatment effects.
 
-    Args:
-        effects: Array or Series of individual treatment effects
-        true_effect: Optional true effect value to show as vertical line
-        title: Optional custom title
+    Parameters
+    ----------
+    effects : array-like
+        Individual treatment effects.
+    true_effect : float, optional
+        True effect value to show as vertical line.
+    title : str, optional
+        Custom title for the plot.
     """
     fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -71,13 +82,19 @@ def plot_individual_effects_distribution(effects, true_effect=None, title=None):
 
 
 def plot_treatment_parameters(ate, att, atc, title=None):
-    """Visualize ATE, ATT, ATC as bar chart.
+    """
+    Visualize ATE, ATT, ATC as bar chart.
 
-    Args:
-        ate: Average Treatment Effect
-        att: Average Treatment on Treated
-        atc: Average Treatment on Control
-        title: Optional custom title
+    Parameters
+    ----------
+    ate : float
+        Average Treatment Effect.
+    att : float
+        Average Treatment on Treated.
+    atc : float
+        Average Treatment on Control.
+    title : str, optional
+        Custom title for the plot.
     """
     fig, ax = plt.subplots(figsize=(8, 5))
 
@@ -107,14 +124,21 @@ def plot_treatment_parameters(ate, att, atc, title=None):
 def plot_bias_decomposition(
     ate, baseline_bias, naive_estimate, selection_on_gains=None, title=None
 ):
-    """Bar chart showing bias decomposition.
+    """
+    Create bar chart showing bias decomposition.
 
-    Args:
-        ate: True Average Treatment Effect
-        baseline_bias: Baseline (selection) bias component
-        naive_estimate: Naive difference-in-means estimate
-        selection_on_gains: Optional selection on gains component
-        title: Optional custom title
+    Parameters
+    ----------
+    ate : float
+        True Average Treatment Effect.
+    baseline_bias : float
+        Baseline (selection) bias component.
+    naive_estimate : float
+        Naive difference-in-means estimate.
+    selection_on_gains : float, optional
+        Selection on gains component.
+    title : str, optional
+        Custom title for the plot.
     """
     fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -164,12 +188,17 @@ def plot_bias_decomposition(
 
 
 def plot_randomization_comparison(random_estimates, biased_estimates, true_ate):
-    """Side-by-side histograms comparing random vs biased selection.
+    """
+    Create side-by-side histograms comparing random vs biased selection.
 
-    Args:
-        random_estimates: Array of estimates from random selection simulations
-        biased_estimates: Array of estimates from biased selection simulations
-        true_ate: True Average Treatment Effect
+    Parameters
+    ----------
+    random_estimates : array-like
+        Estimates from random selection simulations.
+    biased_estimates : array-like
+        Estimates from biased selection simulations.
+    true_ate : float
+        True Average Treatment Effect.
     """
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
@@ -224,12 +253,22 @@ def plot_randomization_comparison(random_estimates, biased_estimates, true_ate):
 
 
 def plot_bootstrap_distribution(estimates, true_ate=None, title=None):
-    """Plot bootstrap distribution with confidence interval.
+    """
+    Plot bootstrap distribution with confidence interval.
 
-    Args:
-        estimates: Array of bootstrap estimates
-        true_ate: Optional true ATE to show as vertical line
-        title: Optional custom title
+    Parameters
+    ----------
+    estimates : array-like
+        Bootstrap estimates.
+    true_ate : float, optional
+        True ATE to show as vertical line.
+    title : str, optional
+        Custom title for the plot.
+
+    Returns
+    -------
+    tuple
+        Lower and upper bounds of 95% confidence interval (ci_low, ci_high).
     """
     fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -274,12 +313,17 @@ def plot_bootstrap_distribution(estimates, true_ate=None, title=None):
 
 
 def plot_outcome_by_treatment(treated_outcomes, control_outcomes, title=None):
-    """Plot overlapping histograms of outcomes by treatment status.
+    """
+    Plot overlapping histograms of outcomes by treatment status.
 
-    Args:
-        treated_outcomes: Array/Series of outcomes for treated group
-        control_outcomes: Array/Series of outcomes for control group
-        title: Optional custom title
+    Parameters
+    ----------
+    treated_outcomes : array-like
+        Outcomes for treated group.
+    control_outcomes : array-like
+        Outcomes for control group.
+    title : str, optional
+        Custom title for the plot.
     """
     fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -326,13 +370,19 @@ def plot_outcome_by_treatment(treated_outcomes, control_outcomes, title=None):
 
 
 def plot_balance_check(df, covariates, treatment_col="D", title=None):
-    """Visualize covariate balance between treatment groups.
+    """
+    Visualize covariate balance between treatment groups.
 
-    Args:
-        df: DataFrame with covariates and treatment indicator
-        covariates: List of column names to check for balance
-        treatment_col: Column name for treatment indicator
-        title: Optional custom title
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame with covariates and treatment indicator.
+    covariates : list of str
+        Column names to check for balance.
+    treatment_col : str, optional
+        Column name for treatment indicator. Default is 'D'.
+    title : str, optional
+        Custom title for the plot.
     """
     treated = df[df[treatment_col] == 1]
     control = df[df[treatment_col] == 0]
@@ -404,14 +454,20 @@ def plot_balance_check(df, covariates, treatment_col="D", title=None):
 
 
 def plot_fundamental_problem_table(df, n_rows=10):
-    """Display table showing observed/missing potential outcomes.
+    """
+    Display table showing observed/missing potential outcomes.
 
-    Args:
-        df: DataFrame with columns 'asin', 'D', 'Y', 'Y_1', 'Y_0'
-        n_rows: Number of rows to display
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame with columns 'asin', 'D', 'Y', 'Y_1', 'Y_0'.
+    n_rows : int, optional
+        Number of rows to display. Default is 10.
 
-    Returns:
-        Styled DataFrame showing the fundamental problem
+    Returns
+    -------
+    pandas.DataFrame
+        Styled DataFrame showing the fundamental problem.
     """
     display_df = df[["asin", "D", "Y", "Y_1", "Y_0"]].head(n_rows).copy()
 
