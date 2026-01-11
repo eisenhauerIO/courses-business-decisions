@@ -2,7 +2,34 @@
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
+
+
+def generate_quality_score(revenue, seed=42, noise_std=0.5):
+    """
+    Generate quality score correlated with revenue.
+
+    Higher revenue products get higher quality scores (realistic assumption:
+    good content quality drives higher sales).
+
+    Args:
+        revenue: Series or array of baseline revenue values
+        seed: Random seed for reproducibility
+        noise_std: Standard deviation of noise (default 0.5)
+
+    Returns:
+        Array of quality scores in range [1, 5]
+    """
+    np.random.seed(seed)
+
+    # Normalize revenue to 0-1 range
+    revenue_min = revenue.min()
+    revenue_max = revenue.max()
+    revenue_normalized = (revenue - revenue_min) / (revenue_max - revenue_min + 1e-6)
+
+    # Map to 1-5 scale with noise
+    quality = 1 + 4 * revenue_normalized + np.random.normal(0, noise_std, len(revenue))
+
+    return np.clip(quality, 1, 5).round(1)
 
 
 def plot_individual_effects_distribution(effects, true_effect=None, title=None):
@@ -15,7 +42,6 @@ def plot_individual_effects_distribution(effects, true_effect=None, title=None):
     """
     fig, ax = plt.subplots(figsize=(10, 6))
 
-    # Use 'auto' bins to handle cases with low variance
     ax.hist(effects, bins="auto", edgecolor="black", alpha=0.7, color="#3498db")
 
     if true_effect is not None:
@@ -24,7 +50,7 @@ def plot_individual_effects_distribution(effects, true_effect=None, title=None):
             color="red",
             linestyle="--",
             linewidth=2,
-            label=f"True Effect = {true_effect:.1%}",
+            label=f"True Effect = ${true_effect:,.0f}",
         )
 
     mean_effect = np.mean(effects)
@@ -33,10 +59,10 @@ def plot_individual_effects_distribution(effects, true_effect=None, title=None):
         color="orange",
         linestyle="-",
         linewidth=2,
-        label=f"Mean Effect = {mean_effect:.1%}",
+        label=f"Mean Effect = ${mean_effect:,.0f}",
     )
 
-    ax.set_xlabel("Treatment Effect")
+    ax.set_xlabel("Treatment Effect ($)")
     ax.set_ylabel("Number of Products")
     ax.set_title(title or "Distribution of Individual Treatment Effects")
     ax.legend()
@@ -63,7 +89,7 @@ def plot_treatment_parameters(ate, att, atc, title=None):
     for bar, value in zip(bars, params.values()):
         ax.text(
             bar.get_x() + bar.get_width() / 2,
-            bar.get_height() + 0.01,
+            bar.get_height() + max(params.values()) * 0.02,
             f"${value:,.0f}",
             ha="center",
             va="bottom",
@@ -78,35 +104,52 @@ def plot_treatment_parameters(ate, att, atc, title=None):
     plt.show()
 
 
-def plot_bias_decomposition(ate, baseline_bias, naive_estimate, title=None):
+def plot_bias_decomposition(
+    ate, baseline_bias, naive_estimate, selection_on_gains=None, title=None
+):
     """Bar chart showing bias decomposition.
 
     Args:
         ate: True Average Treatment Effect
         baseline_bias: Baseline (selection) bias component
         naive_estimate: Naive difference-in-means estimate
+        selection_on_gains: Optional selection on gains component
         title: Optional custom title
     """
     fig, ax = plt.subplots(figsize=(10, 6))
 
-    components = {
-        "True ATE": ate,
-        "Baseline Bias": baseline_bias,
-        "Naive Estimate": naive_estimate,
-    }
+    if selection_on_gains is not None:
+        components = {
+            "True ATE": ate,
+            "Baseline Bias": baseline_bias,
+            "Selection on Gains": selection_on_gains,
+            "Naive Estimate": naive_estimate,
+        }
+        colors = ["#2ecc71", "#e74c3c", "#9b59b6", "#3498db"]
+    else:
+        components = {
+            "True ATE": ate,
+            "Baseline Bias": baseline_bias,
+            "Naive Estimate": naive_estimate,
+        }
+        colors = ["#2ecc71", "#e74c3c", "#3498db"]
 
-    colors = ["#2ecc71", "#e74c3c", "#3498db"]
     x_pos = np.arange(len(components))
 
     bars = ax.bar(x_pos, components.values(), color=colors, edgecolor="black")
 
     for bar, (name, value) in zip(bars, components.items()):
+        y_offset = max(abs(v) for v in components.values()) * 0.02
+        y_pos = (
+            bar.get_height() + y_offset if value >= 0 else bar.get_height() - y_offset
+        )
+        va = "bottom" if value >= 0 else "top"
         ax.text(
             bar.get_x() + bar.get_width() / 2,
-            bar.get_height() + max(components.values()) * 0.02,
+            y_pos,
             f"${value:,.0f}",
             ha="center",
-            va="bottom",
+            va=va,
             fontsize=11,
             fontweight="bold",
         )
@@ -171,54 +214,11 @@ def plot_randomization_comparison(random_estimates, biased_estimates, true_ate):
         linewidth=2,
         label=f"Mean = ${np.mean(biased_estimates):,.0f}",
     )
-    axes[1].set_title("Selection on Performance (Biased)")
+    axes[1].set_title("Selection on Quality (Biased)")
     axes[1].set_xlabel("Estimated Treatment Effect ($)")
     axes[1].set_ylabel("Frequency")
     axes[1].legend()
 
-    plt.tight_layout()
-    plt.show()
-
-
-def plot_time_series_treatment(daily_data, treatment_start, title=None):
-    """Plot daily revenue with treatment start line.
-
-    Args:
-        daily_data: DataFrame with 'date' and 'revenue' columns
-        treatment_start: Treatment start date string (YYYY-MM-DD)
-        title: Optional custom title
-    """
-    fig, ax = plt.subplots(figsize=(12, 6))
-
-    daily_data = daily_data.copy()
-    daily_data["date"] = pd.to_datetime(daily_data["date"])
-
-    ax.plot(
-        daily_data["date"],
-        daily_data["revenue"],
-        marker="o",
-        linewidth=2,
-        markersize=4,
-        color="#3498db",
-    )
-    ax.fill_between(
-        daily_data["date"], daily_data["revenue"], alpha=0.3, color="#3498db"
-    )
-
-    ax.axvline(
-        pd.to_datetime(treatment_start),
-        color="red",
-        linestyle="--",
-        linewidth=2,
-        label="Treatment Start",
-    )
-
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Revenue ($)")
-    ax.set_title(title or "Daily Revenue with Treatment Period")
-    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"${x:,.0f}"))
-    ax.legend()
-    plt.xticks(rotation=45)
     plt.tight_layout()
     plt.show()
 
@@ -271,84 +271,6 @@ def plot_bootstrap_distribution(estimates, true_ate=None, title=None):
     plt.show()
 
     return ci_low, ci_high
-
-
-def create_fundamental_problem_table(df, n_rows=10):
-    """Display table showing observed/missing potential outcomes.
-
-    Args:
-        df: DataFrame with columns 'asin', 'D', 'Y', 'Y_1', 'Y_0'
-        n_rows: Number of rows to display
-
-    Returns:
-        Styled DataFrame showing the fundamental problem
-    """
-    display_df = df[["asin", "D", "Y", "Y_1", "Y_0"]].head(n_rows).copy()
-
-    # Format for display
-    display_df["D"] = display_df["D"].map({1: "Treated", 0: "Control"})
-    display_df["Y"] = display_df["Y"].apply(lambda x: f"${x:,.2f}")
-    display_df["Y_1"] = display_df["Y_1"].apply(
-        lambda x: f"${x:,.2f}" if pd.notna(x) else "?"
-    )
-    display_df["Y_0"] = display_df["Y_0"].apply(
-        lambda x: f"${x:,.2f}" if pd.notna(x) else "?"
-    )
-
-    display_df.columns = ["Product", "Treatment", "Observed", "Y(1)", "Y(0)"]
-
-    return display_df
-
-
-def compute_bias_components(
-    df, treatment_col="D", outcome_col="Y", y1_col="Y_1", y0_col="Y_0"
-):
-    """Calculate baseline and differential treatment effect bias.
-
-    Args:
-        df: DataFrame with potential outcomes
-        treatment_col: Column name for treatment indicator
-        outcome_col: Column name for observed outcome
-        y1_col: Column name for potential outcome under treatment
-        y0_col: Column name for potential outcome under control
-
-    Returns:
-        Dictionary with ATE, baseline_bias, and naive_estimate
-    """
-    treated = df[df[treatment_col] == 1]
-    control = df[df[treatment_col] == 0]
-
-    # Naive estimate
-    naive_estimate = treated[outcome_col].mean() - control[outcome_col].mean()
-
-    # True ATE (requires knowing both potential outcomes)
-    if y1_col in df.columns and y0_col in df.columns:
-        # Fill in the counterfactuals from the actual data
-        df_full = df.copy()
-        ate = df_full[y1_col].mean() - df_full[y0_col].mean()
-
-        # Baseline bias: E[Y0|D=1] - E[Y0|D=0]
-        # For treated: Y0 is counterfactual, for control: Y0 is observed
-        e_y0_d1 = treated[y0_col].mean() if y0_col in treated.columns else None
-        e_y0_d0 = (
-            control[y0_col].mean()
-            if y0_col in control.columns
-            else control[outcome_col].mean()
-        )
-
-        if e_y0_d1 is not None:
-            baseline_bias = e_y0_d1 - e_y0_d0
-        else:
-            baseline_bias = naive_estimate - ate
-    else:
-        ate = None
-        baseline_bias = None
-
-    return {
-        "ate": ate,
-        "baseline_bias": baseline_bias,
-        "naive_estimate": naive_estimate,
-    }
 
 
 def plot_outcome_by_treatment(treated_outcomes, control_outcomes, title=None):
@@ -465,9 +387,7 @@ def plot_balance_check(df, covariates, treatment_col="D", title=None):
         ax.set_title(cov.replace("_", " ").title())
         ax.legend()
 
-    plt.suptitle(
-        title or "Covariate Balance Check: Random vs Biased Selection", fontsize=14
-    )
+    plt.suptitle(title or "Covariate Balance Check", fontsize=14)
     plt.tight_layout()
     plt.show()
 
@@ -481,3 +401,26 @@ def plot_balance_check(df, covariates, treatment_col="D", title=None):
         print(
             f"{cov:20s}: Control={ctrl_mean:8.2f}, Treated={treat_mean:8.2f}, Diff={diff:+8.2f}"
         )
+
+
+def plot_fundamental_problem_table(df, n_rows=10):
+    """Display table showing observed/missing potential outcomes.
+
+    Args:
+        df: DataFrame with columns 'asin', 'D', 'Y', 'Y_1', 'Y_0'
+        n_rows: Number of rows to display
+
+    Returns:
+        Styled DataFrame showing the fundamental problem
+    """
+    display_df = df[["asin", "D", "Y", "Y_1", "Y_0"]].head(n_rows).copy()
+
+    # Mask counterfactuals
+    display_df["Y_1_obs"] = np.where(display_df["D"] == 1, display_df["Y_1"], np.nan)
+    display_df["Y_0_obs"] = np.where(display_df["D"] == 0, display_df["Y_0"], np.nan)
+
+    result = display_df[["asin", "D", "Y", "Y_1_obs", "Y_0_obs"]].copy()
+    result.columns = ["Product", "D", "Observed (Y)", "Y(1)", "Y(0)"]
+    result["D"] = result["D"].map({1: "Treated", 0: "Control"})
+
+    return result
