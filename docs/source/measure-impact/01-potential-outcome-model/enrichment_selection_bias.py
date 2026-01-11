@@ -57,15 +57,11 @@ def quality_selection_boost(sales: List[Dict], **kwargs) -> List[Dict]:
         raise ValueError("products_df with quality_score is required")
 
     # Build quality lookup
-    quality_map = {}
-    for _, row in products_df.iterrows():
-        product_id = row.get("asin", row.get("product_id"))
-        quality_map[product_id] = row.get("quality_score", 3.0)
+    id_col = "asin" if "asin" in products_df.columns else "product_id"
+    quality_map = products_df.set_index(id_col)["quality_score"].fillna(3.0).to_dict()
 
     # Select TOP quality products for treatment
-    sorted_products = sorted(
-        quality_map.keys(), key=lambda x: quality_map[x], reverse=True
-    )
+    sorted_products = sorted(quality_map.keys(), key=lambda x: quality_map[x], reverse=True)
     n_treated = int(len(sorted_products) * enrichment_fraction)
     treated_ids = set(sorted_products[:n_treated])
 
@@ -90,9 +86,7 @@ def quality_selection_boost(sales: List[Dict], **kwargs) -> List[Dict]:
     return treated_sales
 
 
-def get_treated_products_by_quality(
-    products_df: pd.DataFrame, enrichment_fraction: float = 0.3
-) -> Set[str]:
+def get_treated_products_by_quality(products_df: pd.DataFrame, enrichment_fraction: float = 0.3) -> Set[str]:
     """
     Get the set of treated product IDs based on quality selection.
 
@@ -111,14 +105,10 @@ def get_treated_products_by_quality(
     set of str
         Product IDs in the treatment group.
     """
-    quality_map = {}
-    for _, row in products_df.iterrows():
-        product_id = row.get("asin", row.get("product_id"))
-        quality_map[product_id] = row.get("quality_score", 3.0)
+    id_col = "asin" if "asin" in products_df.columns else "product_id"
+    quality_map = products_df.set_index(id_col)["quality_score"].fillna(3.0).to_dict()
 
-    sorted_products = sorted(
-        quality_map.keys(), key=lambda x: quality_map[x], reverse=True
-    )
+    sorted_products = sorted(quality_map.keys(), key=lambda x: quality_map[x], reverse=True)
     n_treated = int(len(sorted_products) * enrichment_fraction)
 
     return set(sorted_products[:n_treated])

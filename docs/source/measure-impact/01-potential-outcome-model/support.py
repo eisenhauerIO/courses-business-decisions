@@ -56,22 +56,10 @@ def plot_individual_effects_distribution(effects, true_effect=None, title=None):
     ax.hist(effects, bins="auto", edgecolor="black", alpha=0.7, color="#3498db")
 
     if true_effect is not None:
-        ax.axvline(
-            true_effect,
-            color="red",
-            linestyle="--",
-            linewidth=2,
-            label=f"True Effect = ${true_effect:,.0f}",
-        )
+        ax.axvline(true_effect, color="red", linestyle="--", linewidth=2, label=f"True Effect = ${true_effect:,.0f}")
 
     mean_effect = np.mean(effects)
-    ax.axvline(
-        mean_effect,
-        color="orange",
-        linestyle="-",
-        linewidth=2,
-        label=f"Mean Effect = ${mean_effect:,.0f}",
-    )
+    ax.axvline(mean_effect, color="orange", linestyle="-", linewidth=2, label=f"Mean Effect = ${mean_effect:,.0f}")
 
     ax.set_xlabel("Treatment Effect ($)")
     ax.set_ylabel("Number of Products")
@@ -160,7 +148,7 @@ def plot_bias_decomposition(ate, baseline_bias, naive_estimate, selection_on_gai
 
     bars = ax.bar(x_pos, components.values(), color=colors, edgecolor="black")
 
-    for bar, (name, value) in zip(bars, components.items()):
+    for bar, (_, value) in zip(bars, components.items()):
         y_offset = max(abs(v) for v in components.values()) * 0.02
         y_pos = bar.get_height() + y_offset if value >= 0 else bar.get_height() - y_offset
         va = "bottom" if value >= 0 else "top"
@@ -200,20 +188,9 @@ def plot_randomization_comparison(random_estimates, biased_estimates, true_ate):
 
     # Random selection (unbiased)
     axes[0].hist(random_estimates, bins=30, alpha=0.7, color="#2ecc71", edgecolor="black")
-    axes[0].axvline(
-        true_ate,
-        color="red",
-        linestyle="--",
-        linewidth=2,
-        label=f"True ATE = ${true_ate:,.0f}",
-    )
-    axes[0].axvline(
-        np.mean(random_estimates),
-        color="blue",
-        linestyle="-",
-        linewidth=2,
-        label=f"Mean = ${np.mean(random_estimates):,.0f}",
-    )
+    axes[0].axvline(true_ate, color="red", linestyle="--", linewidth=2, label=f"True ATE = ${true_ate:,.0f}")
+    random_mean = np.mean(random_estimates)
+    axes[0].axvline(random_mean, color="blue", linestyle="-", linewidth=2, label=f"Mean = ${random_mean:,.0f}")
     axes[0].set_title("Random Selection (Unbiased)")
     axes[0].set_xlabel("Estimated Treatment Effect ($)")
     axes[0].set_ylabel("Frequency")
@@ -221,20 +198,9 @@ def plot_randomization_comparison(random_estimates, biased_estimates, true_ate):
 
     # Biased selection
     axes[1].hist(biased_estimates, bins=30, alpha=0.7, color="#e74c3c", edgecolor="black")
-    axes[1].axvline(
-        true_ate,
-        color="red",
-        linestyle="--",
-        linewidth=2,
-        label=f"True ATE = ${true_ate:,.0f}",
-    )
-    axes[1].axvline(
-        np.mean(biased_estimates),
-        color="blue",
-        linestyle="-",
-        linewidth=2,
-        label=f"Mean = ${np.mean(biased_estimates):,.0f}",
-    )
+    axes[1].axvline(true_ate, color="red", linestyle="--", linewidth=2, label=f"True ATE = ${true_ate:,.0f}")
+    biased_mean = np.mean(biased_estimates)
+    axes[1].axvline(biased_mean, color="blue", linestyle="-", linewidth=2, label=f"Mean = ${biased_mean:,.0f}")
     axes[1].set_title("Selection on Quality (Biased)")
     axes[1].set_xlabel("Estimated Treatment Effect ($)")
     axes[1].set_ylabel("Frequency")
@@ -267,32 +233,14 @@ def plot_bootstrap_distribution(estimates, true_ate=None, title=None):
     ax.hist(estimates, bins=40, edgecolor="black", alpha=0.7, color="#9b59b6")
 
     if true_ate is not None:
-        ax.axvline(
-            true_ate,
-            color="red",
-            linestyle="--",
-            linewidth=2,
-            label=f"True ATE = ${true_ate:,.0f}",
-        )
+        ax.axvline(true_ate, color="red", linestyle="--", linewidth=2, label=f"True ATE = ${true_ate:,.0f}")
 
     mean_est = np.mean(estimates)
-    ax.axvline(
-        mean_est,
-        color="blue",
-        linestyle="-",
-        linewidth=2,
-        label=f"Bootstrap Mean = ${mean_est:,.0f}",
-    )
+    ax.axvline(mean_est, color="blue", linestyle="-", linewidth=2, label=f"Bootstrap Mean = ${mean_est:,.0f}")
 
     # Confidence interval
     ci_low, ci_high = np.percentile(estimates, [2.5, 97.5])
-    ax.axvspan(
-        ci_low,
-        ci_high,
-        alpha=0.2,
-        color="blue",
-        label=f"95% CI: [${ci_low:,.0f}, ${ci_high:,.0f}]",
-    )
+    ax.axvspan(ci_low, ci_high, alpha=0.2, color="blue", label=f"95% CI: [${ci_low:,.0f}, ${ci_high:,.0f}]")
 
     ax.set_xlabel("Estimated Treatment Effect ($)")
     ax.set_ylabel("Frequency")
@@ -337,20 +285,9 @@ def plot_outcome_by_treatment(treated_outcomes, control_outcomes, title=None):
     )
 
     # Add mean lines
-    ax.axvline(
-        np.mean(control_outcomes),
-        color="#3498db",
-        linestyle="--",
-        linewidth=2,
-        label=f"Control Mean = ${np.mean(control_outcomes):,.0f}",
-    )
-    ax.axvline(
-        np.mean(treated_outcomes),
-        color="#e74c3c",
-        linestyle="--",
-        linewidth=2,
-        label=f"Treated Mean = ${np.mean(treated_outcomes):,.0f}",
-    )
+    control_mean, treated_mean = np.mean(control_outcomes), np.mean(treated_outcomes)
+    ax.axvline(control_mean, color="#3498db", linestyle="--", linewidth=2, label=f"Control Mean = ${control_mean:,.0f}")
+    ax.axvline(treated_mean, color="#e74c3c", linestyle="--", linewidth=2, label=f"Treated Mean = ${treated_mean:,.0f}")
 
     ax.set_xlabel("Revenue ($)")
     ax.set_ylabel("Number of Products")
