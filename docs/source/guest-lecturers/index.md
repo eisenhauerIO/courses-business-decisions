@@ -4,6 +4,6 @@ Industry practitioners and academic experts contribute specialized sessions thro
 
 ## Tilman Drerup
 
-<img src="../_static/drerup.jpeg" alt="Tilman Drerup" style="width: 150px; border-radius: 50%;">
+<img src="drerup.jpeg" alt="Tilman Drerup" style="width: 150px; border-radius: 50%;">
 
 *Chief Economist, [Instacart](https://www.instacart.com/)*
