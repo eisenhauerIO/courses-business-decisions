@@ -10,8 +10,10 @@ The material is organized in three parts. We begin with foundational causal mode
 
 We introduce the potential outcomes framework as the foundational model for causal inference. This section formalizes the fundamental problem of causal inference—missing counterfactuals—and explains why randomization resolves it. The goal is to establish a precise language for defining causal effects and understanding what can and cannot be identified from data.
 
-```{todo}
-Add notebook link
+```{toctree}
+:maxdepth: 1
+
+01_potential_outcome_model
 ```
 
 ### Causal Graphical Models

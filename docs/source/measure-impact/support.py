@@ -15,7 +15,8 @@ def plot_individual_effects_distribution(effects, true_effect=None, title=None):
     """
     fig, ax = plt.subplots(figsize=(10, 6))
 
-    ax.hist(effects, bins=30, edgecolor="black", alpha=0.7, color="#3498db")
+    # Use 'auto' bins to handle cases with low variance
+    ax.hist(effects, bins="auto", edgecolor="black", alpha=0.7, color="#3498db")
 
     if true_effect is not None:
         ax.axvline(
@@ -348,3 +349,135 @@ def compute_bias_components(
         "baseline_bias": baseline_bias,
         "naive_estimate": naive_estimate,
     }
+
+
+def plot_outcome_by_treatment(treated_outcomes, control_outcomes, title=None):
+    """Plot overlapping histograms of outcomes by treatment status.
+
+    Args:
+        treated_outcomes: Array/Series of outcomes for treated group
+        control_outcomes: Array/Series of outcomes for control group
+        title: Optional custom title
+    """
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    ax.hist(
+        control_outcomes,
+        bins=30,
+        alpha=0.6,
+        color="#3498db",
+        edgecolor="black",
+        label=f"Control (n={len(control_outcomes)})",
+    )
+    ax.hist(
+        treated_outcomes,
+        bins=30,
+        alpha=0.6,
+        color="#e74c3c",
+        edgecolor="black",
+        label=f"Treated (n={len(treated_outcomes)})",
+    )
+
+    # Add mean lines
+    ax.axvline(
+        np.mean(control_outcomes),
+        color="#3498db",
+        linestyle="--",
+        linewidth=2,
+        label=f"Control Mean = ${np.mean(control_outcomes):,.0f}",
+    )
+    ax.axvline(
+        np.mean(treated_outcomes),
+        color="#e74c3c",
+        linestyle="--",
+        linewidth=2,
+        label=f"Treated Mean = ${np.mean(treated_outcomes):,.0f}",
+    )
+
+    ax.set_xlabel("Revenue ($)")
+    ax.set_ylabel("Number of Products")
+    ax.set_title(title or "Distribution of Outcomes by Treatment Status")
+    ax.legend()
+    ax.set_xlim(0, None)
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_balance_check(df, covariates, treatment_col="D", title=None):
+    """Visualize covariate balance between treatment groups.
+
+    Args:
+        df: DataFrame with covariates and treatment indicator
+        covariates: List of column names to check for balance
+        treatment_col: Column name for treatment indicator
+        title: Optional custom title
+    """
+    treated = df[df[treatment_col] == 1]
+    control = df[df[treatment_col] == 0]
+
+    n_covs = len(covariates)
+    fig, axes = plt.subplots(1, n_covs, figsize=(5 * n_covs, 5))
+
+    if n_covs == 1:
+        axes = [axes]
+
+    for ax, cov in zip(axes, covariates):
+        treated_vals = treated[cov]
+        control_vals = control[cov]
+
+        # For continuous variables, use histograms
+        if treated_vals.nunique() > 10:
+            ax.hist(
+                control_vals,
+                bins=20,
+                alpha=0.6,
+                color="#3498db",
+                edgecolor="black",
+                label="Control",
+                density=True,
+            )
+            ax.hist(
+                treated_vals,
+                bins=20,
+                alpha=0.6,
+                color="#e74c3c",
+                edgecolor="black",
+                label="Treated",
+                density=True,
+            )
+            ax.set_ylabel("Density")
+        else:
+            # For categorical/discrete, use bar chart
+            x = np.arange(2)
+            width = 0.35
+            ax.bar(
+                x - width / 2,
+                [control_vals.mean(), treated_vals.mean()],
+                width,
+                label="Mean",
+                color=["#3498db", "#e74c3c"],
+                edgecolor="black",
+            )
+            ax.set_xticks(x)
+            ax.set_xticklabels(["Control", "Treated"])
+            ax.set_ylabel("Mean")
+
+        ax.set_title(cov.replace("_", " ").title())
+        ax.legend()
+
+    plt.suptitle(
+        title or "Covariate Balance Check: Random vs Biased Selection", fontsize=14
+    )
+    plt.tight_layout()
+    plt.show()
+
+    # Also print summary statistics
+    print("\nBalance Summary (Mean by Treatment Status):")
+    print("-" * 50)
+    for cov in covariates:
+        ctrl_mean = control[cov].mean()
+        treat_mean = treated[cov].mean()
+        diff = treat_mean - ctrl_mean
+        print(
+            f"{cov:20s}: Control={ctrl_mean:8.2f}, Treated={treat_mean:8.2f}, Diff={diff:+8.2f}"
+        )
