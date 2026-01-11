@@ -60,7 +60,7 @@ html_extra_path = []
 
 # nbsphinx settings: execute notebooks during build
 nbsphinx_execute = "always"
-nbsphinx_allow_errors = True
+nbsphinx_allow_errors = False
 
 # Add notebook info bar (applies to all notebooks)
 _gh_repo = "https://github.com/eisenhauerIO/courses-business-decisions"

@@ -44,7 +44,7 @@ jobs:
 
     - name: Build documentation
       run: |
-        SPHINX_PROD=1 hatch run build
+        MPLCONFIGDIR=$GITHUB_WORKSPACE/docs/configurations SPHINX_PROD=1 hatch run build
 
     - name: Upload artifact
       if: github.ref == 'refs/heads/main'
