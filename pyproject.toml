@@ -18,7 +18,6 @@ dependencies = [
     "ipykernel",
     "sphinxcontrib-bibtex",
     "sphinxcontrib-mermaid",
-    "nbqa",
     "nbconvert",
     "nbmake",
     "pytest",
@@ -44,9 +43,6 @@ convention = "numpy"
 
 [tool.ruff.lint.per-file-ignores]
 "*.ipynb" = ["D", "E402", "F", "I"]
-
-[tool.nbqa.exclude]
-ruff = "_external"
 
 [tool.pytest.ini_options]
 testpaths = ["docs/source"]
