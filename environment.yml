@@ -11,6 +11,7 @@ dependencies:
   - seaborn
   # Jupyter
   - ipykernel
+  - jupyterlab
   - nbconvert
   # Documentation
   - sphinx>=6.0

@@ -77,3 +77,8 @@ nbsphinx_prolog = rf"""
         Interactive online version: |colab|
 
 """
+
+
+def setup(app):
+    """Register custom static files with Sphinx."""
+    app.add_css_file("custom.css")
