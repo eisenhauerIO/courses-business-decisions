@@ -11,16 +11,16 @@ This guide covers both **Python code cells** and **markdown cells**.
 
 ## 1. Data Columns and DataFrame Fields
 
-**Use bold code formatting** for column/field names:
+**Use backticks** for column/field names:
 
 ```markdown
-✅ Each product has a unique `**product_identifier**`, a `**category**`, and a `**price**`.
-✅ The `**impressions**` column tracks how many times a product was shown.
+✅ Each product has a unique `product_identifier`, a `category`, and a `price`.
+✅ The `impressions` column tracks how many times a product was shown.
 ❌ Each product has a unique product_identifier (missing formatting)
-❌ The **impressions** column (acceptable but less precise)
+❌ The **impressions** column (bold alone - use backticks instead)
 ```
 
-**Why:** Visually distinguishes data fields from regular text.
+**Why:** Visually distinguishes data fields from regular text and indicates they are code elements.
 
 ---
 
@@ -198,23 +198,23 @@ Be precise about which phase generates what:
 
 ### Field Attribution
 **Characteristics phase generates:**
-- `**product_identifier**`
-- `**category**`
-- `**brand**`
-- `**price**`
+- `product_identifier`
+- `category`
+- `brand`
+- `price`
 
 **Product_details phase generates:**
-- `**title**`
-- `**description**`
-- `**features**`
+- `title`
+- `description`
+- `features`
 
 **Metrics phase generates:**
-- `**date**`
-- `**impressions**`
-- `**visits**`
-- `**cart_adds**`
-- `**ordered_units**`
-- `**revenue**`
+- `date`
+- `impressions`
+- `visits`
+- `cart_adds`
+- `ordered_units`
+- `revenue`
 
 ---
 
@@ -349,15 +349,15 @@ Use quotes for strings:
 
 ### Introducing Data Output
 ```markdown
-The **[concept]** data [description]. Each record tracks `**column1**`,
-`**column2**`, and `**column3**`. This structure [explanation].
+The **[concept]** data [description]. Each record tracks `column1`,
+`column2`, and `column3`. This structure [explanation].
 ```
 
 **Example:**
 ```markdown
 The sales data captures the full customer journey as a conversion funnel.
-Each record tracks `**impressions**`, `**visits**`, `**cart_adds**`, and
-`**ordered_units**`. This funnel structure reflects real e-commerce behavior
+Each record tracks `impressions`, `visits`, `cart_adds`, and
+`ordered_units`. This funnel structure reflects real e-commerce behavior
 where customers drop off at each stage.
 ```
 
@@ -395,7 +395,7 @@ treatment (1.0 = 100%).
 
 | Element | Format | Example |
 |---------|--------|---------|
-| Column name | `**name**` | `**product_identifier**` |
+| Column name | `` `name` `` | `product_identifier` |
 | Function | `` `function()` `` | `simulate()` |
 | Variable | `` `variable` `` | `job_info` |
 | Parameter | `` `parameter` `` | `effect_size` |
@@ -432,8 +432,38 @@ from support import plot_revenue_by_category
 - ✅ Group imports by category with comments
 - ✅ One import per line for readability
 - ✅ Alphabetize within groups
+- ✅ Single import: no parentheses (keep on one line)
+- ✅ Multiple imports: use parentheses with one per line
 - ❌ Never use `import *`
 - ❌ Don't mix standard library and third-party
+- ❌ Don't use parentheses for single imports
+
+**Single Import:**
+```python
+# ✅ Good
+from online_retail_simulator.simulate.product_details_mock import simulate_product_details_mock
+
+# ❌ Bad - unnecessary parentheses
+from online_retail_simulator.simulate.product_details_mock import (
+    simulate_product_details_mock,
+)
+```
+
+**Multiple Imports:**
+```python
+# ✅ Good
+from support import (
+    plot_revenue_by_category,
+    plot_daily_metrics_trend,
+    plot_conversion_funnel,
+    plot_treatment_effect,
+)
+
+# ❌ Bad - too long, hard to read
+from support import plot_revenue_by_category, plot_daily_metrics_trend, plot_conversion_funnel, plot_treatment_effect
+```
+
+---
 
 ### One Logical Operation Per Cell
 **Good:**
@@ -951,9 +981,9 @@ controls how many products are created.
 ### ✅ Good Markdown Cell
 ```markdown
 The products data represents the catalog of items available for sale. Each
-product starts with core **characteristics**—a unique `**product_identifier**`,
-`**category**`, `**brand**`, and `**price**`—which are then enriched with
-**product_details** including `**title**`, `**description**`, and `**features**`.
+product starts with core **characteristics**—a unique `product_identifier`,
+`category`, `brand`, and `price`—which are then enriched with
+**product_details** including `title`, `description`, and `features`.
 
 Calling `simulate("config_simulation.yaml")` generates this data. The
 **CHARACTERISTICS** section in the YAML config controls how many products
@@ -1015,12 +1045,12 @@ print("=" * 50)
 
 Before finalizing markdown cells:
 
-- [ ] All column names use `**column_name**` format
-- [ ] All functions use `function_name()` format
-- [ ] All file references use `"filename.ext"` format
+- [ ] All column names use `` `column_name` `` format
+- [ ] All functions use `` `function_name()` `` format
+- [ ] All file references use `` `"filename.ext"` `` format
 - [ ] Phase names are lowercase bold (**characteristics**)
 - [ ] YAML sections are uppercase bold (**CHARACTERISTICS**)
-- [ ] Object types use backticks (`DataFrame`, `JobInfo`)
+- [ ] Object types use backticks (`` `DataFrame` ``, `` `JobInfo` ``)
 - [ ] First introduction of concepts uses **bold**
 - [ ] Brand is listed as a **characteristic**, not product detail
 - [ ] Title, description, features are **product_details**
@@ -1035,6 +1065,7 @@ Before finalizing markdown cells:
 Before finalizing code cells:
 
 - [ ] Imports organized and grouped by category
+- [ ] Single imports: no parentheses; Multiple imports: use parentheses
 - [ ] One logical operation per cell
 - [ ] Variable names are descriptive
 - [ ] Comments explain WHY, not WHAT

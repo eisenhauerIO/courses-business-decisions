@@ -47,6 +47,9 @@ def plot_daily_metrics_trend(daily_metrics):
     daily_metrics : pandas.DataFrame
         DataFrame with 'date' and 'revenue' columns.
     """
+    daily_metrics = daily_metrics.copy()
+    daily_metrics["date"] = pd.to_datetime(daily_metrics["date"])
+
     fig, ax = plt.subplots(figsize=(12, 5))
     ax.plot(
         daily_metrics["date"],
@@ -65,16 +68,21 @@ def plot_daily_metrics_trend(daily_metrics):
     plt.show()
 
 
-def plot_conversion_funnel(funnel_data):
+def plot_conversion_funnel(metrics):
     """
     Plot customer journey conversion funnel.
 
     Parameters
     ----------
-    funnel_data : dict
-        Dictionary mapping stage names to counts (e.g., {'Impressions': 1000,
-        'Visits': 500, 'Cart Adds': 100, 'Orders': 50}).
+    metrics : pandas.DataFrame
+        DataFrame with 'impressions', 'visits', 'cart_adds', and 'ordered_units' columns.
     """
+    funnel_data = {
+        "Impressions": metrics["impressions"].sum(),
+        "Visits": metrics["visits"].sum(),
+        "Cart Adds": metrics["cart_adds"].sum(),
+        "Orders": metrics["ordered_units"].sum(),
+    }
     stages = list(funnel_data.keys())
     values = list(funnel_data.values())
 
