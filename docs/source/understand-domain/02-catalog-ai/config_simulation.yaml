@@ -5,7 +5,7 @@ RULE:
   CHARACTERISTICS:
     FUNCTION: simulate_characteristics_rule_based
     PARAMS:
-      num_products: 100
+      num_products: 10
       seed: 42
 
   METRICS:

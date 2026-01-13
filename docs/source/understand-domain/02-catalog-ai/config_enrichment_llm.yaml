@@ -1,4 +1,0 @@
-PRODUCT_DETAILS:
-  FUNCTION: simulate_product_details_ollama
-  PARAMS:
-    model: llama3.2

@@ -1,0 +1,10 @@
+IMPACT:
+  FUNCTION: product_detail_boost
+  PARAMS:
+    effect_size: 0.75
+    ramp_days: 0
+    enrichment_fraction: 1.0
+    enrichment_start: "2024-11-15"
+    seed: 42
+    backend: "ollama"
+    prompt_path: "prompt_budget.txt"
