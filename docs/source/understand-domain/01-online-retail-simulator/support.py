@@ -19,6 +19,30 @@ def print_data_summary(sales):
     print(f"What is the total revenue?    ${sales['revenue'].sum():,.2f}")
 
 
+def display_product_details(product, title, add_newline=False):
+    """
+    Display formatted product details.
+
+    Parameters
+    ----------
+    product : pandas.Series
+        Product data with 'brand', 'title', 'description', and 'features' fields.
+    title : str
+        Header title to display above the product details.
+    add_newline : bool, optional
+        Whether to add a newline before the display (default: False).
+    """
+    if add_newline:
+        print()
+    print("=" * 70)
+    print(title)
+    print("=" * 70)
+    print(f"Brand:       {product['brand']}")
+    print(f"Title:       {product['title']}")
+    print(f"Description: {product['description']}")
+    print(f"Features:    {product['features']}")
+
+
 def plot_revenue_by_category(category_revenue):
     """
     Plot horizontal bar chart of revenue by category.
