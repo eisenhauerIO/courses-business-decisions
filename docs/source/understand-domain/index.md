@@ -4,11 +4,11 @@ Decisions are not made in a vacuum. Causal inference, decision theory, and softw
 
 ## Product Data Improvements
 
-We study the problem of **improving product data quality at scale**. Rather than treating causal inference, decision theory, or software systems in the abstract, the course anchors these ideas in a real operational setting—one where decisions are frequent, uncertainty is pervasive, and mistakes are costly.
+We study the problem of improving product data quality at scale. Rather than treating causal inference, decision theory, or software systems in the abstract, the course anchors these ideas in a real operational setting.
 
-The course is grounded in challenges observed in **large-scale generative AI systems operating in production**. In such systems, AI generates vast numbers of potential changes to product data, creating a quality-control problem that cannot be solved through manual review or intuition alone. Ensuring reliability, measuring impact, and deciding which changes to deploy require systematic learning loops that connect evidence to action.
+The course is grounded in challenges observed in large-scale generative AI systems operating in production. In such systems, AI generates vast numbers of potential changes to product data, creating a quality-control problem that cannot be solved through manual review or intuition alone. Determining which changes will resonate with shoppers, measuring their business impact, and using those insights to guide future product data improvements require systematic learning loops that connect evidence to action.
 
-A concrete way to grasp this domain is to look at a real product page, such as [*Keurig K-Express Single Serve Coffee Maker*](https://www.amazon.com/Keurig-K-Express-Coffee-Single-Brewer/dp/B09715G57M?th=1) on Amazon. What consumers see as a simple product listing belies a rich set of underlying data decisions: the title, structured attributes, images, pricing context, badges, and descriptive text all shape discovery, interpretation, and trust. In modern e-commerce systems, many of these elements are proposed or modified by AI, and each such change represents a hypothesis about customer behavior that must be evaluated.
+A concrete way to grasp this domain is to look at a real product page, such as [*Keurig K-Express Single Serve Coffee Maker*](https://www.amazon.com/Keurig-K-Express-Coffee-Single-Brewer/dp/B09715G57M?th=1) on Amazon. What shoppers see as a simple product listing belies a rich set of underlying data decisions—the title, structured attributes, images, pricing context, badges, and descriptive text that shape whether shoppers can find, understand, and trust what they're buying. When an AI system modifies any of these elements at scale, each change is motivated by a hypothesis about what will resonate with shoppers—hypotheses that must be tested and measured to determine what actually drives business outcomes.
 
 ```{figure} product-data.png
 :alt: Product Data Example
@@ -17,19 +17,20 @@ A concrete way to grasp this domain is to look at a real product page, such as [
 ***Product Data***
 ```
 
-Improving product data quality at scale therefore means learning not just which changes *seem* better, but which actually improve outcomes, and then deciding which modifications to deploy, which to test further, and which to discard—grounded in evidence rather than intuition.
+To explore these challenges in a controlled setting, we use the <img src="../_static/online-retail-simulator.svg" alt="ORS" style="height: 1em; vertical-align: middle;"> **[Online Retail Simulator](https://github.com/eisenhauerIO/tools-catalog-generator)** — a tool that generates realistic product catalogs, customer behavior, and sales transactions with known ground truth. This allows us to inject treatment effects, measure their impact through causal inference, and validate our methods against what we know to be true. We first examine how the simulator works and what data it produces. We then implement an AI-powered product catalog system that uses large language models to generate product content at scale, creating the kind of quality-control problem that motivates the rest of the course.
 
 ## Online Retail Simulator
 
-We explore the [Online Retail Simulator](https://github.com/eisenhauerIO/tools-catalog-generator), covering product characteristics simulation, sales metrics with conversion funnels, and treatment effects through enrichment.
+We introduce the <img src="../_static/online-retail-simulator.svg" alt="ORS" style="height: 1em; vertical-align: middle;"> **[Online Retail Simulator](https://github.com/eisenhauerIO/tools-catalog-generator)** as a simulation tool that generates realistic product catalogs, shopper behavior, and sales transactions with known ground truth. This section explores how treatment effects can be injected and measured within this controlled environment, enabling validation of causal inference methods before applying them to real-world data. The goal is to establish a realistic testing ground where hypotheses about product data quality can be measured against observable outcomes across the conversion funnel.
 
-[Online Retail Simulator](01-online-retail-simulator/lecture.ipynb)
 
-## AI-Powered Product Catalogs
+- [Online Retail Simulator](01-online-retail-simulator/lecture.ipynb)
 
-We implement the Catalog AI system using LLM-generated product details with custom prompts, and visualize causal impact through diverging treatment effect plots.
+## Catalog AI
 
-[AI-Powered Product Catalogs](02-catalog-ai/lecture.ipynb)
+We introduce Catalog AI, as discussed in [Addressing Gen AI's Quality Control Problem](https://hbr.org/2025/09/addressing-gen-ais-quality-control-problem) (Harvard Business Review), as a generative AI system for creating product content at scale using large language models to generate descriptions and metadata. This section examines how AI-generated content creates a quality-control problem that requires causal measurement, where each generated change represents a hypothesis about what will improve shopper experience and conversion. The goal is to connect content generation to treatment effect heterogeneity and establish systematic evaluation methods for AI-produced catalog improvements.
+
+- [Catalog AI](02-catalog-ai/lecture.ipynb)
 
 ```{toctree}
 :maxdepth: 2

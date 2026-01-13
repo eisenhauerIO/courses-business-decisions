@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Online Retail Simulator icon">
+  <defs>
+    <style>
+      .blue { fill: #0B4EA2; }
+      .blue2 { fill: #0A3F86; }
+      .orange { fill: #F28C1B; }
+      .dark { stroke: #1F2A37; }
+    </style>
+  </defs>
+
+  <!-- cart handle -->
+  <rect x="72" y="228" width="60" height="26" rx="13" class="orange"/>
+  <path d="M132 241 L182 304" fill="none" stroke="#0B4EA2" stroke-width="20" stroke-linecap="round"/>
+
+  <!-- cart frame -->
+  <path d="M186 308 H390
+           C412 308 430 326 430 348
+           V392
+           C430 414 412 432 390 432
+           H236
+           C222 432 209 424 203 411
+           L164 330"
+        class="blue" opacity="0.95"/>
+
+  <!-- cart stripes -->
+  <rect x="236" y="364" width="176" height="18" rx="9" fill="#0A3F86" opacity="0.35"/>
+  <rect x="236" y="394" width="176" height="18" rx="9" fill="#0A3F86" opacity="0.35"/>
+
+  <!-- wheels -->
+  <circle cx="260" cy="468" r="26" class="orange"/>
+  <circle cx="260" cy="468" r="12" fill="#fff" opacity="0.9"/>
+  <circle cx="378" cy="468" r="26" class="orange"/>
+  <circle cx="378" cy="468" r="12" fill="#fff" opacity="0.9"/>
+
+  <!-- bars -->
+  <rect x="212" y="212" width="38" height="72" rx="9" class="orange"/>
+  <rect x="258" y="182" width="38" height="102" rx="9" class="orange"/>
+  <rect x="304" y="156" width="38" height="128" rx="9" class="orange"/>
+  <rect x="350" y="198" width="38" height="86" rx="9" class="blue2"/>
+
+  <!-- magnifier -->
+  <circle cx="356" cy="144" r="62" fill="#fff" opacity="0.96" class="dark" stroke-width="14"/>
+  <path d="M322 170 L350 144 L372 156 L398 126" fill="none" stroke="#F28C1B" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M398 126 L398 152" fill="none" stroke="#F28C1B" stroke-width="12" stroke-linecap="round"/>
+  <path d="M398 126 L374 126" fill="none" stroke="#F28C1B" stroke-width="12" stroke-linecap="round"/>
+  <path d="M404 194 L454 244" fill="none" stroke="#1F2A37" stroke-width="18" stroke-linecap="round"/>
+  <path d="M404 194 L454 244" fill="none" stroke="#0B4EA2" stroke-width="9" stroke-linecap="round" opacity="0.35"/>
+</svg>
