@@ -17,7 +17,7 @@ A concrete way to grasp this domain is to look at a real product page, such as [
 ***Product Data***
 ```
 
-To explore these challenges in a controlled setting, we use the <img src="../_static/online-retail-simulator.svg" alt="ORS" style="height: 1em; vertical-align: middle;"> **[Online Retail Simulator](https://github.com/eisenhauerIO/tools-catalog-generator)** — a tool that generates realistic product catalogs, customer behavior, and sales transactions with known ground truth. This allows us to inject treatment effects, measure their impact through causal inference, and validate our methods against what we know to be true. We first examine how the simulator works and what data it produces. We then implement an AI-powered product catalog system that uses large language models to generate product content at scale, creating the kind of quality-control problem that motivates the rest of the course.
+To explore these challenges in a controlled setting, we first introduce a simulation tool that generates realistic retail data with known ground truth, then showcase an AI system that creates the kind of quality-control problem motivating the rest of the course.
 
 ## Online Retail Simulator
 
