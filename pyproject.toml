@@ -49,3 +49,4 @@ convention = "numpy"
 testpaths = ["docs/source"]
 addopts = "--nbmake --timeout=300"
 norecursedirs = [".ipynb_checkpoints", "__pycache__", "output", "_external"]
+markers = ["slow: marks tests as slow (deselected by default, run with -m slow)"]
