@@ -1,4 +1,4 @@
-""""""
+"""Plot treatment effects with and without essential heterogeneity."""
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,6 +9,7 @@ plt.style.use("resources/grmpy.mplstyle")
 
 
 def plot_treatment_effect():
+    """Plot treatment effect distribution with ATE, TT, and TUT."""
     x_axis = np.arange(-2, 4, 0.001)
     ax = plt.figure(figsize=(14, 6))
 
@@ -32,9 +33,7 @@ def plot_treatment_effect():
             ay.plot([effect[0], effect[0]], [0, 5], label=effect[1])
     plt.legend(prop={"size": 15})
 
-    plt.subplots_adjust(
-        top=0.95, bottom=0.15, left=0.05, right=0.95, hspace=0.15, wspace=0.1
-    )
+    plt.subplots_adjust(top=0.95, bottom=0.15, left=0.05, right=0.95, hspace=0.15, wspace=0.1)
 
     plt.savefig(OUTPUT_DIR + "/fig-treatment-effects-with-and-without-eh.png", dpi=300)
 

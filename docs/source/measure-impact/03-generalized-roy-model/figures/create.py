@@ -1,6 +1,4 @@
-"""This module creates all available figures and then provides them in a compiled
-document for review.
-"""
+"""Create all available figures and compile them for review."""
 
 import os
 import subprocess
@@ -9,9 +7,7 @@ from scripts.fig_config import SCRIPTS_DIR
 
 
 def create_figures():
-    """This function creates all the figures that are available in its
-    subdirectories.
-    """
+    """Create all figures available in subdirectories."""
     for script in os.listdir(SCRIPTS_DIR):
         os.chdir(SCRIPTS_DIR)
         if script.startswith("fig-"):

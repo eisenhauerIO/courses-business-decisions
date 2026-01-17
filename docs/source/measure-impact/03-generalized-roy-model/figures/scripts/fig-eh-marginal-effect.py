@@ -1,11 +1,8 @@
-"""The script creates a figure to illustrate the appearance of the marginal treatment
-effect in the abscence and presence of individual heterogeneity.
-"""
+"""Illustrate the marginal treatment effect with and without individual heterogeneity."""
 
 import matplotlib.pyplot as plt
 import numpy as np
 from fig_config import OUTPUT_DIR, RESOURCE_DIR
-
 from grmpy.read.read import read
 from grmpy.simulate.simulate import simulate
 from grmpy.simulate.simulate_auxiliary import (
@@ -22,6 +19,7 @@ plt.style.use("resources/grmpy.mplstyle")
 
 
 def plot_marginal_treatment_effect(pres, abs_):
+    """Plot marginal treatment effect with and without heterogeneity."""
     ax = plt.figure().add_subplot(111)
 
     ax.set_ylabel(r"$B^{MTE}$")
@@ -43,9 +41,7 @@ if __name__ == "__main__":
     cov = construct_covariance_matrix(init_dict)
     df = simulate(RESOURCE_DIR + filename)
     x = df[init_dict["TREATED"]["order"]]
-    MTE_pres = mte_information(
-        coeffs_treated, coeffs_untreated, cov, GRID, x, init_dict
-    )
+    MTE_pres = mte_information(coeffs_treated, coeffs_untreated, cov, GRID, x, init_dict)
 
     para_diff = coeffs_treated - coeffs_untreated
 

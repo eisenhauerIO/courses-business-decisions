@@ -1,19 +1,16 @@
-"""This script creates a figure to illustrate how the usual treatment effects can be
-constructed by using differen weights on the marginal treatment effect.
-"""
+"""Illustrate how treatment effects are constructed using weights on the MTE."""
 
 import matplotlib.pyplot as plt
 import numpy as np
 from fig_config import OUTPUT_DIR, RESOURCE_DIR
-from scipy.integrate import quad
-from scipy.stats import norm
-
 from grmpy.read.read import read
 from grmpy.simulate.simulate_auxiliary import (
     construct_covariance_matrix,
     mte_information,
     simulate_covariates,
 )
+from scipy.integrate import quad
+from scipy.stats import norm
 
 filename = "/tutorial.grmpy.yml"
 
@@ -24,10 +21,7 @@ plt.style.use("resources/grmpy.mplstyle")
 
 
 def weights_treatment_parameters(init_dict, GRID):
-    """This function calculates the weights for the special case in
-    Heckman & Vytlacil (2005) Figure 1B.
-
-    """
+    """Calculate weights for the special case in Heckman & Vytlacil (2005) Figure 1B."""
     GRID = np.linspace(0.01, 0.99, num=99, endpoint=True)
 
     coeffs_untreated = init_dict["UNTREATED"]["params"]
@@ -67,6 +61,7 @@ def weights_treatment_parameters(init_dict, GRID):
 
 
 def plot_weights_marginal_effect(ate, tt, tut, mte):
+    """Plot weights for ATE, TT, TUT alongside the MTE."""
     ax = plt.figure().add_subplot(111)
     ax.set_xlabel(r"$u_S$")
     ax.set_ylabel(r"$\omega(u_S)$")
@@ -87,7 +82,5 @@ def plot_weights_marginal_effect(ate, tt, tut, mte):
 
 
 if __name__ == "__main__":
-    ate_weights, tt_weights, tut_weights, mte = weights_treatment_parameters(
-        init_dict, GRID
-    )
+    ate_weights, tt_weights, tut_weights, mte = weights_treatment_parameters(init_dict, GRID)
     plot_weights_marginal_effect(ate_weights, tt_weights, tut_weights, mte)

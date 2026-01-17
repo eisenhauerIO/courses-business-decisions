@@ -1,4 +1,4 @@
-"""This file contains paths that are used for the execution of all figure scripts."""
+"""Define paths used for the execution of all figure scripts."""
 
 import os
 

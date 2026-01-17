@@ -1,4 +1,4 @@
-"""This module creates the contour plots for the bivariate normal distribution."""
+"""Create contour plots for the bivariate normal distribution."""
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -33,9 +33,7 @@ ax.set_xlim(y_min, y_max)
 ax.set_yticklabels([])
 ax.set_xticklabels([])
 
-plt.plot(
-    np.arange(y_min, y_max), np.arange(y_min, y_max), color="black", linestyle="--"
-)
+plt.plot(np.arange(y_min, y_max), np.arange(y_min, y_max), color="black", linestyle="--")
 
 plt.colorbar(cns)
 

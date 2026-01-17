@@ -1,8 +1,7 @@
-"""This module contains the code for a local average treatment graph."""
+"""Generate a local average treatment effect graph."""
 
 import matplotlib.pyplot as plt
 from fig_config import OUTPUT_DIR, RESOURCE_DIR
-
 from grmpy.read.read import read
 from grmpy.simulate.simulate_auxiliary import (
     construct_covariance_matrix,
@@ -18,6 +17,7 @@ init_dict = read(RESOURCE_DIR + filename)
 
 
 def plot_local_average_treatment(mte):
+    """Plot local average treatment effect."""
     ax = plt.figure().add_subplot(111)
 
     # Plot the mte

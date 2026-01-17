@@ -1,6 +1,4 @@
-"""This script replicates the results of Caneiro 2011 via using a
-mock data set and plots the original as well as the estimated mar-
-ginal treatment effect"""
+"""Replicate Carneiro 2011 results and plot original vs estimated marginal treatment effect."""
 
 import json
 
@@ -9,7 +7,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from fig_config import OUTPUT_DIR, RESOURCE_DIR
-
 from grmpy.estimate.estimate import fit
 from grmpy.plot.plot_auxiliary import mte_and_cof_int_par
 from grmpy.read.read import read
@@ -18,6 +15,7 @@ plt.style.use("resources/grmpy.mplstyle")
 
 
 def plot_rslts(rslt, file):
+    """Plot estimation results comparing original and replicated MTE."""
     init_dict = read(file)
     data_frame = pd.read_pickle(init_dict["ESTIMATION"]["file"])
 
@@ -39,9 +37,7 @@ def plot_rslts(rslt, file):
     ax.plot(quantiles, mte, label="grmpy MTE", color="blue", linewidth=4)
     ax.plot(quantiles, mte_up, color="blue", linestyle=":", linewidth=3)
     ax.plot(quantiles, mte_d, color="blue", linestyle=":", linewidth=3)
-    ax.plot(
-        quantiles, mte_original, label="original${MTE}$", color="orange", linewidth=4
-    )
+    ax.plot(quantiles, mte_original, label="original${MTE}$", color="orange", linewidth=4)
     ax.plot(quantiles, mte_original_d, color="orange", linestyle=":", linewidth=3)
     ax.plot(quantiles, mte_original_u, color="orange", linestyle=":", linewidth=3)
     ax.xaxis.set_ticks(np.arange(0, 1.1, step=0.1))
@@ -55,9 +51,7 @@ def plot_rslts(rslt, file):
     blue_patch = mpatches.Patch(color="blue", label="original $MTE$")
     orange_patch = mpatches.Patch(color="orange", label="replicated $MTE$")
     plt.legend(handles=[blue_patch, orange_patch], prop={"size": 16})
-    plt.savefig(
-        OUTPUT_DIR + "/fig-marginal-benefit-parametric-replication.png", dpi=300
-    )
+    plt.savefig(OUTPUT_DIR + "/fig-marginal-benefit-parametric-replication.png", dpi=300)
 
 
 if __name__ == "__main__":
