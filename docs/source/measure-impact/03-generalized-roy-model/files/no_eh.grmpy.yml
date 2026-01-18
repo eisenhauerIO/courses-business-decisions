@@ -1,0 +1,14 @@
+# Configuration without essential heterogeneity
+# Covariance between U1/U0 and V is zero
+SIMULATION:
+  FUNCTION: roy_model
+  PARAMS:
+    agents: 10000
+    seed: 2356
+    coefficients_treated: [0.5, 1.0]
+    coefficients_untreated: [0.0, 1.0]
+    coefficients_choice: [0.0, 0.5, 0.5]
+    covariance:
+      - [0.10, 0.00, 0.00]
+      - [0.00, 0.10, 0.00]
+      - [0.00, 0.00, 1.00]
