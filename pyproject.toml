@@ -17,6 +17,7 @@ dependencies = [
     "seaborn",
     "scipy",
     "ipykernel",
+    "jupyterlab",
     "sphinxcontrib-bibtex",
     "sphinxcontrib-mermaid",
     "nbconvert",
