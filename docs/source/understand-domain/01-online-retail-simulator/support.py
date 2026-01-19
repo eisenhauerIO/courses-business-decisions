@@ -94,7 +94,7 @@ def plot_daily_metrics_trend(daily_metrics):
 
 def plot_conversion_funnel(metrics):
     """
-    Plot customer journey conversion funnel.
+    Plot shopper journey conversion funnel.
 
     Parameters
     ----------

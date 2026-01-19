@@ -44,7 +44,7 @@ def plot_treatment_effects_distribution(delta, ate, tt, tut, effect_est):
     plt.axis([-1, 2, 0.0, 1.31])
 
     # Plot distribution of individual effects
-    sns.distplot(delta, kde=True, hist=False)
+    sns.kdeplot(delta)
 
     # Plot average effect parameters
     plt.plot([ate, ate], [0.00, 1.3], label=r"$\Delta^{ATE}$")
