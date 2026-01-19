@@ -14,6 +14,7 @@ improve-decisions/index
 guest-lecturers/index
 course-projects/index
 software/index
+iterations/index
 references
 ```
 
