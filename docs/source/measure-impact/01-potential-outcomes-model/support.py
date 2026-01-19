@@ -1,5 +1,6 @@
 """Support functions for the Potential Outcome Model notebook."""
 
+# Third-party packages
 import matplotlib.pyplot as plt
 import numpy as np
 

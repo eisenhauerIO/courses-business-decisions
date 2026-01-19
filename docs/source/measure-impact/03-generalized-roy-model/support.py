@@ -71,7 +71,8 @@ def plot_joint_distribution(df, title):
     seaborn.JointGrid
         The jointplot grid object.
     """
-    g = sns.jointplot(x=df["V"], y=df["U1"], height=10).set_axis_labels("$V$", "$U_1$", fontsize=18)
+    g = sns.jointplot(x=df["V"], y=df["U1"], height=10)
+    g = g.set_axis_labels("$V$", "$U_1$", fontsize=18)
     g.fig.subplots_adjust(top=0.9)
     g.fig.suptitle(title, fontsize=22)
     return g

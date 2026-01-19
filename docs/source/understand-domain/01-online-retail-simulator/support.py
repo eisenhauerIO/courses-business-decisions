@@ -5,20 +5,6 @@ import pandas as pd
 import seaborn as sns
 
 
-def print_data_summary(sales):
-    """
-    Print formatted summary of sales data.
-
-    Parameters
-    ----------
-    sales : pandas.DataFrame
-        Sales DataFrame with columns 'date', 'category', and 'revenue'.
-    """
-    print(f"What is the date range?       {sales['date'].min()} to {sales['date'].max()}")
-    print(f"How many categories?          {sales['category'].nunique()}")
-    print(f"What is the total revenue?    ${sales['revenue'].sum():,.2f}")
-
-
 def display_product_details(product, title, add_newline=False):
     """
     Display formatted product details.
@@ -57,7 +43,7 @@ def plot_revenue_by_category(category_revenue):
     ax.set_xlabel("Revenue ($)")
     ax.set_ylabel("Category")
     ax.set_title("Total Revenue by Category")
-    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"${x:,.0f}"))
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"${x:,.0f}"))
     plt.tight_layout()
     plt.show()
 
@@ -86,7 +72,7 @@ def plot_daily_metrics_trend(daily_metrics):
     ax.set_xlabel("Date")
     ax.set_ylabel("Revenue ($)")
     ax.set_title("Daily Revenue Trend")
-    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"${x:,.0f}"))
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"${x:,.0f}"))
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.show()
@@ -114,7 +100,7 @@ def plot_conversion_funnel(metrics):
     colors = sns.color_palette("Blues_r", len(stages))
     bars = ax.barh(stages[::-1], values[::-1], color=colors)
     ax.set_xlabel("Count")
-    ax.set_title("Customer Journey Funnel")
+    ax.set_title("Shopper Journey Funnel")
 
     for bar, val in zip(bars, values[::-1]):
         ax.text(
@@ -177,7 +163,7 @@ def plot_treatment_effect(metrics, enriched, enrichment_start):
     ax.set_xlabel("Date")
     ax.set_ylabel("Revenue ($)")
     ax.set_title("Treatment Effect: Daily Revenue")
-    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"${x:,.0f}"))
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f"${x:,.0f}"))
     ax.legend()
     plt.xticks(rotation=45)
     plt.tight_layout()

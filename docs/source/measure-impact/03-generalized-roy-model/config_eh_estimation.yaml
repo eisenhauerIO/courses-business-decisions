@@ -1,5 +1,5 @@
 # Configuration for estimation with essential heterogeneity
-# Builds on the eh.grmpy.yml simulation setup
+# Builds on the config_eh.yaml simulation setup
 SIMULATION:
   FUNCTION: roy_model
   PARAMS:

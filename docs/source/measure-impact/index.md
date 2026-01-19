@@ -2,7 +2,7 @@
 
 Lectures are provided as [Jupyter Notebooks](https://jupyter.org/). Throughout the course, we use the [**Generalized Roy Model**](https://github.com/eisenhauerIO/tools-generalized-roy) as a unifying framework for understanding the statistical assumptions underlying different causal methods and their economic implications. The [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine) allows us then to put these methods into practice.
 
-We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scott Cunningham as our foundational reference. The book provides the theoretical baseline, while our lectures apply these concepts to product data and business decision-making contexts.
+We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scott Cunningham as our foundational reference. All lectures consist of two parts. First, we cover the theory from the book. Second, we apply these concepts to product data and business decision-making contexts.
 
 ```{figure} ../_static/mixtape-book.png
 :align: center
@@ -22,7 +22,7 @@ We introduce the potential outcomes framework as the foundational model for caus
 ```{toctree}
 :titlesonly:
 
-01-potential-outcome-model/lecture
+01-potential-outcomes-model/lecture
 ```
 
 ### Causal Graphical Models
