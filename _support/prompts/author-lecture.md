@@ -42,6 +42,16 @@ The Mixtape chapters are available at `_external/books-mixtape/`. Use these PDF 
 - Show what works and what fails (selection bias, etc.)
 - Connect results back to theory
 
+### No Summary Sections
+
+Lectures should focus purely on content. **Do NOT include:**
+- "Conclusion" sections
+- "Key Takeaways" sections
+- "What's Next" sections
+- "Summary" sections
+
+Let the content speak for itself. Students absorb concepts through the theory and application—wrap-up sections add length without value.
+
 ### Chapter-to-Lecture Mapping
 
 | Lecture | Mixtape Chapter | Pages | Domain Example |

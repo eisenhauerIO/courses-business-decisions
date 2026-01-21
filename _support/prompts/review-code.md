@@ -273,6 +273,38 @@ sample = df.sample(n=100, random_state=42)
 
 ## Notebook-Specific Standards
 
+### Import Placement in Lecture Notebooks
+
+For Measure Impact lectures that follow the Theory → Application structure, imports should **not** appear at the beginning of the notebook. Instead, place all imports at the start of Part II (Application) to keep Part I (Theory) completely clean of code.
+
+```python
+# ✅ Good - imports at start of Application section
+## Part II: Application
+
+# First code cell of Part II
+# Standard Library
+import inspect
+
+# Third-party packages
+import pandas as pd
+
+# Local imports
+from online_retail_simulator import simulate
+```
+
+```python
+# ❌ Bad - imports at notebook start pollute Theory section
+# Cell 1: Imports (before any theory content)
+import pandas as pd
+from online_retail_simulator import simulate
+
+# ... Theory section with no code ...
+```
+
+**Rationale:** The Theory section should be pure exposition—definitions, notation, and intuition—without any code distractions. Code only enters when we begin the hands-on Application.
+
+---
+
 ### One Logical Operation Per Cell
 ```python
 # Cell 1: Run simulation
@@ -295,9 +327,18 @@ sales = results["sales"]
 - Cells should be executable top-to-bottom in sequence
 - No "skip this cell" or "run cell 5 before cell 3" instructions
 
-### Avoid Inline Shell Commands
+### Inline Shell Commands
+
+**Use `!cat` for displaying file contents** (config files, prompts, etc.):
 ```python
-# ❌ Bad
+# ✅ Good - clear and concise for displaying files
+! cat "config_simulation.yaml"
+! cat prompt_budget.txt
+```
+
+**Avoid shell commands when Python equivalents exist:**
+```python
+# ❌ Bad - use Python for file operations
 files = ! ls output/
 
 # ✅ Good
