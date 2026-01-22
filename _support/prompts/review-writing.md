@@ -409,6 +409,7 @@ For Measure Impact lectures:
 - [ ] Headers are questions when exploring data
 - [ ] Active voice, present tense throughout
 - [ ] Uses "shoppers" not "customers" for e-commerce end-users
+- [ ] Additional resources section uses correct format: `## Additional resources` header, bullet points with **Author (Year)**. [Title](url). *Journal*, volume(issue), pages.
 
 ## Pedagogy Checklist
 

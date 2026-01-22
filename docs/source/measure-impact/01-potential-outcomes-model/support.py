@@ -4,6 +4,83 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+# =============================================================================
+# Print Helper Functions
+# =============================================================================
+
+
+def print_ite_summary(effects):
+    """
+    Print summary statistics for individual treatment effects.
+
+    Parameters
+    ----------
+    effects : array-like
+        Individual treatment effects.
+    """
+    print("Individual Treatment Effects:")
+    print(f"  Mean: ${np.mean(effects):,.2f}")
+    print(f"  Std:  ${np.std(effects):,.2f}")
+    print(f"  Min:  ${np.min(effects):,.2f}")
+    print(f"  Max:  ${np.max(effects):,.2f}")
+
+
+def print_naive_estimator(treated_mean, control_mean, true_ate, title="Naive Estimator"):
+    """
+    Print naive estimator results with comparison to true ATE.
+
+    Parameters
+    ----------
+    treated_mean : float
+        Mean outcome for treated group.
+    control_mean : float
+        Mean outcome for control group.
+    true_ate : float
+        True Average Treatment Effect.
+    title : str, optional
+        Title for the output block.
+    """
+    estimate = treated_mean - control_mean
+    bias = estimate - true_ate
+
+    print(f"{title}:")
+    print(f"  E[Y | D=1] = ${treated_mean:,.2f}")
+    print(f"  E[Y | D=0] = ${control_mean:,.2f}")
+    print(f"  Naive estimate = ${estimate:,.2f}")
+    print(f"\nTrue ATE = ${true_ate:,.2f}")
+    print(f"Bias = ${bias:,.2f}")
+
+
+def print_bias_decomposition(baseline_bias, differential_effect_bias, naive_estimate, true_ate):
+    """
+    Print bias decomposition showing baseline and differential effect components.
+
+    Parameters
+    ----------
+    baseline_bias : float
+        Baseline (selection) bias component.
+    differential_effect_bias : float
+        Differential treatment effect bias component.
+    naive_estimate : float
+        Naive difference-in-means estimate.
+    true_ate : float
+        True Average Treatment Effect.
+    """
+    total_bias = baseline_bias + differential_effect_bias
+    actual_bias = naive_estimate - true_ate
+
+    print("Bias Decomposition:")
+    print(f"  Baseline bias:                ${baseline_bias:,.2f}  (treated have higher Y⁰)")
+    print(f"  Differential treatment effect: ${differential_effect_bias:,.2f}")
+    print("  " + "─" * 40)
+    print(f"  Total bias:                   ${total_bias:,.2f}")
+    print(f"\nActual bias (Naive - ATE):      ${actual_bias:,.2f}")
+
+
+# =============================================================================
+# Data Generation Functions
+# =============================================================================
+
 
 def generate_quality_score(revenue, seed=42, noise_std=0.5):
     """
@@ -299,7 +376,7 @@ def plot_outcome_by_treatment(treated_outcomes, control_outcomes, title=None):
     plt.show()
 
 
-def plot_balance_check(df, covariates, treatment_col="D", title=None):
+def plot_balance_check(df, covariates, treatment_col="D", title=None, percentile_clip=95):
     """
     Visualize covariate balance between treatment groups.
 
@@ -313,6 +390,8 @@ def plot_balance_check(df, covariates, treatment_col="D", title=None):
         Column name for treatment indicator. Default is 'D'.
     title : str, optional
         Custom title for the plot.
+    percentile_clip : int, optional
+        Percentile to clip outliers for continuous variables. Default is 95.
     """
     treated = df[df[treatment_col] == 1]
     control = df[df[treatment_col] == 0]
@@ -329,8 +408,13 @@ def plot_balance_check(df, covariates, treatment_col="D", title=None):
 
         # For continuous variables, use histograms
         if treated_vals.nunique() > 10:
+            # Clip outliers for better visualization
+            upper_bound = np.percentile(df[cov], percentile_clip)
+            treated_clipped = treated_vals.clip(upper=upper_bound)
+            control_clipped = control_vals.clip(upper=upper_bound)
+
             ax.hist(
-                control_vals,
+                control_clipped,
                 bins=20,
                 alpha=0.6,
                 color="#3498db",
@@ -339,7 +423,7 @@ def plot_balance_check(df, covariates, treatment_col="D", title=None):
                 density=True,
             )
             ax.hist(
-                treated_vals,
+                treated_clipped,
                 bins=20,
                 alpha=0.6,
                 color="#e74c3c",
@@ -379,6 +463,59 @@ def plot_balance_check(df, covariates, treatment_col="D", title=None):
         treat_mean = treated[cov].mean()
         diff = treat_mean - ctrl_mean
         print(f"{cov:20s}: Control={ctrl_mean:8.2f}, Treated={treat_mean:8.2f}, Diff={diff:+8.2f}")
+
+
+def plot_sample_size_convergence(sample_sizes, estimates_by_size, true_ate):
+    """
+    Plot how estimator variance decreases with sample size.
+
+    Parameters
+    ----------
+    sample_sizes : list
+        List of sample sizes used.
+    estimates_by_size : dict
+        Dictionary mapping sample size to list of estimates.
+    true_ate : float
+        True Average Treatment Effect.
+    """
+    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+    # Left panel: distributions at each sample size
+    colors = plt.cm.viridis(np.linspace(0.2, 0.8, len(sample_sizes)))
+
+    for i, (n, color) in enumerate(zip(sample_sizes, colors)):
+        estimates = estimates_by_size[n]
+        axes[0].hist(
+            estimates,
+            bins=30,
+            alpha=0.5,
+            color=color,
+            edgecolor="black",
+            linewidth=0.5,
+            label=f"n = {n}",
+        )
+
+    axes[0].axvline(true_ate, color="red", linestyle="--", linewidth=2, label=f"True ATE = ${true_ate:,.0f}")
+    axes[0].set_xlabel("Estimated Treatment Effect ($)")
+    axes[0].set_ylabel("Frequency")
+    axes[0].set_title("Sampling Distributions by Sample Size")
+    axes[0].legend()
+
+    # Right panel: standard deviation vs sample size
+    std_devs = [np.std(estimates_by_size[n]) for n in sample_sizes]
+
+    axes[1].plot(sample_sizes, std_devs, "o-", color="#3498db", linewidth=2, markersize=8)
+    axes[1].set_xlabel("Sample Size (n)")
+    axes[1].set_ylabel("Standard Deviation of Estimate ($)")
+    axes[1].set_title("Uncertainty Decreases with Sample Size")
+
+    # Add theoretical 1/sqrt(n) reference line
+    theoretical = std_devs[0] * np.sqrt(sample_sizes[0]) / np.sqrt(sample_sizes)
+    axes[1].plot(sample_sizes, theoretical, "--", color="gray", linewidth=1.5, label=r"$\propto 1/\sqrt{n}$")
+    axes[1].legend()
+
+    plt.tight_layout()
+    plt.show()
 
 
 def plot_fundamental_problem_table(df, n_rows=10):
