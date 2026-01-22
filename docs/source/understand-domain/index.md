@@ -26,16 +26,9 @@ We introduce the <img src="../_static/online-retail-simulator.svg" alt="ORS" sty
 
 - [Online Retail Simulator](01-online-retail-simulator/lecture.ipynb)
 
-## Catalog AI
-
-We introduce **Catalog AI** as a generative AI system for creating product content at scale using large language models to generate descriptions and metadata. This section examines how AI-generated content creates a quality-control problem that requires causal measurement, where each generated change represents a hypothesis about what will improve shopper experience and conversion. The goal is to connect content generation to treatment effect heterogeneity and establish systematic evaluation methods for AI-produced catalog improvements, as discussed in [Addressing Gen AI's Quality Control Problem](https://hbr.org/2025/09/addressing-gen-ais-quality-control-problem) (Harvard Business Review).
-
-- [Catalog AI](02-catalog-ai/lecture.ipynb)
-
 ```{toctree}
 :maxdepth: 2
 :hidden:
 
 01-online-retail-simulator/lecture
-02-catalog-ai/lecture
 ```
