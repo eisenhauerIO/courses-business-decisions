@@ -146,8 +146,13 @@ def compute_mte_by_quality(potential_outcomes_df, quality_col="quality_score", t
     """
     df = potential_outcomes_df.copy()
 
-    # Create quality bins
-    df["quality_bin"] = pd.qcut(df[quality_col], q=n_bins, labels=False, duplicates="drop")
+    # Create quality bins using equal-width bins based on the data range
+    # We use pd.cut instead of pd.qcut to avoid collapsing bins when there are
+    # many duplicate values (qcut with duplicates="drop" can reduce bin count)
+    quality_min = df[quality_col].min()
+    quality_max = df[quality_col].max()
+    bin_edges = np.linspace(quality_min, quality_max, n_bins + 1)
+    df["quality_bin"] = pd.cut(df[quality_col], bins=bin_edges, labels=False, include_lowest=True)
 
     # Compute MTE within each bin
     results = []

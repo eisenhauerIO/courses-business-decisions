@@ -1,5 +1,6 @@
 """Support functions for the Catalog AI notebook."""
 
+# Third-party packages
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -26,7 +27,7 @@ def print_product_details(products, label=None):
         print(f"  Description: {row['description']}")
 
 
-def plot_treatment_effect(metrics, enriched, enrichment_start):
+def plot_treatment_effect(metrics, enriched, enrichment_start, figsize=(12, 6)):
     """
     Plot daily revenue comparing original vs enriched data.
 
@@ -38,6 +39,8 @@ def plot_treatment_effect(metrics, enriched, enrichment_start):
         Enriched metrics DataFrame with 'date' and 'revenue' columns.
     enrichment_start : str
         Date string (YYYY-MM-DD) when enrichment treatment began.
+    figsize : tuple, optional
+        Figure size as (width, height) in inches. Default is (12, 6).
     """
     daily_original = metrics.groupby("date")["revenue"].sum().reset_index()
     daily_original["date"] = pd.to_datetime(daily_original["date"])
@@ -45,7 +48,7 @@ def plot_treatment_effect(metrics, enriched, enrichment_start):
     daily_enriched = enriched.groupby("date")["revenue"].sum().reset_index()
     daily_enriched["date"] = pd.to_datetime(daily_enriched["date"])
 
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=figsize)
     ax.plot(
         daily_original["date"],
         daily_original["revenue"],
@@ -79,9 +82,10 @@ def plot_treatment_effect(metrics, enriched, enrichment_start):
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.show()
+    plt.close()
 
 
-def plot_positioning_comparison(baseline_metrics, budget_enriched, luxury_enriched, treatment_start):
+def plot_positioning_comparison(baseline_metrics, budget_enriched, luxury_enriched, treatment_start, figsize=(12, 6)):
     """
     Plot three-way comparison of baseline vs budget vs luxury positioning.
 
@@ -95,6 +99,8 @@ def plot_positioning_comparison(baseline_metrics, budget_enriched, luxury_enrich
         Luxury positioning enriched metrics with 'date' and 'revenue' columns.
     treatment_start : str
         Date string (YYYY-MM-DD) when treatment began.
+    figsize : tuple, optional
+        Figure size as (width, height) in inches. Default is (12, 6).
 
     Returns
     -------
@@ -110,7 +116,7 @@ def plot_positioning_comparison(baseline_metrics, budget_enriched, luxury_enrich
     luxury_daily = luxury_enriched.groupby("date")["revenue"].sum().reset_index()
 
     # Create comparison plot
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=figsize)
     ax.plot(
         baseline_daily["date"],
         baseline_daily["revenue"],
@@ -137,7 +143,14 @@ def plot_positioning_comparison(baseline_metrics, budget_enriched, luxury_enrich
         linewidth=2,
         color="#d62728",
     )
-    ax.axvline(x=treatment_start, color="red", linestyle=":", linewidth=2, alpha=0.5, label="Treatment Start")
+    ax.axvline(
+        x=treatment_start,
+        color="red",
+        linestyle=":",
+        linewidth=2,
+        alpha=0.5,
+        label="Treatment Start",
+    )
     ax.set_xlabel("Date")
     ax.set_ylabel("Revenue ($)")
     ax.set_title("Business Impact Comparison: Budget vs Luxury Positioning")
@@ -147,6 +160,7 @@ def plot_positioning_comparison(baseline_metrics, budget_enriched, luxury_enrich
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.show()
+    plt.close()
 
     # Calculate lift statistics
     baseline_before = baseline_metrics[baseline_metrics["date"] < treatment_start]["revenue"].mean()

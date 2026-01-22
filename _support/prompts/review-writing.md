@@ -262,6 +262,16 @@ Use quotes for strings:
 ❌ ### Revenue Distribution (less engaging)
 ```
 
+### No Formulaic Summary Sections
+
+Do **not** add structured summary sections at the end of lectures. Avoid:
+- "Summary" with bullet points recapping the lecture
+- "Key Concepts" or "Key Takeaways" lists
+- "Practical Implications" sections
+- "Looking Ahead" or "Next Steps" sections
+
+Lectures should end naturally with the final content. Let the material speak for itself.
+
 ---
 
 ## Tone and Voice
