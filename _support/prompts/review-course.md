@@ -111,7 +111,40 @@ docs/source/<section>/<lecture-name>/
 
 ---
 
-### 5. Check Git Status
+### 5. Check Notation Consistency Across Lectures
+
+Verify that mathematical notation, variable names, and symbols are used consistently across all lectures.
+
+#### Extract Notation Patterns
+
+Review each lecture notebook for:
+
+- **Mathematical symbols**: Greek letters ($\alpha$, $\beta$, $\theta$, etc.)
+- **Variable naming**: Treatment indicators ($D$, $T$, $W$), outcomes ($Y$, $Y_0$, $Y_1$), covariates ($X$, $Z$)
+- **Function notation**: Expectations ($E[\cdot]$, $\mathbb{E}[\cdot]$), probabilities ($P(\cdot)$, $\Pr(\cdot)$)
+- **Subscript/superscript conventions**: Time indices, group indicators, potential outcomes
+
+#### Cross-Reference Check
+
+For each notation element, verify:
+
+1. Same concept uses same symbol across all lectures
+2. Same symbol is not used for different concepts
+3. Notation introduced in earlier lectures matches usage in later lectures
+
+#### Common Inconsistencies to Flag
+
+| Category | Check For |
+|----------|-----------|
+| Treatment indicator | $D$ vs $T$ vs $W$ for same concept |
+| Potential outcomes | $Y(0), Y(1)$ vs $Y_0, Y_1$ |
+| Expectations | $E[\cdot]$ vs $\mathbb{E}[\cdot]$ |
+| Probabilities | $P(\cdot)$ vs $\Pr(\cdot)$ vs $p(\cdot)$ |
+| Indices | Subscript vs superscript for same meaning |
+
+---
+
+### 6. Check Git Status
 
 ```bash
 git status
@@ -127,6 +160,7 @@ Flag any untracked files in `docs/source/` that should be committed.
 - [ ] All external URLs return 200 (or expected 403 for paywalled content)
 - [ ] All image files exist at referenced paths
 - [ ] All internal notebook references resolve
+- [ ] Notation is consistent across all lectures
 - [ ] No untracked files that should be committed
 
 ---
@@ -142,3 +176,8 @@ Flag any untracked files in `docs/source/` that should be committed.
 | Referenced In | Missing File |
 |---------------|--------------|
 | path/to/file.md | path/to/image.png |
+
+**Notation Inconsistencies:**
+| Concept | Lecture A | Lecture B | Recommended |
+|---------|-----------|-----------|-------------|
+| Treatment indicator | $D$ | $T$ | Pick one and use consistently |

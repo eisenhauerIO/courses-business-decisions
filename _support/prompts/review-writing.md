@@ -338,22 +338,6 @@ For Measure Impact lectures:
 
 ---
 
-## Learning Objectives
-
-### Clarity of Purpose
-- [ ] The lecture's goal is stated or clearly implied
-- [ ] Students know what they should understand by the end
-- [ ] The business question (if applicable) is clearly framed
-
-### Measurable Outcomes
-After completing the lecture, can students:
-- [ ] Define key terms and concepts?
-- [ ] Explain the method's assumptions?
-- [ ] Apply the technique to a new problem?
-- [ ] Recognize when the method is appropriate?
-
----
-
 ## Examples and Applications
 
 ### Worked Examples
@@ -418,7 +402,6 @@ After completing the lecture, can students:
 
 ## Pedagogy Checklist
 
-- [ ] Learning objectives are clear
 - [ ] Concepts build logically
 - [ ] Technical jargon is explained
 - [ ] Examples are realistic and explained
