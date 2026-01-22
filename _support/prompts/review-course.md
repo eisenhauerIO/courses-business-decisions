@@ -75,7 +75,43 @@ grep -rhoE '\]\([0-9]+-[^)]+/lecture' docs/source/ --include="*.md"
 
 ---
 
-### 4. Check Git Status
+### 4. Verify Lecture Self-Containment
+
+Each lecture directory should be fully self-contained. All files required to run the notebook must exist in the same directory.
+
+#### Check Local Python Imports
+
+For each lecture notebook, find local imports and verify the files exist:
+
+```bash
+# Find local imports in notebooks
+grep -E "from support|from \." docs/source/**/lecture.ipynb
+```
+
+For each import like `from support import ...`, verify `support.py` exists in the same directory as the notebook.
+
+#### Check Config File References
+
+```bash
+# Find config file references
+grep -E 'cat.*\.yaml|\.yaml' docs/source/**/lecture.ipynb
+```
+
+For each config file reference like `config_simulation.yaml`, verify the file exists in the lecture directory.
+
+#### Expected Lecture Directory Structure
+
+```
+docs/source/<section>/<lecture-name>/
+├── lecture.ipynb          # Main notebook
+├── support.py             # Local helper functions (if imported)
+├── config_*.yaml          # Configuration files (if referenced)
+└── output/                # Generated outputs (gitignored)
+```
+
+---
+
+### 5. Check Git Status
 
 ```bash
 git status

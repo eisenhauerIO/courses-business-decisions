@@ -1,654 +1,541 @@
 """Support functions for the Generalized Roy Model lecture.
 
-This module provides helper functions for:
-- Treatment effect visualization
-- Monte Carlo simulation comparing estimators
-- Plotting estimated MTE from grmpy results
-- Comparing naive, OLS, and IV estimates
+This module provides helper functions for demonstrating essential heterogeneity
+using the online retail simulator, focusing on:
+- MTE-style analysis using quality as a propensity proxy
+- Bias decomposition into baseline and selection-on-gains components
+- Comparing treatment parameters (ATE, ATT, ATC)
 """
 
 # Third-party packages
-import grmpy
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-import statsmodels.api as sm
-from scipy.stats import norm
 
 
-def plot_treatment_effects_distribution(delta, ate, tt, tut, effect_est):
-    """Plot distribution of treatment effects with vertical lines for parameters.
+def compute_treatment_effects(potential_outcomes_df, treatment_col="D"):
+    """Compute treatment effect parameters from potential outcomes data.
 
     Parameters
     ----------
-    delta : array-like
-        Individual treatment effects (Y1 - Y0).
-    ate : float
-        Average Treatment Effect.
-    tt : float
-        Treatment on the Treated.
-    tut : float
-        Treatment on the Untreated.
-    effect_est : float
-        Naive effect estimate (mean treated - mean untreated).
-
-    Returns
-    -------
-    None
-        Displays the plot directly.
-    """
-    plt.figure(figsize=(15, 10))
-    plt.ylabel("$f_{Y_1 - Y_0}$", fontsize=20)
-    plt.xlabel("$Y_1 - Y_0$", fontsize=20)
-    plt.axis([-1, 2, 0.0, 1.31])
-
-    # Plot distribution of individual effects
-    sns.kdeplot(delta)
-
-    # Plot average effect parameters
-    plt.plot([ate, ate], [0.00, 1.3], label=r"$\Delta^{ATE}$")
-    plt.plot([tt, tt], [0.00, 1.3], label=r"$\Delta^{TT}$")
-    plt.plot([tut, tut], [0.00, 1.3], label=r"$\Delta^{TUT}$")
-    plt.plot([effect_est, effect_est], [0.00, 1.3], label=r"$\hat{\Delta}$")
-
-    plt.legend(prop={"size": 20})
-    plt.show()
-
-
-def plot_joint_distribution(df, title):
-    """Plot joint distribution of V and U1 using seaborn jointplot.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        DataFrame with columns 'V' and 'U1'.
-    title : str
-        Title for the plot.
-
-    Returns
-    -------
-    seaborn.JointGrid
-        The jointplot grid object.
-    """
-    g = sns.jointplot(x=df["V"], y=df["U1"], height=10)
-    g = g.set_axis_labels("$V$", "$U_1$", fontsize=18)
-    g.fig.subplots_adjust(top=0.9)
-    g.fig.suptitle(title, fontsize=22)
-    return g
-
-
-def plot_mte_comparison(configs, quantiles=None):
-    """Plot MTE curves comparing with and without essential heterogeneity.
-
-    Parameters
-    ----------
-    configs : list
-        List of grmpy config objects [config_no_eh, config_eh].
-    quantiles : array-like, optional
-        Quantile grid. Defaults to np.arange(0.01, 1.0, 0.01).
-
-    Returns
-    -------
-    None
-        Displays the plot directly.
-    """
-    if quantiles is None:
-        quantiles = np.arange(0.01, 1.0, 0.01)
-
-    plt.figure(figsize=(15, 10))
-    plt.ylabel(r"$\Delta^{MTE}$", fontsize=24)
-    plt.xlabel("$u_D$", fontsize=24)
-
-    labels = ["Without essential heterogeneity", "With essential heterogeneity"]
-    colors = ["blue", "orange"]
-
-    for counter, config in enumerate(configs):
-        sim = config.simulation
-        beta1 = np.array(sim.coefficients_treated)
-        beta0 = np.array(sim.coefficients_untreated)
-        cov = np.array(sim.covariance)
-        cov1V = cov[0, 2]
-        cov0V = cov[1, 2]
-
-        mte_base = beta1[0] - beta0[0]
-        mte = mte_base + (cov1V - cov0V) * norm.ppf(quantiles)
-
-        plt.plot(quantiles, mte, label=labels[counter], color=colors[counter], linewidth=4)
-
-    plt.legend(prop={"size": 20})
-    plt.show()
-
-
-def plot_mte_with_weights(quantiles, mte, omega_tt, omega_tut, omega_ate):
-    """Plot MTE curve with treatment effect weights on secondary axis.
-
-    Parameters
-    ----------
-    quantiles : array-like
-        Quantile grid (0 to 1).
-    mte : array-like
-        Marginal Treatment Effect values.
-    omega_tt : array-like
-        Weights for Treatment on Treated.
-    omega_tut : array-like
-        Weights for Treatment on Untreated.
-    omega_ate : array-like
-        Weights for Average Treatment Effect.
-
-    Returns
-    -------
-    None
-        Displays the plot directly.
-    """
-    ax1 = plt.figure(figsize=(15, 10)).add_subplot(111)
-
-    plt.ylabel(r"$\Delta^{MTE}$", fontsize=24)
-    plt.xlabel("$u_D$", fontsize=24)
-    ax1.plot(quantiles, mte, color="blue", label=r" $\Delta^{MTE}$", linewidth=3.0)
-
-    ax2 = ax1.twinx()
-    ax2.plot(quantiles, omega_tt, color="red", linestyle="--", label=r" $\omega^{TT}$", linewidth=3.0)
-    ax2.plot(quantiles, omega_tut, color="green", linestyle="--", label=r" $\omega^{TUT}$", linewidth=3.0)
-    ax2.plot(quantiles, omega_ate, color="orange", linestyle="-.", label=r" $\omega^{ATE}$", linewidth=3.0)
-
-    plt.legend(prop={"size": 20})
-    plt.show()
-
-
-def compute_treatment_effects(df):
-    """Compute treatment effect parameters from simulated data.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        DataFrame with columns 'D', 'Y', 'Y1', 'Y0'.
+    potential_outcomes_df : pandas.DataFrame
+        DataFrame with columns 'Y0', 'Y1', and treatment indicator.
+    treatment_col : str, optional
+        Name of treatment indicator column. Default is 'D'.
 
     Returns
     -------
     dict
-        Dictionary with 'delta', 'ate', 'tt', 'tut', 'effect_est' keys.
+        Dictionary with 'ate', 'att', 'atc', 'delta' (individual effects),
+        and 'naive_estimate' keys.
     """
-    is_treated = df["D"] == 1
+    df = potential_outcomes_df.copy()
+    is_treated = df[treatment_col] == 1
+
+    # Individual treatment effects
     delta = df["Y1"] - df["Y0"]
-    ate = np.mean(df["Y1"] - df["Y0"])
-    tt = np.mean(df.loc[is_treated, "Y1"] - df.loc[is_treated, "Y0"])
-    tut = np.mean(df.loc[~is_treated, "Y1"] - df.loc[~is_treated, "Y0"])
-    effect_est = np.mean(df.loc[is_treated, "Y"]) - np.mean(df.loc[~is_treated, "Y"])
+
+    # Population parameters
+    ate = delta.mean()
+    att = delta[is_treated].mean()
+    atc = delta[~is_treated].mean()
+
+    # Naive estimate (what we observe)
+    if "Y_observed" in df.columns:
+        y_col = "Y_observed"
+    elif "Y" in df.columns:
+        y_col = "Y"
+    else:
+        # Compute observed outcome using switching equation
+        df["Y_observed"] = np.where(is_treated, df["Y1"], df["Y0"])
+        y_col = "Y_observed"
+
+    naive_estimate = df.loc[is_treated, y_col].mean() - df.loc[~is_treated, y_col].mean()
 
     return {
-        "delta": delta,
         "ate": ate,
-        "tt": tt,
-        "tut": tut,
-        "effect_est": effect_est,
+        "att": att,
+        "atc": atc,
+        "delta": delta,
+        "naive_estimate": naive_estimate,
     }
 
 
-def compute_mte_weights(df, quantiles=None):
-    """Compute MTE and weights for treatment effect parameters.
+def compute_bias_decomposition(potential_outcomes_df, treatment_col="D"):
+    """Decompose naive estimator bias into baseline and selection-on-gains components.
+
+    The naive estimator can be decomposed as:
+        E[Y|D=1] - E[Y|D=0] = ATE + Baseline Bias + Selection on Gains
+
+    Where:
+        - Baseline Bias = E[Y0|D=1] - E[Y0|D=0]  (treated have different baseline)
+        - Selection on Gains = E[delta|D=1] - E[delta]  (treated benefit more/less)
 
     Parameters
     ----------
-    df : pd.DataFrame
-        DataFrame with simulated data including 'D' column.
-    quantiles : array-like, optional
-        Quantile grid. Defaults to np.arange(0.01, 1.0, 0.01).
+    potential_outcomes_df : pandas.DataFrame
+        DataFrame with columns 'Y0', 'Y1', and treatment indicator.
+    treatment_col : str, optional
+        Name of treatment indicator column. Default is 'D'.
 
     Returns
     -------
     dict
-        Dictionary with 'omega_tt', 'omega_tut', 'omega_ate' arrays.
+        Dictionary with 'ate', 'baseline_bias', 'selection_on_gains',
+        'total_bias', and 'naive_estimate' keys.
     """
-    if quantiles is None:
-        quantiles = np.arange(0.01, 1.0, 0.01)
+    df = potential_outcomes_df.copy()
+    is_treated = df[treatment_col] == 1
 
-    propensity_mean = df["D"].mean()
+    # True ATE
+    ate = (df["Y1"] - df["Y0"]).mean()
 
-    omega_tt = np.array([(1 - quantiles[i]) for i in range(len(quantiles))]) / (1 - propensity_mean) * 2
-    omega_tut = np.array([quantiles[i] for i in range(len(quantiles))]) / propensity_mean * 2
-    omega_ate = np.ones(len(quantiles))
+    # Baseline bias: difference in counterfactual outcomes
+    baseline_bias = df.loc[is_treated, "Y0"].mean() - df.loc[~is_treated, "Y0"].mean()
 
-    # Normalize weights
-    omega_tt = omega_tt / np.mean(omega_tt)
-    omega_tut = omega_tut / np.mean(omega_tut)
+    # Selection on gains: treated have different effects than average
+    delta = df["Y1"] - df["Y0"]
+    att = delta[is_treated].mean()
+    selection_on_gains = att - ate
+
+    # Total bias
+    total_bias = baseline_bias + selection_on_gains
+
+    # Naive estimate
+    if "Y_observed" in df.columns:
+        y_col = "Y_observed"
+    else:
+        df["Y_observed"] = np.where(is_treated, df["Y1"], df["Y0"])
+        y_col = "Y_observed"
+
+    naive_estimate = df.loc[is_treated, y_col].mean() - df.loc[~is_treated, y_col].mean()
 
     return {
-        "omega_tt": omega_tt,
-        "omega_tut": omega_tut,
-        "omega_ate": omega_ate,
+        "ate": ate,
+        "baseline_bias": baseline_bias,
+        "selection_on_gains": selection_on_gains,
+        "total_bias": total_bias,
+        "naive_estimate": naive_estimate,
     }
 
 
-def compute_mte(config, quantiles=None):
-    """Compute MTE from grmpy config parameters.
+def compute_mte_by_quality(potential_outcomes_df, quality_col="quality_score", treatment_col="D", n_bins=5):
+    """Compute marginal treatment effects by quality bins (proxy for propensity).
+
+    This provides an MTE-style analysis where quality score serves as a proxy
+    for selection propensity. Products are binned by quality, and the average
+    treatment effect is computed within each bin.
 
     Parameters
     ----------
-    config : Config
-        grmpy configuration object.
-    quantiles : array-like, optional
-        Quantile grid. Defaults to np.arange(0.01, 1.0, 0.01).
+    potential_outcomes_df : pandas.DataFrame
+        DataFrame with columns 'Y0', 'Y1', and quality score.
+    quality_col : str, optional
+        Name of quality score column. Default is 'quality_score'.
+    treatment_col : str, optional
+        Name of treatment indicator column. Default is 'D'.
+    n_bins : int, optional
+        Number of quality bins. Default is 5.
 
     Returns
     -------
-    np.ndarray
-        MTE values at each quantile.
+    pandas.DataFrame
+        DataFrame with columns 'quality_bin', 'quality_midpoint', 'quality_min',
+        'quality_max', 'mte', 'mte_std', 'n_products', 'pct_treated'.
     """
-    if quantiles is None:
-        quantiles = np.arange(0.01, 1.0, 0.01)
+    df = potential_outcomes_df.copy()
 
-    sim = config.simulation
-    beta1 = np.array(sim.coefficients_treated)
-    beta0 = np.array(sim.coefficients_untreated)
-    cov = np.array(sim.covariance)
-    cov1V = cov[0, 2]
-    cov0V = cov[1, 2]
+    # Create quality bins
+    df["quality_bin"] = pd.qcut(df[quality_col], q=n_bins, labels=False, duplicates="drop")
 
-    mte_base = beta1[0] - beta0[0]
-    mte = mte_base + (cov1V - cov0V) * norm.ppf(quantiles)
+    # Compute MTE within each bin
+    results = []
+    for bin_idx in sorted(df["quality_bin"].unique()):
+        bin_data = df[df["quality_bin"] == bin_idx]
 
-    return mte
+        # Individual effects in this bin
+        effects = bin_data["Y1"] - bin_data["Y0"]
+
+        # Treatment rate in this bin
+        if treatment_col in df.columns:
+            pct_treated = bin_data[treatment_col].mean()
+        else:
+            pct_treated = np.nan
+
+        results.append(
+            {
+                "quality_bin": bin_idx,
+                "quality_midpoint": bin_data[quality_col].median(),
+                "quality_min": bin_data[quality_col].min(),
+                "quality_max": bin_data[quality_col].max(),
+                "mte": effects.mean(),
+                "mte_std": effects.std(),
+                "n_products": len(bin_data),
+                "pct_treated": pct_treated,
+            }
+        )
+
+    return pd.DataFrame(results)
 
 
-def monte_carlo(base_config_path, num_iterations=100, rho_grid=None):
-    """Run Monte Carlo comparing OLS, IV, and grmpy estimators across correlation levels.
+def plot_mte_by_quality(mte_df, title=None):
+    """Plot MTE curve across quality bins.
 
     Parameters
     ----------
-    base_config_path : str
-        Path to base configuration file.
-    num_iterations : int, optional
-        Number of Monte Carlo iterations per correlation level. Default is 100.
-    rho_grid : array-like, optional
-        Grid of correlation values between U1 and V. Default is np.linspace(0, 0.9, 10).
-
-    Returns
-    -------
-    dict
-        Dictionary with keys 'rho', 'naive_mean', 'naive_std', 'ols_mean', 'ols_std',
-        'iv_mean', 'iv_std', 'true_ate' containing arrays of estimates for each
-        correlation level.
-    """
-    if rho_grid is None:
-        rho_grid = np.linspace(0, 0.9, 10)
-
-    base_config = grmpy.process_config(base_config_path)
-    sim_config = base_config.simulation
-    results = _initialize_mc_results(rho_grid)
-
-    for rho in rho_grid:
-        iteration_results = _run_mc_iterations(sim_config, rho, num_iterations)
-        _append_mc_results(results, iteration_results)
-
-    return results
-
-
-def _initialize_mc_results(rho_grid):
-    """Initialize Monte Carlo results dictionary.
-
-    Parameters
-    ----------
-    rho_grid : array-like
-        Grid of correlation values.
-
-    Returns
-    -------
-    dict
-        Empty results dictionary with initialized keys.
-    """
-    return {
-        "rho": rho_grid,
-        "naive_mean": [],
-        "naive_std": [],
-        "ols_mean": [],
-        "ols_std": [],
-        "iv_mean": [],
-        "iv_std": [],
-        "true_ate": [],
-    }
-
-
-def _run_mc_iterations(sim_config, rho, num_iterations):
-    """Run all Monte Carlo iterations for a single correlation level.
-
-    Parameters
-    ----------
-    sim_config : SimulationConfig
-        Simulation configuration object.
-    rho : float
-        Correlation between U1 and V.
-    num_iterations : int
-        Number of iterations to run.
-
-    Returns
-    -------
-    dict
-        Dictionary with lists of estimates from each iteration.
-    """
-    naive_estimates = []
-    ols_estimates = []
-    iv_estimates = []
-    true_ate = None
-
-    for _ in range(num_iterations):
-        df = _simulate_with_correlation(sim_config, rho)
-        true_ate = np.mean(df["Y1"] - df["Y0"])
-
-        # Naive comparison
-        treated_mean = df.loc[df["D"] == 1, "Y"].mean()
-        untreated_mean = df.loc[df["D"] == 0, "Y"].mean()
-        naive_estimates.append(treated_mean - untreated_mean)
-
-        # OLS estimate
-        X_ols = sm.add_constant(df["D"])
-        ols_model = sm.OLS(df["Y"], X_ols).fit()
-        ols_estimates.append(ols_model.params["D"])
-
-        # IV estimate
-        iv_estimate = _iv_estimator(df)
-        iv_estimates.append(iv_estimate)
-
-    return {
-        "naive": naive_estimates,
-        "ols": ols_estimates,
-        "iv": iv_estimates,
-        "true_ate": true_ate,
-    }
-
-
-def _append_mc_results(results, iteration_results):
-    """Append iteration results to main results dictionary.
-
-    Parameters
-    ----------
-    results : dict
-        Main results dictionary to update.
-    iteration_results : dict
-        Results from a single correlation level.
-
-    Returns
-    -------
-    None
-        Updates results in place.
-    """
-    results["naive_mean"].append(np.mean(iteration_results["naive"]))
-    results["naive_std"].append(np.std(iteration_results["naive"]))
-    results["ols_mean"].append(np.mean(iteration_results["ols"]))
-    results["ols_std"].append(np.std(iteration_results["ols"]))
-    results["iv_mean"].append(np.mean(iteration_results["iv"]))
-    results["iv_std"].append(np.std(iteration_results["iv"]))
-    results["true_ate"].append(iteration_results["true_ate"])
-
-
-def _simulate_with_correlation(sim_config, rho):
-    """Simulate data with a specific correlation between U1 and V.
-
-    Parameters
-    ----------
-    sim_config : SimulationConfig
-        Simulation configuration object.
-    rho : float
-        Correlation between U1 and V.
-
-    Returns
-    -------
-    pd.DataFrame
-        Simulated data with columns Y, Y1, Y0, D, X0, X1, Z.
-    """
-    # Get original covariance matrix
-    cov = np.array(sim_config.covariance)
-    sigma1 = np.sqrt(cov[0, 0])
-    sigma_v = np.sqrt(cov[2, 2])
-
-    # Set new covariance with specified rho
-    cov_modified = cov.copy()
-    cov_1v = rho * sigma1 * sigma_v
-    cov_modified[0, 2] = cov_1v
-    cov_modified[2, 0] = cov_1v
-
-    # Simulate unobservables
-    num_agents = sim_config.agents
-    unobservables = np.random.multivariate_normal(np.zeros(3), cov_modified, num_agents)
-
-    # Simulate covariates
-    n_treated = len(sim_config.coefficients_treated)
-    n_choice = len(sim_config.coefficients_choice)
-
-    # First covariate is intercept
-    X = np.ones((num_agents, max(n_treated, n_choice)))
-    for i in range(1, max(n_treated, n_choice)):
-        X[:, i] = np.random.standard_normal(num_agents)
-
-    # Get coefficients
-    beta1 = np.array(sim_config.coefficients_treated)
-    beta0 = np.array(sim_config.coefficients_untreated)
-    gamma = np.array(sim_config.coefficients_choice)
-
-    # Potential outcomes
-    Y1 = X[:, :n_treated] @ beta1 + unobservables[:, 0]
-    Y0 = X[:, : len(beta0)] @ beta0 + unobservables[:, 1]
-
-    # Treatment decision
-    Z = X[:, :n_choice]
-    D = (Z @ gamma > unobservables[:, 2]).astype(float)
-
-    # Observed outcome
-    Y = D * Y1 + (1 - D) * Y0
-
-    return pd.DataFrame(
-        {
-            "Y": Y,
-            "Y1": Y1,
-            "Y0": Y0,
-            "D": D,
-            "X0": X[:, 0],
-            "X1": X[:, 1] if X.shape[1] > 1 else np.zeros(num_agents),
-            "Z": X[:, 2] if X.shape[1] > 2 else np.random.standard_normal(num_agents),
-        }
-    )
-
-
-def _iv_estimator(df):
-    """Compute IV estimate using two-stage least squares.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        Data with columns Y, D, Z.
-
-    Returns
-    -------
-    float
-        IV estimate of treatment effect.
-    """
-    # First stage: regress D on Z
-    Z = sm.add_constant(df[["X0", "X1", "Z"]] if "Z" in df.columns else df[["X0", "X1"]])
-
-    # Check if we have an instrument
-    if "Z" not in df.columns:
-        Z_cols = [c for c in df.columns if c.startswith("Z")]
-        if not Z_cols:
-            return np.nan
-        Z = sm.add_constant(df[Z_cols])
-
-    first_stage = sm.OLS(df["D"], Z).fit()
-    D_hat = first_stage.fittedvalues
-
-    # Second stage: regress Y on fitted D
-    X_2sls = sm.add_constant(D_hat)
-    second_stage = sm.OLS(df["Y"], X_2sls).fit()
-
-    return second_stage.params.iloc[1]
-
-
-def plot_monte_carlo_results(results, ax=None):
-    """Plot Monte Carlo simulation results.
-
-    Parameters
-    ----------
-    results : dict
-        Results dictionary from monte_carlo function.
-    ax : matplotlib.axes.Axes, optional
-        Axes to plot on. If None, creates new figure.
+    mte_df : pandas.DataFrame
+        Output from compute_mte_by_quality().
+    title : str, optional
+        Plot title.
 
     Returns
     -------
     matplotlib.figure.Figure
         The figure object.
     """
-    if ax is None:
-        fig, ax = plt.subplots(figsize=(12, 8))
-    else:
-        fig = ax.get_figure()
+    fig, ax = plt.subplots(figsize=(10, 6))
 
-    rho = results["rho"]
-
-    # Plot true ATE
-    ax.axhline(
-        y=results["true_ate"][0],
-        color="black",
-        linestyle="--",
-        label="True ATE",
+    # Plot MTE with error bars
+    ax.errorbar(
+        mte_df["quality_midpoint"],
+        mte_df["mte"],
+        yerr=mte_df["mte_std"] / np.sqrt(mte_df["n_products"]),
+        fmt="o-",
+        capsize=5,
+        capthick=2,
+        markersize=10,
         linewidth=2,
+        color="#2c3e50",
+        label="MTE by Quality",
     )
 
-    # Plot estimator means with error bands
-    ax.plot(rho, results["naive_mean"], "o-", label="Naive", color="red", linewidth=2)
-    ax.fill_between(
-        rho,
-        np.array(results["naive_mean"]) - np.array(results["naive_std"]),
-        np.array(results["naive_mean"]) + np.array(results["naive_std"]),
-        alpha=0.2,
-        color="red",
-    )
+    # Add horizontal line for overall ATE
+    overall_ate = (mte_df["mte"] * mte_df["n_products"]).sum() / mte_df["n_products"].sum()
+    ax.axhline(overall_ate, color="#e74c3c", linestyle="--", linewidth=2, label=f"Overall ATE = ${overall_ate:,.0f}")
 
-    ax.plot(rho, results["ols_mean"], "s-", label="OLS", color="blue", linewidth=2)
-    ax.fill_between(
-        rho,
-        np.array(results["ols_mean"]) - np.array(results["ols_std"]),
-        np.array(results["ols_mean"]) + np.array(results["ols_std"]),
-        alpha=0.2,
-        color="blue",
-    )
-
-    ax.plot(rho, results["iv_mean"], "^-", label="IV", color="green", linewidth=2)
-    ax.fill_between(
-        rho,
-        np.array(results["iv_mean"]) - np.array(results["iv_std"]),
-        np.array(results["iv_mean"]) + np.array(results["iv_std"]),
-        alpha=0.2,
-        color="green",
-    )
-
-    ax.set_xlabel(r"$\rho_{U_1, V}$", fontsize=16)
-    ax.set_ylabel("Estimated ATE", fontsize=16)
-    ax.set_title("Monte Carlo: Comparison of Estimators", fontsize=18)
-    ax.legend(fontsize=14)
+    ax.set_xlabel("Quality Score (Propensity Proxy)", fontsize=12)
+    ax.set_ylabel("Marginal Treatment Effect ($)", fontsize=12)
+    ax.set_title(title or "MTE by Quality: How Treatment Effects Vary with Selection", fontsize=14)
+    ax.legend(fontsize=11)
     ax.grid(True, alpha=0.3)
 
+    plt.tight_layout()
     return fig
 
 
-def plot_est_mte(result, config_path=None, ax=None):
-    """Plot estimated MTE from grmpy.estimate() result.
+def plot_treatment_parameters(ate, att, atc, naive=None, title=None):
+    """Visualize treatment parameters as bar chart.
 
     Parameters
     ----------
-    result : EstimationResult
-        Result from grmpy.estimate().
-    config_path : str, optional
-        Path to config file (for true parameter comparison).
-    ax : matplotlib.axes.Axes, optional
-        Axes to plot on. If None, creates new figure.
+    ate : float
+        Average Treatment Effect.
+    att : float
+        Average Treatment on Treated.
+    atc : float
+        Average Treatment on Control.
+    naive : float, optional
+        Naive estimate to include.
+    title : str, optional
+        Plot title.
 
     Returns
     -------
-    tuple
-        (mte array, quantiles array).
+    matplotlib.figure.Figure
+        The figure object.
     """
-    if ax is None:
-        fig, ax = plt.subplots(figsize=(12, 8))
+    fig, ax = plt.subplots(figsize=(10, 6))
 
-    quantiles = result.quantiles
-    mte = result.mte
+    params = {"ATE": ate, "ATT": att, "ATC": atc}
+    colors = ["#2ecc71", "#e74c3c", "#3498db"]
 
-    ax.plot(quantiles, mte, label="Estimated MTE", color="blue", linewidth=2)
+    if naive is not None:
+        params["Naive"] = naive
+        colors.append("#95a5a6")
 
-    # If config provided, plot true MTE for comparison
-    if config_path is not None:
-        config = grmpy.process_config(config_path)
-        sim = config.simulation
-        if sim is not None:
-            beta1 = np.array(sim.coefficients_treated)
-            beta0 = np.array(sim.coefficients_untreated)
-            cov = np.array(sim.covariance)
-            cov1V = cov[0, 2]
-            cov0V = cov[1, 2]
+    x_pos = np.arange(len(params))
+    bars = ax.bar(x_pos, params.values(), color=colors, edgecolor="black", width=0.6)
 
-            mte_base = beta1[0] - beta0[0]
-            mte_true = mte_base + (cov1V - cov0V) * norm.ppf(quantiles)
+    # Add value labels
+    for bar, (name, value) in zip(bars, params.items()):
+        y_offset = max(abs(v) for v in params.values()) * 0.03
+        y_pos = bar.get_height() + y_offset if value >= 0 else bar.get_height() - y_offset
+        va = "bottom" if value >= 0 else "top"
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,
+            y_pos,
+            f"${value:,.0f}",
+            ha="center",
+            va=va,
+            fontsize=12,
+            fontweight="bold",
+        )
 
-            ax.plot(
-                quantiles,
-                mte_true,
-                label="True MTE",
-                color="red",
-                linestyle="--",
-                linewidth=2,
-            )
+    ax.set_xticks(x_pos)
+    ax.set_xticklabels(params.keys())
+    ax.set_ylabel("Treatment Effect ($)", fontsize=12)
+    ax.set_title(title or "Treatment Parameters: Why They Differ Under Essential Heterogeneity", fontsize=14)
+    ax.axhline(0, color="black", linewidth=0.5)
 
-    ax.set_xlabel(r"$u_D$", fontsize=16)
-    ax.set_ylabel(r"$\Delta^{MTE}$", fontsize=16)
-    ax.set_title("Marginal Treatment Effect", fontsize=18)
-    ax.legend(fontsize=14)
-    ax.grid(True, alpha=0.3)
-
-    return mte, quantiles
+    plt.tight_layout()
+    return fig
 
 
-def compare_estimators(df, true_ate=None):
-    """Compare Naive, OLS, and IV estimates to true ATE.
+def plot_bias_decomposition(decomposition, title=None):
+    """Visualize bias decomposition as stacked bar chart.
 
     Parameters
     ----------
-    df : pd.DataFrame
-        Data with columns Y, D, and optionally Y1, Y0.
-    true_ate : float, optional
-        True ATE. If None, computed from Y1 and Y0 if available.
+    decomposition : dict
+        Output from compute_bias_decomposition().
+    title : str, optional
+        Plot title.
 
     Returns
     -------
-    pd.DataFrame
-        DataFrame with estimator names and their estimates.
+    matplotlib.figure.Figure
+        The figure object.
     """
-    results = []
+    fig, ax = plt.subplots(figsize=(12, 6))
 
-    # True ATE
-    if true_ate is None and "Y1" in df.columns and "Y0" in df.columns:
-        true_ate = np.mean(df["Y1"] - df["Y0"])
-    if true_ate is not None:
-        results.append({"Estimator": "True ATE", "Estimate": true_ate})
+    # Create decomposition visualization
+    components = {
+        "True ATE": decomposition["ate"],
+        "Baseline Bias\n(Selection on Endowments)": decomposition["baseline_bias"],
+        "Selection\non Gains": decomposition["selection_on_gains"],
+        "Naive Estimate": decomposition["naive_estimate"],
+    }
+    colors = ["#2ecc71", "#e74c3c", "#9b59b6", "#3498db"]
 
-    # Naive comparison
-    treated_mean = df.loc[df["D"] == 1, "Y"].mean()
-    untreated_mean = df.loc[df["D"] == 0, "Y"].mean()
-    naive = treated_mean - untreated_mean
-    results.append({"Estimator": "Naive", "Estimate": naive})
+    x_pos = np.arange(len(components))
+    bars = ax.bar(x_pos, components.values(), color=colors, edgecolor="black", width=0.6)
 
-    # OLS
-    X_ols = sm.add_constant(df["D"])
-    ols_model = sm.OLS(df["Y"], X_ols).fit()
-    results.append({"Estimator": "OLS", "Estimate": ols_model.params["D"]})
+    # Add value labels
+    for bar, (name, value) in zip(bars, components.items()):
+        y_offset = max(abs(v) for v in components.values()) * 0.03
+        y_pos = bar.get_height() + y_offset if value >= 0 else bar.get_height() - y_offset
+        va = "bottom" if value >= 0 else "top"
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,
+            y_pos,
+            f"${value:,.0f}",
+            ha="center",
+            va=va,
+            fontsize=11,
+            fontweight="bold",
+        )
 
-    # IV using available instruments
-    Z_cols = [c for c in df.columns if c.startswith("Z")]
-    if Z_cols:
-        Z = sm.add_constant(df[Z_cols])
-        first_stage = sm.OLS(df["D"], Z).fit()
-        D_hat = first_stage.fittedvalues
-        X_2sls = sm.add_constant(D_hat)
-        second_stage = sm.OLS(df["Y"], X_2sls).fit()
-        results.append({"Estimator": "IV", "Estimate": second_stage.params.iloc[1]})
+    ax.set_xticks(x_pos)
+    ax.set_xticklabels(components.keys(), fontsize=10)
+    ax.set_ylabel("Dollar Amount", fontsize=12)
+    ax.set_title(title or "Bias Decomposition: Naive Estimate = ATE + Baseline Bias + Selection on Gains", fontsize=13)
+    ax.axhline(0, color="black", linewidth=0.5)
 
-    return pd.DataFrame(results)
+    # Add equation annotation
+    ate = decomposition["ate"]
+    bb = decomposition["baseline_bias"]
+    sg = decomposition["selection_on_gains"]
+    naive = decomposition["naive_estimate"]
+
+    equation = f"${naive:,.0f} = ${ate:,.0f} + ${bb:,.0f} + ${sg:,.0f}"
+    ax.text(
+        0.5,
+        0.02,
+        equation,
+        transform=ax.transAxes,
+        ha="center",
+        fontsize=11,
+        bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.5),
+    )
+
+    plt.tight_layout()
+    return fig
+
+
+def plot_treatment_effects_distribution(potential_outcomes_df, treatment_col="D", title=None):
+    """Plot distribution of individual treatment effects by treatment status.
+
+    Parameters
+    ----------
+    potential_outcomes_df : pandas.DataFrame
+        DataFrame with columns 'Y0', 'Y1', and treatment indicator.
+    treatment_col : str, optional
+        Name of treatment indicator column. Default is 'D'.
+    title : str, optional
+        Plot title.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+        The figure object.
+    """
+    df = potential_outcomes_df.copy()
+    df["delta"] = df["Y1"] - df["Y0"]
+    is_treated = df[treatment_col] == 1
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    # Plot distributions for treated and control
+    sns.kdeplot(df.loc[is_treated, "delta"], ax=ax, color="#e74c3c", fill=True, alpha=0.3, label="Treated", linewidth=2)
+    sns.kdeplot(
+        df.loc[~is_treated, "delta"], ax=ax, color="#3498db", fill=True, alpha=0.3, label="Control", linewidth=2
+    )
+
+    # Add vertical lines for means
+    att = df.loc[is_treated, "delta"].mean()
+    atc = df.loc[~is_treated, "delta"].mean()
+    ate = df["delta"].mean()
+
+    ax.axvline(att, color="#e74c3c", linestyle="--", linewidth=2, label=f"ATT = ${att:,.0f}")
+    ax.axvline(atc, color="#3498db", linestyle="--", linewidth=2, label=f"ATC = ${atc:,.0f}")
+    ax.axvline(ate, color="#2ecc71", linestyle="-", linewidth=2, label=f"ATE = ${ate:,.0f}")
+
+    ax.set_xlabel("Individual Treatment Effect ($)", fontsize=12)
+    ax.set_ylabel("Density", fontsize=12)
+    ax.set_title(
+        title or "Distribution of Treatment Effects: Essential Heterogeneity\n(Treated vs Control Groups)", fontsize=13
+    )
+    ax.legend(fontsize=10)
+
+    plt.tight_layout()
+    return fig
+
+
+def plot_selection_mechanism(potential_outcomes_df, quality_col="quality_score", treatment_col="D", title=None):
+    """Visualize how treatment selection relates to quality and potential outcomes.
+
+    Parameters
+    ----------
+    potential_outcomes_df : pandas.DataFrame
+        DataFrame with quality score, treatment indicator, and potential outcomes.
+    quality_col : str, optional
+        Name of quality score column. Default is 'quality_score'.
+    treatment_col : str, optional
+        Name of treatment indicator column. Default is 'D'.
+    title : str, optional
+        Plot title.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+        The figure object.
+    """
+    df = potential_outcomes_df.copy()
+    df["delta"] = df["Y1"] - df["Y0"]
+    is_treated = df[treatment_col] == 1
+
+    fig, axes = plt.subplots(1, 3, figsize=(16, 5))
+
+    # Panel 1: Quality vs Treatment (selection mechanism)
+    axes[0].scatter(
+        df.loc[~is_treated, quality_col],
+        df.loc[~is_treated, "Y0"],
+        alpha=0.5,
+        color="#3498db",
+        s=30,
+        label="Control",
+    )
+    axes[0].scatter(
+        df.loc[is_treated, quality_col],
+        df.loc[is_treated, "Y0"],
+        alpha=0.5,
+        color="#e74c3c",
+        s=30,
+        label="Treated",
+    )
+    axes[0].set_xlabel("Quality Score")
+    axes[0].set_ylabel("Baseline Outcome (Y0)")
+    axes[0].set_title("Selection into Treatment")
+    axes[0].legend()
+
+    # Panel 2: Quality vs Treatment Effect
+    axes[1].scatter(df[quality_col], df["delta"], alpha=0.4, color="#2c3e50", s=30)
+    z = np.polyfit(df[quality_col], df["delta"], 1)
+    p = np.poly1d(z)
+    x_line = np.linspace(df[quality_col].min(), df[quality_col].max(), 100)
+    axes[1].plot(x_line, p(x_line), "r--", linewidth=2, label="Trend")
+    axes[1].set_xlabel("Quality Score")
+    axes[1].set_ylabel("Treatment Effect (Y1 - Y0)")
+    axes[1].set_title("Heterogeneous Effects by Quality")
+    axes[1].legend()
+
+    # Panel 3: Summary text
+    axes[2].axis("off")
+
+    ate = df["delta"].mean()
+    att = df.loc[is_treated, "delta"].mean()
+    atc = df.loc[~is_treated, "delta"].mean()
+    treated_quality = df.loc[is_treated, quality_col].mean()
+    control_quality = df.loc[~is_treated, quality_col].mean()
+
+    summary_text = (
+        "Essential Heterogeneity Summary\n"
+        "=" * 35 + "\n\n"
+        f"Avg Quality (Treated):  {treated_quality:.1f}\n"
+        f"Avg Quality (Control):  {control_quality:.1f}\n\n"
+        f"ATE:  ${ate:,.0f}\n"
+        f"ATT:  ${att:,.0f}\n"
+        f"ATC:  ${atc:,.0f}\n\n"
+        "=" * 35 + "\n"
+        "Key Insight:\n"
+        "Treatment selection correlates\n"
+        "with treatment response.\n\n"
+        "High-quality products:\n"
+        "  - Selected for treatment\n"
+        "  - Have smaller effects\n\n"
+        "This is essential heterogeneity."
+    )
+
+    axes[2].text(
+        0.1,
+        0.9,
+        summary_text,
+        transform=axes[2].transAxes,
+        fontsize=11,
+        verticalalignment="top",
+        fontfamily="monospace",
+        bbox=dict(boxstyle="round", facecolor="lightgray", alpha=0.3),
+    )
+
+    plt.suptitle(title or "The Selection-Effect Correlation: Why ATE != ATT != ATC", fontsize=14, fontweight="bold")
+    plt.tight_layout()
+    return fig
+
+
+def print_essential_heterogeneity_summary(potential_outcomes_df, treatment_col="D"):
+    """Print formatted summary of essential heterogeneity analysis.
+
+    Parameters
+    ----------
+    potential_outcomes_df : pandas.DataFrame
+        DataFrame with potential outcomes and treatment indicator.
+    treatment_col : str, optional
+        Name of treatment indicator column. Default is 'D'.
+    """
+    effects = compute_treatment_effects(potential_outcomes_df, treatment_col)
+    decomp = compute_bias_decomposition(potential_outcomes_df, treatment_col)
+
+    print("=" * 60)
+    print("ESSENTIAL HETEROGENEITY ANALYSIS")
+    print("=" * 60)
+    print()
+    print("Treatment Parameters:")
+    print(f"  ATE (Average Treatment Effect):     ${effects['ate']:>10,.2f}")
+    print(f"  ATT (Treatment on Treated):         ${effects['att']:>10,.2f}")
+    print(f"  ATC (Treatment on Control):         ${effects['atc']:>10,.2f}")
+    print()
+    print("Bias Decomposition:")
+    print(f"  Naive Estimate:                     ${decomp['naive_estimate']:>10,.2f}")
+    print(f"  True ATE:                           ${decomp['ate']:>10,.2f}")
+    print(f"  Baseline Bias (selection on Y0):    ${decomp['baseline_bias']:>10,.2f}")
+    print(f"  Selection on Gains (ATT - ATE):     ${decomp['selection_on_gains']:>10,.2f}")
+    print(f"  Total Bias:                         ${decomp['total_bias']:>10,.2f}")
+    print()
+    print("Verification:")
+    print("  Naive = ATE + Baseline + SelGains")
+    print(
+        f"  {decomp['naive_estimate']:.2f} = {decomp['ate']:.2f} + {decomp['baseline_bias']:.2f} + "
+        f"{decomp['selection_on_gains']:.2f}"
+    )
+    print("=" * 60)
