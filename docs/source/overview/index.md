@@ -25,7 +25,8 @@ This course teaches you to build and operate <img src="../_static/learn-decide-r
 
 Throughout the course, we ground these ideas in a single, concrete decision context drawn from large-scale online retail. The problem of improving product data quality at scale provides the domain in which every method, system, and decision is introduced.
 
-## Frequently Asked Questions
+```{rubric} Frequently Asked Questions
+```
 
 **What software do I need to install?** The [Build Systems](https://eisenhauerio.github.io/courses-business-decisions/build-systems/index.html) page lists the tools we use throughout the course. Start with the essentials: [Python](https://www.python.org/), [VS Code](https://code.visualstudio.com/), and [Git](https://git-scm.com/). You'll also need a [GitHub](https://github.com/) account. For Python libraries, we primarily use [NumPy](https://numpy.org/), [Pandas](https://pandas.pydata.org/), [Matplotlib](https://matplotlib.org/), [Seaborn](https://seaborn.pydata.org/), [SciPy](https://scipy.org/), and [Statsmodels](https://www.statsmodels.org/). We'll introduce additional tools as they become relevant—you don't need everything on day one.
 
