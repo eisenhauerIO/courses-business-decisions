@@ -34,7 +34,7 @@ dependencies = [
 [tool.hatch.envs.default.scripts]
 build = "sphinx-build -b html docs/source docs/build/html"
 notebook = "jupyter nbconvert --to notebook --execute --inplace {args}"
-notebooks = "jupyter nbconvert --to notebook --execute --inplace docs/source/**/*.ipynb"
+notebooks = "find docs/source -name '*.ipynb' -not -path '*/.ipynb_checkpoints/*' -exec jupyter nbconvert --to notebook --execute --inplace {} +"
 slides = "jupyter nbconvert docs/source/**/lecture.ipynb --to slides --reveal-prefix https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0 --output-dir docs/build/slides"
 
 [tool.ruff]
