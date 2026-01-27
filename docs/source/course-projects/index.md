@@ -20,6 +20,8 @@ This [replication project](https://ose-course-projects.readthedocs.io/en/latest/
 
 **What are the reproducibility requirements?** All projects must achieve full reproducibility through [GitHub Actions](https://github.com/features/actions) continuous integration. The [repository template](https://github.com/eisenhauerIO/projects-student-template) provides a reference implementation. When code execution spans multiple hours, you can pre-compute results and load them during CI runs—but you must include notebook explanations detailing why this approach is necessary.
 
+**What is the scope of replication?** For replication projects, focus on reproducing the core results and main findings of the original paper. You do not need to replicate every table, figure, or robustness check—prioritize the central analyses that support the paper's key conclusions.
+
 **Where can I find research data?** Some journals offer data supplements on their websites. Useful compilations include the [Harvard Dataverse](https://dataverse.harvard.edu/), [MDRC Public-Use Files](https://www.mdrc.org/available-public-use-files), [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/), and [Google Dataset Search](https://datasetsearch.research.google.com/).
 
 **Do we get to present our projects at the end of the course?** Yes, if you would like feedback on your project, make sure to reach out.
