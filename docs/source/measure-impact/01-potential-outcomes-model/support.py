@@ -70,7 +70,7 @@ def print_bias_decomposition(baseline_bias, differential_effect_bias, naive_esti
     actual_bias = naive_estimate - true_ate
 
     print("Bias Decomposition:")
-    print(f"  Baseline bias:                ${baseline_bias:,.2f}  (treated have higher Y⁰)")
+    print(f"  Baseline bias:                ${baseline_bias:,.2f}  (treated have higher Y0)")
     print(f"  Differential treatment effect: ${differential_effect_bias:,.2f}")
     print("  " + "─" * 40)
     print(f"  Total bias:                   ${total_bias:,.2f}")

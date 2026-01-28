@@ -1,6 +1,6 @@
 # Measure Impact
 
-Lectures are provided as [Jupyter Notebooks](https://jupyter.org/). Throughout the course, we use the [**Generalized Roy Model**](https://github.com/eisenhauerIO/tools-generalized-roy) as a unifying framework for understanding the statistical assumptions underlying different causal methods and their economic implications. The [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine) allows us then to put these methods into practice.
+Lectures are provided as [Jupyter Notebooks](https://jupyter.org/). The [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine) allows us to put causal inference methods into practice.
 
 We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scott Cunningham as our foundational reference. All lectures consist of two parts. First, we cover the theory from the book. Second, we apply these concepts to product data and business decision-making contexts.
 
@@ -35,16 +35,6 @@ We introduce directed acyclic graphs (DAGs) as a complementary representation of
 02-directed-acyclic-graphs/lecture
 ```
 
-### Generalized Roy Model
-
-We introduce the Generalized Roy Model as a unifying framework for causal inference under selection. The model makes selection mechanisms explicit and provides a common structure for understanding treatment effect heterogeneity, self-selection, and policy evaluation. Within this framework, many standard causal methods can be interpreted as imposing different assumptions on potential outcomes and selection rules.
-
-```{toctree}
-:titlesonly:
-
-03-generalized-roy-model/lecture
-```
-
 ## Selection on Observables
 
 ### Matching & Propensity Scores
@@ -75,7 +65,7 @@ Add notebook link
 
 ### Instrumental Variables
 
-We introduce instrumental variables as a method for causal inference when unobserved confounding is present. The focus is on identification assumptions, interpretation of local average treatment effects, and the role of instruments within the Generalized Roy framework.
+We introduce instrumental variables as a method for causal inference when unobserved confounding is present. The focus is on identification assumptions, interpretation of local average treatment effects, and the role of instruments in causal inference.
 
 ```{todo}
 Add notebook link
