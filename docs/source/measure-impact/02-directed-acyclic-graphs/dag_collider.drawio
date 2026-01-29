@@ -1,0 +1,25 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Collider DAG" id="collider-dag">
+    <mxGraphModel dx="800" dy="400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="500" pageHeight="150">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="node-D" value="Treatment&#xa;(D)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#87CEEB;strokeColor=#333333;strokeWidth=2;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="50" y="45" width="100" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="node-C" value="Collider&#xa;(C)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFB366;strokeColor=#333333;strokeWidth=2;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="200" y="45" width="100" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="node-Y" value="Outcome&#xa;(Y)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#87CEEB;strokeColor=#333333;strokeWidth=2;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="350" y="45" width="100" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge-DC" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#333333;endArrow=classic;endFill=1" edge="1" parent="1" source="node-D" target="node-C">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge-YC" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#333333;endArrow=classic;endFill=1" edge="1" parent="1" source="node-Y" target="node-C">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

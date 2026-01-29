@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" width="500" height="300">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="500" height="300" fill="white"/>
+
+  <!-- Nodes -->
+  <!-- Minority (D) - top left -->
+  <circle cx="100" cy="80" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="100" y="75" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Minority</text>
+  <text x="100" y="95" text-anchor="middle" font-family="Arial" font-size="12">(D)</text>
+
+  <!-- Force (Y) - top right -->
+  <circle cx="400" cy="80" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="400" y="75" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Force</text>
+  <text x="400" y="95" text-anchor="middle" font-family="Arial" font-size="12">(Y)</text>
+
+  <!-- Stop (M) - bottom left -->
+  <circle cx="100" cy="220" r="45" fill="#FFD700" stroke="#333" stroke-width="2"/>
+  <text x="100" y="215" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Stop</text>
+  <text x="100" y="235" text-anchor="middle" font-family="Arial" font-size="12">(M)</text>
+
+  <!-- Suspicion (U) - bottom right -->
+  <circle cx="300" cy="220" r="45" fill="#D3D3D3" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="300" y="215" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Suspicion</text>
+  <text x="300" y="235" text-anchor="middle" font-family="Arial" font-size="12">(U)</text>
+
+  <!-- Edges -->
+  <!-- D → Y (Minority to Force) -->
+  <line x1="145" y1="80" x2="345" y2="80" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- D → M (Minority to Stop) -->
+  <line x1="100" y1="125" x2="100" y2="165" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- U → M (Suspicion to Stop) -->
+  <line x1="255" y1="220" x2="155" y2="220" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- U → Y (Suspicion to Force) -->
+  <line x1="330" y1="185" x2="380" y2="125" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Legend -->
+  <text x="250" y="285" text-anchor="middle" font-family="Arial" font-size="11" fill="#666">
+    M is the collider: D → M ← U. Conditioning on M opens the path D ← M → U → Y
+  </text>
+</svg>

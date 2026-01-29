@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 250" width="450" height="250">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="450" height="250" fill="white"/>
+
+  <!-- Gender Node - left -->
+  <circle cx="80" cy="120" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="80" y="125" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Gender</text>
+
+  <!-- Occupation Node - center -->
+  <circle cx="225" cy="120" r="45" fill="#98FB98" stroke="#333" stroke-width="2"/>
+  <text x="225" y="125" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Occupation</text>
+
+  <!-- Wages Node - right -->
+  <circle cx="370" cy="120" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="370" y="125" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Wages</text>
+
+  <!-- Edge: Gender → Occupation -->
+  <line x1="125" y1="120" x2="170" y2="120" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Edge: Occupation → Wages -->
+  <line x1="270" y1="120" x2="315" y2="120" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Edge: Gender → Wages (curved) -->
+  <path d="M 115 85 Q 225 20 335 85" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <!-- Title -->
+  <text x="225" y="220" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">Gender Discrimination: Direct vs. Total Effect</text>
+
+  <!-- Legend -->
+  <text x="225" y="240" text-anchor="middle" font-family="Arial" font-size="10" fill="#666">Direct effect: Gender → Wages | Indirect effect: Gender → Occupation → Wages</text>
+</svg>

@@ -2,227 +2,154 @@
 
 # Third-party packages
 import matplotlib.pyplot as plt
-import networkx as nx
 import numpy as np
-import statsmodels.api as sm
+import pandas as pd
 
 
-def draw_dag(edges, node_labels=None, title=None, figsize=(8, 6), node_color="#87CEEB", highlight_path=None):
+def simulate_police_force_data(n_population=5000, discrimination_effect=0.3, seed=42):
     """
-    Draw a directed acyclic graph using networkx and matplotlib.
+    Simulate police stop data with collider bias structure.
+
+    The DAG structure:
+        Minority (D) → Stop (M) ← Suspicion (U)
+        Minority (D) → Force (Y)
+        Suspicion (U) → Force (Y)
+
+    Where Stop (M) is the collider that creates sample selection bias.
 
     Parameters
     ----------
-    edges : list of tuples
-        List of (source, target) tuples representing directed edges.
-    node_labels : dict, optional
-        Dictionary mapping node names to display labels.
-    title : str, optional
-        Title for the plot.
-    figsize : tuple, optional
-        Figure size. Default is (8, 6).
-    node_color : str, optional
-        Color for nodes. Default is light blue.
-    highlight_path : list of tuples, optional
-        List of edges to highlight in red.
-
-    Returns
-    -------
-    networkx.DiGraph
-        The created graph object.
-    """
-    G = nx.DiGraph()
-    G.add_edges_from(edges)
-
-    fig, ax = plt.subplots(figsize=figsize)
-
-    # Use hierarchical layout for DAGs
-    try:
-        pos = nx.nx_agraph.graphviz_layout(G, prog="dot")
-    except (ImportError, Exception):
-        pos = nx.spring_layout(G, seed=42, k=2)
-
-    # Draw edges
-    edge_colors = []
-    edge_widths = []
-    for edge in G.edges():
-        if highlight_path and edge in highlight_path:
-            edge_colors.append("#e74c3c")
-            edge_widths.append(3)
-        else:
-            edge_colors.append("#333333")
-            edge_widths.append(2)
-
-    nx.draw_networkx_edges(
-        G,
-        pos,
-        edge_color=edge_colors,
-        width=edge_widths,
-        arrows=True,
-        arrowsize=25,
-        connectionstyle="arc3,rad=0.1",
-        ax=ax,
-    )
-
-    # Draw nodes
-    nx.draw_networkx_nodes(G, pos, node_color=node_color, node_size=2000, edgecolors="black", linewidths=2, ax=ax)
-
-    # Draw labels
-    labels = node_labels if node_labels else {n: n for n in G.nodes()}
-    nx.draw_networkx_labels(G, pos, labels, font_size=12, font_weight="bold", ax=ax)
-
-    ax.set_title(title or "Directed Acyclic Graph", fontsize=14, fontweight="bold")
-    ax.axis("off")
-    plt.tight_layout()
-    plt.show()
-
-    return G
-
-
-def add_collider(df, marketing_pct=70, sales_pct=70, seed=45):
-    """
-    Add a collider variable (Featured status) to the dataframe.
-
-    Products are featured if they have high marketing spend OR high sales.
-    This creates a collider: Marketing -> Featured <- Sales
-
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        DataFrame with marketing_spend and sales columns.
-    marketing_pct : float
-        Percentile threshold for marketing spend.
-    sales_pct : float
-        Percentile threshold for sales.
+    n_population : int
+        Size of the simulated population.
+    discrimination_effect : float
+        True causal effect of minority status on force (0 = no discrimination).
     seed : int
-        Random seed.
+        Random seed for reproducibility.
 
     Returns
     -------
     pandas.DataFrame
-        DataFrame with added 'featured' column.
+        DataFrame with columns:
+        - minority: minority status (0 or 1)
+        - suspicion: suspicion scores
+        - is_stopped: boolean stop status
+        - force_score: force scores
     """
     rng = np.random.default_rng(seed)
 
-    marketing_threshold = np.percentile(df["marketing_spend"], marketing_pct)
-    sales_threshold = np.percentile(df["sales"], sales_pct)
+    # Minority status (binary treatment)
+    minority = rng.choice([0, 1], size=n_population, p=[0.7, 0.3])
 
-    # Featured if high marketing OR high sales (with some noise)
-    high_marketing = df["marketing_spend"] >= marketing_threshold
-    high_sales = df["sales"] >= sales_threshold
+    # Suspicion/perceived threat (unobserved confounder)
+    suspicion = rng.normal(50, 15, n_population)
 
-    # Base featured on either condition, with some noise
-    featured_prob = 0.8 * (high_marketing | high_sales).astype(float) + 0.1
-    featured = rng.random(len(df)) < featured_prob
+    # Stop probability depends on minority status AND suspicion
+    # Minorities are more likely to be stopped (D → M)
+    # Higher suspicion leads to more stops (U → M)
+    stop_score = (
+        0.3 * suspicion  # Suspicion affects stops
+        + 15 * minority  # Minorities more likely stopped
+        + rng.normal(0, 10, n_population)
+    )
+    is_stopped = stop_score > np.percentile(stop_score, 70)
 
-    df = df.copy()
-    df["featured"] = featured
+    # Force depends on suspicion and minority status
+    # True discrimination effect is the parameter
+    force_score = (
+        0.5 * suspicion  # Higher suspicion → more force (U → Y)
+        + discrimination_effect * 20 * minority  # True discrimination (D → Y)
+        + rng.normal(0, 10, n_population)
+    )
 
-    return df
+    return pd.DataFrame(
+        {
+            "minority": minority,
+            "suspicion": suspicion,
+            "is_stopped": is_stopped,
+            "force_score": force_score,
+        }
+    )
 
 
-def run_regression(df, outcome, predictors, add_constant=True):
+def draw_police_force_example(df, figsize=(12, 5)):
     """
-    Run OLS regression and return results.
+    Draw police force collider bias visualization.
 
     Parameters
     ----------
     df : pandas.DataFrame
-        DataFrame with variables.
-    outcome : str
-        Name of outcome variable.
-    predictors : list of str
-        Names of predictor variables.
-    add_constant : bool
-        Whether to add a constant term.
-
-    Returns
-    -------
-    statsmodels.regression.linear_model.RegressionResultsWrapper
-        Fitted regression results.
+        Output from simulate_police_force_data().
+    figsize : tuple
+        Figure size for the plots.
     """
-    X = df[predictors].copy()
-    if add_constant:
-        X = sm.add_constant(X)
-    y = df[outcome]
+    minority = df["minority"].values
+    is_stopped = df["is_stopped"].values
+    force_score = df["force_score"].values
 
-    model = sm.OLS(y, X)
-    results = model.fit()
-
-    return results
-
-
-def print_path_analysis(paths, descriptions):
-    """
-    Print formatted path analysis.
-
-    Parameters
-    ----------
-    paths : list of str
-        Path representations (e.g., ["D -> Y", "D <- X -> Y"]).
-    descriptions : list of str
-        Description of each path type.
-    """
-    print("Path Analysis:")
-    print("=" * 60)
-    for i, (path, desc) in enumerate(zip(paths, descriptions), 1):
-        print(f"\nPath {i}: {path}")
-        print(f"  Type: {desc}")
-    print("=" * 60)
-
-
-def draw_movie_star_example(figsize=(12, 5)):
-    """
-    Draw the classic movie star collider example.
-
-    Shows:
-    - Left: Full population (no correlation between talent and beauty)
-    - Right: Conditioned on being a movie star (negative correlation appears)
-    """
-    rng = np.random.default_rng(42)
-
-    n = 1000
-
-    # Generate talent and beauty (independent)
-    talent = rng.normal(50, 15, n)
-    beauty = rng.normal(50, 15, n)
-
-    # Being a star depends on talent OR beauty (collider)
-    star_score = 0.5 * talent + 0.5 * beauty + rng.normal(0, 10, n)
-    is_star = star_score > np.percentile(star_score, 90)
+    rng = np.random.default_rng(42)  # For jitter only
 
     fig, axes = plt.subplots(1, 2, figsize=figsize)
 
-    # Full population
-    axes[0].scatter(talent[~is_star], beauty[~is_star], alpha=0.3, color="#3498db", s=20, label="Non-stars")
-    axes[0].scatter(talent[is_star], beauty[is_star], alpha=0.8, color="#f39c12", s=50, label="Stars")
-    axes[0].set_xlabel("Talent")
-    axes[0].set_ylabel("Beauty")
+    # Left: Full population
+    axes[0].scatter(
+        minority[~is_stopped] + rng.normal(0, 0.05, (~is_stopped).sum()),
+        force_score[~is_stopped],
+        alpha=0.2,
+        color="#3498db",
+        s=15,
+        label="Not stopped",
+    )
+    axes[0].scatter(
+        minority[is_stopped] + rng.normal(0, 0.05, is_stopped.sum()),
+        force_score[is_stopped],
+        alpha=0.5,
+        color="#e74c3c",
+        s=30,
+        label="Stopped",
+    )
+    axes[0].set_xticks([0, 1])
+    axes[0].set_xticklabels(["Non-minority", "Minority"])
+    axes[0].set_xlabel("Minority Status (D)")
+    axes[0].set_ylabel("Force Score (Y)")
     axes[0].set_title("Full Population")
-    corr_full = np.corrcoef(talent, beauty)[0, 1]
+
+    # Correlation in full population
+    corr_full = np.corrcoef(minority, force_score)[0, 1]
     axes[0].text(0.05, 0.95, f"Correlation: {corr_full:.2f}", transform=axes[0].transAxes, va="top", fontsize=11)
-    axes[0].legend()
+    axes[0].legend(loc="lower right")
 
-    # Stars only (collider bias)
-    axes[1].scatter(talent[is_star], beauty[is_star], alpha=0.8, color="#f39c12", s=50)
-    z = np.polyfit(talent[is_star], beauty[is_star], 1)
-    p = np.poly1d(z)
-    x_line = np.linspace(talent[is_star].min(), talent[is_star].max(), 100)
-    axes[1].plot(x_line, p(x_line), "r--", linewidth=2)
-    axes[1].set_xlabel("Talent")
-    axes[1].set_ylabel("Beauty")
-    axes[1].set_title("Movie Stars Only (Collider Bias)")
-    corr_stars = np.corrcoef(talent[is_star], beauty[is_star])[0, 1]
-    axes[1].text(0.05, 0.95, f"Correlation: {corr_stars:.2f}", transform=axes[1].transAxes, va="top", fontsize=11)
+    # Right: Stopped only (collider bias - conditioning on M)
+    minority_stopped = minority[is_stopped]
+    force_stopped = force_score[is_stopped]
 
-    plt.suptitle("The Movie Star Paradox: Conditioning on a Collider", fontsize=14, fontweight="bold")
+    axes[1].scatter(
+        minority_stopped + rng.normal(0, 0.05, len(minority_stopped)),
+        force_stopped,
+        alpha=0.5,
+        color="#e74c3c",
+        s=30,
+    )
+
+    # Add means for each group
+    mean_force_nonmin = force_stopped[minority_stopped == 0].mean()
+    mean_force_min = force_stopped[minority_stopped == 1].mean()
+    axes[1].hlines(mean_force_nonmin, -0.2, 0.2, colors="#2c3e50", linewidth=3, label="Group mean")
+    axes[1].hlines(mean_force_min, 0.8, 1.2, colors="#2c3e50", linewidth=3)
+
+    axes[1].set_xticks([0, 1])
+    axes[1].set_xticklabels(["Non-minority", "Minority"])
+    axes[1].set_xlabel("Minority Status (D)")
+    axes[1].set_ylabel("Force Score (Y)")
+    axes[1].set_title("Police Stops Only (Collider Bias)")
+
+    # Correlation among stopped individuals
+    corr_stopped = np.corrcoef(minority_stopped, force_stopped)[0, 1]
+    axes[1].text(0.05, 0.95, f"Correlation: {corr_stopped:.2f}", transform=axes[1].transAxes, va="top", fontsize=11)
+    axes[1].legend(loc="lower right")
+
+    plt.suptitle("Police Use of Force: Sample Selection as Collider Bias", fontsize=14, fontweight="bold")
     plt.tight_layout()
     plt.show()
-
-    print(f"\nIn the full population, talent and beauty are uncorrelated (r = {corr_full:.2f})")
-    print(f"Among movie stars, there's a NEGATIVE correlation (r = {corr_stars:.2f})")
-    print("\nThis is collider bias: conditioning on Star (which depends on both Talent and Beauty)")
-    print("creates a spurious negative association between Talent and Beauty.")
 
 
 # =============================================================================
@@ -326,50 +253,6 @@ def apply_confounded_treatment(quality_df, treatment_fraction=0.3, quality_effec
     return df
 
 
-def add_collider_variable(df, revenue_col="Y_observed", treatment_col="D", threshold_pct=70, seed=42):
-    """
-    Add a collider variable: "high_performer" status.
-
-    Products are flagged as high performers if they have:
-    - High observed revenue, OR
-    - Were selected for optimization (treatment)
-
-    This creates a collider: D → HighPerformer ← Y
-
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        DataFrame with treatment and outcome columns.
-    revenue_col : str
-        Column name for revenue.
-    treatment_col : str
-        Column name for treatment indicator.
-    threshold_pct : float
-        Percentile threshold for "high" revenue.
-    seed : int
-        Random seed.
-
-    Returns
-    -------
-    pandas.DataFrame
-        DataFrame with added `high_performer` column.
-    """
-    rng = np.random.default_rng(seed)
-    df = df.copy()
-
-    revenue_threshold = np.percentile(df[revenue_col], threshold_pct)
-
-    # High performer if treated OR high revenue (with some noise)
-    high_revenue = df[revenue_col] >= revenue_threshold
-    treated = df[treatment_col] == 1
-
-    # Base probability on either condition
-    base_prob = 0.8 * (high_revenue | treated).astype(float) + 0.1
-    df["high_performer"] = rng.random(len(df)) < base_prob
-
-    return df
-
-
 def plot_confounding_scatter(df, title=None):
     """
     Plot scatter showing confounding relationship.
@@ -436,38 +319,6 @@ def plot_confounding_scatter(df, title=None):
     plt.show()
 
 
-def plot_estimates_comparison(estimates, title="Three Ways to Estimate the Content Optimization Effect"):
-    """
-    Plot bar chart comparing different effect estimates.
-
-    Parameters
-    ----------
-    estimates : dict
-        Dictionary mapping estimate names to values.
-    title : str, optional
-        Plot title.
-    """
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    colors = ["#e74c3c", "#2ecc71", "#f39c12"]
-    x_pos = np.arange(len(estimates))
-
-    bars = ax.bar(x_pos, estimates.values(), color=colors[: len(estimates)], edgecolor="black", width=0.6)
-
-    # Add value labels
-    for bar, val in zip(bars, estimates.values()):
-        y_pos = bar.get_height() + (20 if val > 0 else -40)
-        ax.text(bar.get_x() + bar.get_width() / 2, y_pos, f"${val:,.0f}", ha="center", fontsize=12, fontweight="bold")
-
-    ax.axhline(0, color="black", linewidth=0.5)
-    ax.set_xticks(x_pos)
-    ax.set_xticklabels(estimates.keys())
-    ax.set_ylabel("Estimated Effect on Revenue ($)")
-    ax.set_title(title)
-    plt.tight_layout()
-    plt.show()
-
-
 def plot_dag_application(df, naive_effect, conditioned_effect, true_effect):
     """
     Create summary visualization comparing naive vs conditioned estimates.
@@ -525,20 +376,21 @@ def plot_dag_application(df, naive_effect, conditioned_effect, true_effect):
 
     # Panel 3: Text summary
     axes[2].axis("off")
+    divider = "─" * 30
     summary_text = (
-        "DAG Analysis Summary\n"
-        "─" * 30 + "\n\n"
+        f"DAG Analysis Summary\n"
+        f"{divider}\n\n"
         f"True effect: +{true_effect:.0%} revenue boost\n\n"
         f"Naive estimate: ${naive_effect:,.0f}\n"
-        "  → BIASED (wrong sign!)\n\n"
+        f"  → BIASED (wrong sign!)\n\n"
         f"Conditioned estimate: ${conditioned_effect:,.0f}\n"
-        "  → Closer to true effect\n\n"
-        "─" * 30 + "\n"
-        "Backdoor path:\n"
-        "  Quality → Optimization\n"
-        "  Quality → Sales\n\n"
-        "Conditioning on Quality\n"
-        "blocks the backdoor path."
+        f"  → Closer to true effect\n\n"
+        f"{divider}\n"
+        f"Backdoor path:\n"
+        f"  Quality → Optimization\n"
+        f"  Quality → Sales\n\n"
+        f"Conditioning on Quality\n"
+        f"blocks the backdoor path."
     )
     axes[2].text(
         0.1,

@@ -277,6 +277,8 @@ sample = df.sample(n=100, random_state=42)
 
 For Measure Impact lectures that follow the Theory → Application structure, imports should **not** appear at the beginning of the notebook. Instead, place all imports at the start of Part II (Application) to keep Part I (Theory) completely clean of code.
 
+**Exception:** The Directed Acyclic Graphs lecture includes simulation code in Part I (Theory) to demonstrate collider bias with the police force example. This is intentional—the simulation reinforces a key theoretical point that benefits from immediate hands-on demonstration.
+
 ```python
 # ✅ Good - imports at start of Application section
 ## Part II: Application

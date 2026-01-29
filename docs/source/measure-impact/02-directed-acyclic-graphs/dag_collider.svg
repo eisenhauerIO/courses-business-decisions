@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 150" width="500" height="150">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="500" height="150" fill="white"/>
+
+  <!-- Treatment (D) Node -->
+  <circle cx="100" cy="75" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="100" y="70" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Treatment</text>
+  <text x="100" y="90" text-anchor="middle" font-family="Arial" font-size="12">(D)</text>
+
+  <!-- Collider (C) Node -->
+  <circle cx="250" cy="75" r="45" fill="#FFB366" stroke="#333" stroke-width="2"/>
+  <text x="250" y="70" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Collider</text>
+  <text x="250" y="90" text-anchor="middle" font-family="Arial" font-size="12">(C)</text>
+
+  <!-- Outcome (Y) Node -->
+  <circle cx="400" cy="75" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="400" y="70" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Outcome</text>
+  <text x="400" y="90" text-anchor="middle" font-family="Arial" font-size="12">(Y)</text>
+
+  <!-- Edge: D → C -->
+  <line x1="145" y1="75" x2="195" y2="75" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Edge: Y → C -->
+  <line x1="355" y1="75" x2="305" y2="75" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Title -->
+  <text x="250" y="140" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">Collider Structure: D → C ← Y</text>
+</svg>

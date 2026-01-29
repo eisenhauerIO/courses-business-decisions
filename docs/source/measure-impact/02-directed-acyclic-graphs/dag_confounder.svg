@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="400" height="250">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="250" fill="white"/>
+
+  <!-- Confounder (X) Node - top center -->
+  <circle cx="200" cy="60" r="45" fill="#F4A460" stroke="#333" stroke-width="2"/>
+  <text x="200" y="55" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Confounder</text>
+  <text x="200" y="75" text-anchor="middle" font-family="Arial" font-size="12">(X)</text>
+
+  <!-- Treatment (D) Node - bottom left -->
+  <circle cx="100" cy="180" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="100" y="175" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Treatment</text>
+  <text x="100" y="195" text-anchor="middle" font-family="Arial" font-size="12">(D)</text>
+
+  <!-- Outcome (Y) Node - bottom right -->
+  <circle cx="300" cy="180" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="300" y="175" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Outcome</text>
+  <text x="300" y="195" text-anchor="middle" font-family="Arial" font-size="12">(Y)</text>
+
+  <!-- Edge: X → D -->
+  <line x1="165" y1="95" x2="125" y2="140" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Edge: X → Y -->
+  <line x1="235" y1="95" x2="275" y2="140" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Edge: D → Y -->
+  <line x1="145" y1="180" x2="245" y2="180" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Title -->
+  <text x="200" y="240" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">Confounded Relationship: D ← X → Y</text>
+</svg>
