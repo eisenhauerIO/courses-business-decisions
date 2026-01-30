@@ -2,6 +2,12 @@
 
 Course projects provide hands-on experience applying the methods and tools covered in this course to real-world problems. Students work on either replication projects or [Kaggle](https://www.kaggle.com/) competitions, developing practical skills in causal inference, data analysis, and reproducible research. All projects use the [repository template](https://github.com/eisenhauerIO/projects-student-template) which provides the standard project structure, GitHub Actions configuration, and setup instructions.
 
+```{toctree}
+:maxdepth: 1
+
+github-workflow
+```
+
 ## Project Types
 
 ***Replication Projects:*** Students reproduce key results from published research articles, critically assess the quality of the original analysis, and contribute independent extensions such as robustness checks or alternative specifications.
@@ -17,8 +23,6 @@ This [replication project](https://ose-course-projects.readthedocs.io/en/latest/
 ## Frequently Asked Questions
 
 **Why are the projects public?** Transparency and reproducibility are core values in research and we want to learn from each other.
-
-**What are the reproducibility requirements?** All projects must achieve full reproducibility through [GitHub Actions](https://github.com/features/actions) continuous integration. The [repository template](https://github.com/eisenhauerIO/projects-student-template) provides a reference implementation. When code execution spans multiple hours, you can pre-compute results and load them during CI runs—but you must include notebook explanations detailing why this approach is necessary.
 
 **What is the scope of replication?** For replication projects, focus on reproducing the core results and main findings of the original paper. You do not need to replicate every table, figure, or robustness check—prioritize the central analyses that support the paper's key conclusions.
 
