@@ -75,9 +75,9 @@ Use backticks with quotes:
 Use backticks:
 
 ```markdown
-✅ `characteristics_rule_based.py`
+✅ `products_rule_based.py`
 ✅ `online_retail_simulator`
-❌ characteristics_rule_based.py
+❌ products_rule_based.py
 ```
 
 ### Directories
@@ -97,10 +97,10 @@ Use backticks with trailing slash:
 Use **BOLD UPPERCASE** in prose:
 
 ```markdown
-✅ The **CHARACTERISTICS** section generates...
+✅ The **PRODUCTS** section generates...
 ✅ The **PARAMS** subsection controls...
-❌ The CHARACTERISTICS section generates...
-❌ The characteristics section generates...
+❌ The PRODUCTS section generates...
+❌ The products section generates...
 ```
 
 ### Specific Keys
@@ -120,18 +120,18 @@ Use backticks in technical context:
 Use **bold lowercase**:
 
 ```markdown
-✅ "the **characteristics** phase"
+✅ "the **products** phase"
 ✅ "the **product_details** phase"
-❌ "the characteristics phase" (not bold)
-❌ "the CHARACTERISTICS phase" (wrong case)
+❌ "the products phase" (not bold)
+❌ "the PRODUCTS phase" (wrong case)
 ```
 
 ### YAML Configuration Sections
 Use **bold uppercase**:
 
 ```markdown
-✅ "The **CHARACTERISTICS** section in the YAML config..."
-❌ "The characteristics section in the YAML..." (lowercase)
+✅ "The **PRODUCTS** section in the YAML config..."
+❌ "The products section in the YAML..." (lowercase)
 ```
 
 **Rule:** Phase names (concepts) = lowercase bold. YAML sections = uppercase bold.
@@ -306,8 +306,8 @@ Lectures should end naturally with the final content. Let the material speak for
 | Variable | `` `variable` `` | `job_info` |
 | Parameter | `` `parameter` `` | `effect_size` |
 | Config file | `` `"file.yaml"` `` | `"config_simulation.yaml"` |
-| Phase (concept) | **phase** | **characteristics** |
-| YAML section | **SECTION** | **CHARACTERISTICS** |
+| Phase (concept) | **phase** | **products** |
+| YAML section | **SECTION** | **PRODUCTS** |
 | Object type | `` `Type` `` | `DataFrame` |
 | Directory | `` `dir/` `` | `output/` |
 
@@ -345,6 +345,16 @@ For Measure Impact lectures:
 - [ ] No section is disproportionately long or short
 - [ ] Complex topics get adequate depth
 - [ ] Simple topics aren't over-explained
+
+### Narrative Depth (Measure Impact Lectures)
+
+For Measure Impact Theory sections:
+- [ ] Concepts are explained thoroughly with multiple paragraphs, not just stated
+- [ ] Mathematical derivations show intermediate steps, not just final results
+- [ ] The "why" is explained, not just the "what"
+- [ ] Tables organize definitions, parameters, and comparisons
+- [ ] Formal definitions use precise LaTeX notation
+- [ ] Complex ideas are decomposed into named components
 
 ---
 
@@ -401,8 +411,8 @@ For Measure Impact lectures:
 - [ ] All column names use `` `column_name` `` format
 - [ ] All functions use `` `function_name()` `` format
 - [ ] All file references use `` `"filename.ext"` `` format
-- [ ] Phase names are lowercase bold (**characteristics**)
-- [ ] YAML sections are uppercase bold (**CHARACTERISTICS**)
+- [ ] Phase names are lowercase bold (**products**)
+- [ ] YAML sections are uppercase bold (**PRODUCTS**)
 - [ ] Object types use backticks (`` `DataFrame` ``, `` `JobInfo` ``)
 - [ ] First introduction of concepts uses **bold**
 - [ ] Links use meaningful text, not "click here"

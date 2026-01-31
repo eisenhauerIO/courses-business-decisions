@@ -42,6 +42,28 @@ The Mixtape chapters are available at `_external/books-mixtape/`. Use these PDF 
 - Show what works and what fails (selection bias, etc.)
 - Connect results back to theory
 
+### Narrative Style for Theory Sections
+
+Measure Impact Theory sections require detailed, textbook-quality exposition:
+
+**Prose Depth**
+- Each concept gets thorough explanation with multiple paragraphs
+- Explain the "why" behind each method, not just the "what"
+- Build intuition before presenting formal definitions
+- Connect new concepts to previously introduced material
+
+**Mathematical Exposition**
+- Use LaTeX equations for all mathematical notation
+- Show derivations step-by-step, not just final results
+- Explain each term in equations when first introduced
+- Present formal definitions with precise notation
+
+**Structure**
+- Use tables to organize definitions, parameters, and comparisons
+- Include worked examples where concepts benefit from concrete illustration
+- Decompose complex ideas into named components (e.g., "Baseline Bias", "Differential Treatment Effect Bias")
+- Use subsections to break down major concepts into digestible parts
+
 ### No Summary Sections
 
 Lectures should focus purely on content. **Do NOT include:**

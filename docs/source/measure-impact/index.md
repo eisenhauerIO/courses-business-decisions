@@ -41,8 +41,10 @@ We introduce directed acyclic graphs (DAGs) as a complementary representation of
 
 We discuss methods for causal inference when selection into treatment depends only on observed covariates. This section covers matching estimators and propensity score methods, highlighting the conditions under which covariate balance is sufficient for identification.
 
-```{todo}
-Add notebook link
+```{toctree}
+:titlesonly:
+
+03-matching-subclassification/lecture
 ```
 
 ### Machine Learning for Causal Inference

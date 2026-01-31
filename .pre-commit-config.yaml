@@ -22,7 +22,7 @@ repos:
     hooks:
       - id: nbmake
         name: nbmake (notebook execution)
-        entry: pytest --nbmake
+        entry: hatch run pytest --nbmake
         language: system
         files: ^docs/source/.*\.ipynb$
         pass_filenames: true
