@@ -346,9 +346,8 @@ For Measure Impact lectures:
 - [ ] Complex topics get adequate depth
 - [ ] Simple topics aren't over-explained
 
-### Narrative Depth (Measure Impact Lectures)
+### Narrative Depth
 
-For Measure Impact Theory sections:
 - [ ] Concepts are explained thoroughly with multiple paragraphs, not just stated
 - [ ] Mathematical derivations show intermediate steps, not just final results
 - [ ] The "why" is explained, not just the "what"
