@@ -157,10 +157,11 @@ def draw_police_force_example(df, figsize=(12, 5)):
 # =============================================================================
 
 
-def create_quality_score(metrics_df, seed=42):
+def create_binary_quality(metrics_df):
     """
-    Create a quality score for each product based on baseline revenue.
+    Create binary quality (High/Low) for each product based on baseline revenue.
 
+    Products in top half by revenue are "High" quality, bottom half are "Low" quality.
     This simulates unobserved product quality that drives both baseline sales
     and the company's decision of which products to optimize.
 
@@ -168,48 +169,40 @@ def create_quality_score(metrics_df, seed=42):
     ----------
     metrics_df : pandas.DataFrame
         Metrics DataFrame with `product_identifier` and `revenue` columns.
-    seed : int
-        Random seed for reproducibility.
 
     Returns
     -------
     pandas.DataFrame
-        DataFrame with `product_identifier` and `quality_score` columns.
+        DataFrame with `product_identifier`, `quality`, and `baseline_revenue` columns.
     """
-    rng = np.random.default_rng(seed)
-
     # Aggregate revenue by product (in case of multiple dates)
     product_revenue = metrics_df.groupby("product_identifier")["revenue"].sum().reset_index()
     product_revenue.columns = ["product_identifier", "baseline_revenue"]
 
-    # Create quality score: normalized revenue + noise
-    # Quality is correlated with revenue but not perfectly
-    revenue_min = product_revenue["baseline_revenue"].min()
-    revenue_max = product_revenue["baseline_revenue"].max()
-    revenue_normalized = (product_revenue["baseline_revenue"] - revenue_min) / (revenue_max - revenue_min + 1e-6)
+    # Binary quality based on rank (top 50% = High, bottom 50% = Low)
+    # Using rank ensures equal split even with ties or skewed distributions
+    product_revenue["rank"] = product_revenue["baseline_revenue"].rank(method="first")
+    cutoff = len(product_revenue) / 2
+    product_revenue["quality"] = np.where(product_revenue["rank"] > cutoff, "High", "Low")
 
-    # Scale to 1-100 range with noise
-    product_revenue["quality_score"] = 10 + 80 * revenue_normalized + rng.normal(0, 10, len(product_revenue))
-    product_revenue["quality_score"] = np.clip(product_revenue["quality_score"], 1, 100)
-
-    return product_revenue[["product_identifier", "quality_score", "baseline_revenue"]]
+    return product_revenue[["product_identifier", "quality", "baseline_revenue"]]
 
 
-def apply_confounded_treatment(quality_df, treatment_fraction=0.3, quality_effect=-0.02, true_effect=0.5, seed=42):
+def apply_confounded_treatment(quality_df, prob_treat_low=0.6, prob_treat_high=0.2, true_effect=0.5, seed=42):
     """
-    Apply treatment assignment that is confounded by quality.
+    Apply treatment assignment that is confounded by binary quality.
 
     Struggling products (low quality) are MORE likely to receive content optimization.
-    This creates a backdoor path: Quality → Optimization ← (selection) and Quality → Sales.
+    This creates a backdoor path: Quality → Optimization and Quality → Sales.
 
     Parameters
     ----------
     quality_df : pandas.DataFrame
-        DataFrame with `product_identifier`, `quality_score`, and `baseline_revenue`.
-    treatment_fraction : float
-        Target fraction of products to treat (approximate).
-    quality_effect : float
-        How quality affects treatment probability (negative = low quality more likely treated).
+        DataFrame with `product_identifier`, `quality`, and `baseline_revenue`.
+    prob_treat_low : float
+        Probability of treatment for low quality products.
+    prob_treat_high : float
+        Probability of treatment for high quality products.
     true_effect : float
         True causal effect of treatment (proportional increase in revenue).
     seed : int
@@ -223,19 +216,12 @@ def apply_confounded_treatment(quality_df, treatment_fraction=0.3, quality_effec
     rng = np.random.default_rng(seed)
     df = quality_df.copy()
 
-    # Treatment probability inversely related to quality
+    # Treatment probability depends on quality
     # Low quality products are more likely to receive optimization
-    quality_centered = df["quality_score"] - df["quality_score"].mean()
-    logit = quality_effect * quality_centered
-    treatment_prob = 1 / (1 + np.exp(-logit))
-
-    # Scale to achieve target treatment fraction
-    treatment_prob = treatment_prob * (treatment_fraction / treatment_prob.mean())
-    treatment_prob = np.clip(treatment_prob, 0.05, 0.95)
+    treatment_prob = np.where(df["quality"] == "Low", prob_treat_low, prob_treat_high)
 
     # Assign treatment
-    df["optimized"] = rng.random(len(df)) < treatment_prob
-    df["D"] = df["optimized"].astype(int)
+    df["D"] = (rng.random(len(df)) < treatment_prob).astype(int)
 
     # Calculate potential outcomes
     # Y^0: baseline revenue (what would happen without treatment)
@@ -253,56 +239,42 @@ def apply_confounded_treatment(quality_df, treatment_fraction=0.3, quality_effec
     return df
 
 
-def plot_confounding_scatter(df, title=None):
+def plot_confounding_bar(df, title=None):
     """
-    Plot scatter showing confounding relationship.
+    Plot bar chart showing confounding with binary quality.
 
     Parameters
     ----------
     df : pandas.DataFrame
-        DataFrame with quality_score, D, and Y_observed columns.
+        DataFrame with quality, D, and Y_observed columns.
     title : str, optional
         Plot title.
     """
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
-    # Left: Quality vs Treatment (showing selection bias)
-    treated = df[df["D"] == 1]
-    control = df[df["D"] == 0]
+    # Left: Treatment rates by quality (showing selection bias)
+    low_quality = df[df["quality"] == "Low"]
+    high_quality = df[df["quality"] == "High"]
+    treat_rate_low = low_quality["D"].mean()
+    treat_rate_high = high_quality["D"].mean()
 
-    axes[0].scatter(
-        control["quality_score"],
-        control["Y0"],
-        alpha=0.5,
-        color="#3498db",
-        s=40,
-        label="Control (not optimized)",
-    )
-    axes[0].scatter(
-        treated["quality_score"],
-        treated["Y0"],
-        alpha=0.5,
-        color="#e74c3c",
-        s=40,
-        label="Treated (optimized)",
-    )
-    axes[0].set_xlabel("Quality Score")
-    axes[0].set_ylabel("Baseline Revenue ($)")
-    axes[0].set_title("Selection into Treatment\n(Low quality products selected for optimization)")
-    axes[0].legend()
+    colors = ["#e74c3c", "#2ecc71"]  # Low=red, High=green
+    axes[0].bar(["Low Quality", "High Quality"], [treat_rate_low, treat_rate_high], color=colors)
+    axes[0].set_ylabel("Treatment Rate")
+    axes[0].set_title("Selection into Treatment\n(Low quality products more likely to be optimized)")
+    axes[0].set_ylim(0, 1)
+    for i, rate in enumerate([treat_rate_low, treat_rate_high]):
+        axes[0].text(i, rate + 0.02, f"{rate:.0%}", ha="center", fontsize=12, fontweight="bold")
 
     # Right: Naive comparison of outcomes
-    axes[1].boxplot(
-        [control["Y_observed"], treated["Y_observed"]],
-        labels=["Control", "Treated"],
-        patch_artist=True,
-    )
-    axes[1].patches[0].set_facecolor("#3498db")
-    axes[1].patches[1].set_facecolor("#e74c3c")
-    axes[1].set_ylabel("Observed Revenue ($)")
-    axes[1].set_title("Observed Outcomes\n(Naive comparison suggests optimization hurts!)")
+    treated = df[df["D"] == 1]
+    control = df[df["D"] == 0]
+    means = [control["Y_observed"].mean(), treated["Y_observed"].mean()]
+    axes[1].bar(["Control", "Treated"], means, color=["#3498db", "#e74c3c"])
+    axes[1].set_ylabel("Mean Revenue ($)")
+    axes[1].set_title("Naive Comparison\n(Suggests optimization hurts sales!)")
 
-    naive_diff = treated["Y_observed"].mean() - control["Y_observed"].mean()
+    naive_diff = means[1] - means[0]
     true_effect = df["true_effect"].iloc[0]
     axes[1].text(
         0.5,
@@ -319,89 +291,132 @@ def plot_confounding_scatter(df, title=None):
     plt.show()
 
 
-def plot_dag_application(df, naive_effect, conditioned_effect, true_effect):
+def compute_effects(df):
     """
-    Create summary visualization comparing naive vs conditioned estimates.
+    Compute naive and conditional treatment effects from binary quality data.
 
     Parameters
     ----------
     df : pandas.DataFrame
-        Data with quality_score, D, Y_observed columns.
-    naive_effect : float
-        Naive estimate (biased).
-    conditioned_effect : float
-        Estimate after conditioning on quality.
-    true_effect : float
-        True causal effect (proportional).
+        Data with quality, D, Y_observed columns.
+
+    Returns
+    -------
+    dict
+        Dictionary with naive_effect, effects by quality bin, and weighted average.
     """
-    fig, axes = plt.subplots(1, 3, figsize=(16, 5))
+    # Naive effect (unconditional)
+    naive_effect = df[df["D"] == 1]["Y_observed"].mean() - df[df["D"] == 0]["Y_observed"].mean()
 
-    # Panel 1: Scatter colored by quality
-    scatter = axes[0].scatter(
-        df["D"] + np.random.normal(0, 0.05, len(df)),  # Jitter for visibility
-        df["Y_observed"],
-        c=df["quality_score"],
-        cmap="RdYlGn",
-        alpha=0.6,
-        s=40,
-    )
-    plt.colorbar(scatter, ax=axes[0], label="Quality Score")
-    axes[0].set_xticks([0, 1])
-    axes[0].set_xticklabels(["Control", "Treated"])
-    axes[0].set_ylabel("Observed Revenue ($)")
-    axes[0].set_title("Outcomes by Treatment\n(colored by quality)")
+    # Within-bin effects
+    effects = {}
+    weights = {}
+    for quality in ["Low", "High"]:
+        bin_data = df[df["quality"] == quality]
+        treated_mean = bin_data[bin_data["D"] == 1]["Y_observed"].mean()
+        control_mean = bin_data[bin_data["D"] == 0]["Y_observed"].mean()
+        effects[quality] = treated_mean - control_mean
+        weights[quality] = len(bin_data) / len(df)
 
-    # Panel 2: Comparison of estimates
-    estimates = {
-        "Naive": naive_effect,
-        "Conditioned\non Quality": conditioned_effect,
+    # Weighted average of within-bin effects
+    conditional_effect = sum(effects[q] * weights[q] for q in ["Low", "High"])
+
+    return {
+        "naive": naive_effect,
+        "by_quality": effects,
+        "weights": weights,
+        "conditional": conditional_effect,
     }
-    colors = ["#e74c3c" if abs(v) > abs(conditioned_effect) else "#2ecc71" for v in estimates.values()]
 
-    x_pos = np.arange(len(estimates))
-    bars = axes[1].bar(x_pos, estimates.values(), color=colors, edgecolor="black", width=0.6)
+
+def plot_conditional_comparison(df):
+    """
+    Create visualization comparing naive vs conditional estimates with binary quality.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        Data with quality, D, Y_observed columns.
+    """
+    effects = compute_effects(df)
+    true_effect_pct = df["true_effect"].iloc[0]
+
+    _, axes = plt.subplots(1, 3, figsize=(16, 5))
+
+    # Panel 1: Mean outcomes by quality and treatment (2x2 visualization)
+    categories = ["Low\nControl", "Low\nTreated", "High\nControl", "High\nTreated"]
+    means = []
+    colors = []
+    for quality in ["Low", "High"]:
+        for d in [0, 1]:
+            mean_val = df[(df["quality"] == quality) & (df["D"] == d)]["Y_observed"].mean()
+            means.append(mean_val)
+            colors.append("#3498db" if d == 0 else "#e74c3c")
+
+    bars = axes[0].bar(categories, means, color=colors)
+    axes[0].set_ylabel("Mean Revenue ($)")
+    axes[0].set_title("Mean Outcomes by Quality × Treatment")
+    axes[0].axhline(means[0], color="#3498db", linestyle="--", alpha=0.5, xmin=0, xmax=0.25)
+    axes[0].axhline(means[2], color="#3498db", linestyle="--", alpha=0.5, xmin=0.5, xmax=0.75)
 
     # Add value labels
-    for bar, val in zip(bars, estimates.values()):
-        y_pos = bar.get_height() + (50 if val > 0 else -80)
-        axes[1].text(
-            bar.get_x() + bar.get_width() / 2, y_pos, f"${val:,.0f}", ha="center", fontsize=11, fontweight="bold"
-        )
+    for bar, val in zip(bars, means):
+        axes[0].text(bar.get_x() + bar.get_width() / 2, val + 20, f"${val:,.0f}", ha="center", fontsize=9)
 
+    # Panel 2: Comparison of effects
+    effect_labels = [
+        "Naive\n(Biased)",
+        "Low Quality\n(Within-bin)",
+        "High Quality\n(Within-bin)",
+        "Conditional\n(Weighted Avg)",
+    ]
+    effect_values = [
+        effects["naive"],
+        effects["by_quality"]["Low"],
+        effects["by_quality"]["High"],
+        effects["conditional"],
+    ]
+    bar_colors = ["#e74c3c", "#2ecc71", "#2ecc71", "#2ecc71"]
+
+    bars = axes[1].bar(effect_labels, effect_values, color=bar_colors, edgecolor="black")
     axes[1].axhline(0, color="black", linewidth=0.5)
-    axes[1].set_xticks(x_pos)
-    axes[1].set_xticklabels(estimates.keys())
-    axes[1].set_ylabel("Estimated Effect on Revenue ($)")
-    axes[1].set_title("Naive vs. Conditioned Estimates")
+    axes[1].set_ylabel("Estimated Treatment Effect ($)")
+    axes[1].set_title("Naive vs. Conditional Estimates")
+
+    for bar, val in zip(bars, effect_values):
+        y_pos = val + (30 if val > 0 else -50)
+        axes[1].text(
+            bar.get_x() + bar.get_width() / 2, y_pos, f"${val:,.0f}", ha="center", fontsize=10, fontweight="bold"
+        )
 
     # Panel 3: Text summary
     axes[2].axis("off")
-    divider = "─" * 30
+    divider = "─" * 35
     summary_text = (
-        f"DAG Analysis Summary\n"
+        f"Conditional Comparison Summary\n"
         f"{divider}\n\n"
-        f"True effect: +{true_effect:.0%} revenue boost\n\n"
-        f"Naive estimate: ${naive_effect:,.0f}\n"
+        f"True effect: +{true_effect_pct:.0%} revenue boost\n\n"
+        f"Naive (unconditional):\n"
+        f"  E[Y|D=1] - E[Y|D=0] = ${effects['naive']:,.0f}\n"
         f"  → BIASED (wrong sign!)\n\n"
-        f"Conditioned estimate: ${conditioned_effect:,.0f}\n"
-        f"  → Closer to true effect\n\n"
-        f"{divider}\n"
-        f"Backdoor path:\n"
-        f"  Quality → Optimization\n"
-        f"  Quality → Sales\n\n"
-        f"Conditioning on Quality\n"
-        f"blocks the backdoor path."
+        f"Within Low Quality:\n"
+        f"  E[Y|D=1,Q=Low] - E[Y|D=0,Q=Low] = ${effects['by_quality']['Low']:,.0f}\n\n"
+        f"Within High Quality:\n"
+        f"  E[Y|D=1,Q=High] - E[Y|D=0,Q=High] = ${effects['by_quality']['High']:,.0f}\n\n"
+        f"Weighted average: ${effects['conditional']:,.0f}\n"
+        f"  → Recovers POSITIVE effect!"
     )
     axes[2].text(
-        0.1,
-        0.9,
+        0.05,
+        0.95,
         summary_text,
         transform=axes[2].transAxes,
-        fontsize=12,
+        fontsize=11,
         verticalalignment="top",
         fontfamily="monospace",
         bbox=dict(boxstyle="round", facecolor="lightgray", alpha=0.3),
     )
 
+    plt.suptitle("Blocking the Backdoor: Conditioning on Quality", fontsize=14, fontweight="bold")
     plt.tight_layout()
     plt.show()

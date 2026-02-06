@@ -37,9 +37,9 @@ We introduce directed acyclic graphs (DAGs) as a complementary representation of
 
 ## Selection on Observables
 
-### Matching & Propensity Scores
+### Matching & Subclassification
 
-We discuss methods for causal inference when selection into treatment depends only on observed covariates. This section covers matching estimators and propensity score methods, highlighting the conditions under which covariate balance is sufficient for identification.
+We introduce methods for causal inference under selection on observables. This section covers the conditional independence assumption, subclassification, and matching estimators. The focus is on achieving covariate balance to satisfy the backdoor criterion.
 
 ```{toctree}
 :titlesonly:
