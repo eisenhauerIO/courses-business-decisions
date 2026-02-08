@@ -17,7 +17,11 @@ extensions = [
     "nbsphinx",
     "sphinxcontrib.bibtex",
     "sphinxcontrib.mermaid",
+    "sphinxcontrib.googleanalytics",
 ]
+
+# Google Analytics
+googleanalytics_id = "G-JKB8KLDL1B"
 
 # External links shortcuts
 extlinks = {
@@ -39,7 +43,6 @@ exclude_patterns = ["build"]
 html_theme = "sphinx_rtd_theme"
 html_theme_options = {
     "navigation_depth": 2,
-    "analytics_id": "G-JKB8KLDL1B",
 }
 html_static_path = ["_static"]
 

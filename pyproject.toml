@@ -20,6 +20,7 @@ dependencies = [
     "jupyterlab",
     "sphinxcontrib-bibtex",
     "sphinxcontrib-mermaid",
+    "sphinxcontrib-googleanalytics",
     "nbconvert",
     "nbmake",
     "pytest",
