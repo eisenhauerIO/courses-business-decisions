@@ -21,7 +21,7 @@ extensions = [
 ]
 
 # Google Analytics
-googleanalytics_id = "G-JKB8KLDL1B"
+googleanalytics_id = "G-HJWERZ4H1F"
 
 # External links shortcuts
 extlinks = {
