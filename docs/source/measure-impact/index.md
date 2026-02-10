@@ -2,7 +2,7 @@
 
 Lectures are provided as [Jupyter Notebooks](https://jupyter.org/). The [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine) allows us to put causal inference methods into practice.
 
-We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scott Cunningham as our foundational reference. All lectures consist of two parts. First, we cover the theory from the book. Second, we apply these concepts to product data and business decision-making contexts.
+We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scott Cunningham as our foundational reference.
 
 ```{figure} ../_static/mixtape-book.png
 :align: center
@@ -11,9 +11,28 @@ We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scot
 ***Causal Inference: The Mixtape***
 ```
 
+### Lecture Structure
+
+All lectures consist of two parts:
+
+**Part I: Theory** draws directly from the corresponding Mixtape chapter. Each section introduces the method's formal framework, identification assumptions, and key estimators using the book's notation and exposition style.
+
+**Part II: Application** connects theory to practice through a recurring business scenario—product content optimization in an online retail setting. Every application follows a common progression:
+
+1. **Business Context** — frame the causal question within the recurring domain
+2. **Data Generation** — use the [Online Retail Simulator](https://github.com/eisenhauerIO/tools-catalog-generator) to produce data with known ground truth via confounded treatment assignment
+3. **Naive Comparison** — compute the biased estimate and explain why it fails using Part I theory
+4. **Apply the Method** — implement the method using the [Impact Engine](https://github.com/eisenhauerIO/tools-impact-engine-measure), mapping each interface parameter back to its theoretical concept
+5. **Validation Against Ground Truth** — compare the estimate to the true effect, which is known because the simulator exposes full potential outcomes
+6. **Deep Dive** — explore method-specific diagnostics, limitations, or extensions that deepen understanding beyond the core estimation
+
+### Organization
+
 The material is organized in three parts. We begin with foundational causal models that clarify what causal effects mean and under which assumptions they are identified. We then study methods that rely on selection on observables, followed by methods designed to address selection on unobservables.
 
 ## Foundations
+
+These lectures establish the conceptual and formal tools for reasoning about causality. They define what causal effects are, when they can be identified, and how graphical models encode the assumptions that make identification possible.
 
 ### Potential Outcomes Model
 
@@ -36,6 +55,8 @@ We introduce directed acyclic graphs (DAGs) as a complementary representation of
 ```
 
 ## Selection on Observables
+
+These methods assume that all confounders are observed and measured. Under the conditional independence assumption, conditioning on observed covariates is sufficient to identify causal effects. The challenge is how to condition effectively—through stratification, matching, or flexible modeling.
 
 ### Matching & Subclassification
 
@@ -64,6 +85,8 @@ Add notebook link
 ```
 
 ## Selection on Unobservables
+
+These methods address settings where unobserved confounders make the conditional independence assumption untenable. Each exploits a different source of exogenous variation—an instrument, a threshold, a policy change, or a comparison unit—to identify causal effects despite unmeasured confounding.
 
 ### Instrumental Variables
 
