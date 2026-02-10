@@ -1,3 +1,7 @@
+---
+description: Use when reviewing prose in markdown files and Jupyter notebook markdown cells. Checks formatting, style, clarity, and pedagogical effectiveness.
+---
+
 # Writing Review
 
 Review prose in markdown files (`.md`) and Jupyter notebook markdown cells for formatting, style, clarity, and pedagogical effectiveness.
@@ -20,10 +24,10 @@ Review prose in markdown files (`.md`) and Jupyter notebook markdown cells for f
 **Use backticks** for column/field names:
 
 ```markdown
-✅ Each product has a unique `product_identifier`, a `category`, and a `price`.
-✅ The `impressions` column tracks how many times a product was shown.
-❌ Each product has a unique product_identifier (missing formatting)
-❌ The **impressions** column (bold alone - use backticks instead)
+Good: Each product has a unique `product_identifier`, a `category`, and a `price`.
+Good: The `impressions` column tracks how many times a product was shown.
+Bad:  Each product has a unique product_identifier (missing formatting)
+Bad:  The **impressions** column (bold alone - use backticks instead)
 ```
 
 ---
@@ -34,28 +38,28 @@ Review prose in markdown files (`.md`) and Jupyter notebook markdown cells for f
 Use backticks with parentheses:
 
 ```markdown
-✅ `simulate()`
-✅ `load_job_results()`
-❌ simulate()
-❌ simulate
+Good: `simulate()`
+Good: `load_job_results()`
+Bad:  simulate()
+Bad:  simulate
 ```
 
 ### Variables and Objects
 Use backticks:
 
 ```markdown
-✅ The `job_info` object contains...
-✅ Pass the `results` to the next function...
-❌ The job_info object contains...
+Good: The `job_info` object contains...
+Good: Pass the `results` to the next function...
+Bad:  The job_info object contains...
 ```
 
 ### Parameters and Arguments
 Use backticks:
 
 ```markdown
-✅ The `effect_size` parameter controls...
-✅ Set `num_products` to 100...
-❌ The effect_size parameter controls...
+Good: The `effect_size` parameter controls...
+Good: Set `num_products` to 100...
+Bad:  The effect_size parameter controls...
 ```
 
 ---
@@ -66,27 +70,27 @@ Use backticks:
 Use backticks with quotes:
 
 ```markdown
-✅ `"config_simulation.yaml"`
-❌ config_simulation.yaml
-❌ "config_simulation.yaml"
+Good: `"config_simulation.yaml"`
+Bad:  config_simulation.yaml
+Bad:  "config_simulation.yaml"
 ```
 
 ### Python Modules
 Use backticks:
 
 ```markdown
-✅ `products_rule_based.py`
-✅ `online_retail_simulator`
-❌ products_rule_based.py
+Good: `products_rule_based.py`
+Good: `online_retail_simulator`
+Bad:  products_rule_based.py
 ```
 
 ### Directories
 Use backticks with trailing slash:
 
 ```markdown
-✅ `output/`
-✅ `src/simulate/`
-❌ output
+Good: `output/`
+Good: `src/simulate/`
+Bad:  output
 ```
 
 ---
@@ -97,19 +101,19 @@ Use backticks with trailing slash:
 Use **BOLD UPPERCASE** in prose:
 
 ```markdown
-✅ The **PRODUCTS** section generates...
-✅ The **PARAMS** subsection controls...
-❌ The PRODUCTS section generates...
-❌ The products section generates...
+Good: The **PRODUCTS** section generates...
+Good: The **PARAMS** subsection controls...
+Bad:  The PRODUCTS section generates...
+Bad:  The products section generates...
 ```
 
 ### Specific Keys
 Use backticks in technical context:
 
 ```markdown
-✅ The `effect_size` parameter controls...
-✅ Set `enrichment_fraction` to 1.0...
-❌ The effect_size parameter controls...
+Good: The `effect_size` parameter controls...
+Good: Set `enrichment_fraction` to 1.0...
+Bad:  The effect_size parameter controls...
 ```
 
 ---
@@ -120,18 +124,18 @@ Use backticks in technical context:
 Use **bold lowercase**:
 
 ```markdown
-✅ "the **products** phase"
-✅ "the **product_details** phase"
-❌ "the products phase" (not bold)
-❌ "the PRODUCTS phase" (wrong case)
+Good: "the **products** phase"
+Good: "the **product_details** phase"
+Bad:  "the products phase" (not bold)
+Bad:  "the PRODUCTS phase" (wrong case)
 ```
 
 ### YAML Configuration Sections
 Use **bold uppercase**:
 
 ```markdown
-✅ "The **PRODUCTS** section in the YAML config..."
-❌ "The products section in the YAML..." (lowercase)
+Good: "The **PRODUCTS** section in the YAML config..."
+Bad:  "The products section in the YAML..." (lowercase)
 ```
 
 **Rule:** Phase names (concepts) = lowercase bold. YAML sections = uppercase bold.
@@ -143,9 +147,9 @@ Use **bold uppercase**:
 Use backticks for types:
 
 ```markdown
-✅ Returns a `JobInfo` object
-✅ Returns a `DataFrame`
-❌ Returns a JobInfo object
+Good: Returns a `JobInfo` object
+Good: Returns a `DataFrame`
+Bad:  Returns a JobInfo object
 ```
 
 ---
@@ -156,24 +160,24 @@ Use backticks for types:
 Use on first introduction:
 
 ```markdown
-✅ The **conversion funnel** tracks customer behavior. The conversion funnel includes...
-❌ The conversion funnel tracks... (not bold on first use)
+Good: The **conversion funnel** tracks customer behavior. The conversion funnel includes...
+Bad:  The conversion funnel tracks... (not bold on first use)
 ```
 
 ### Italics for Subtle Emphasis
 Use sparingly for meta-comments:
 
 ```markdown
-✅ Describe *what* you want in natural language
-✅ The goal is not perfectly polished code—it's *rapid insight generation*
+Good: Describe *what* you want in natural language
+Good: The goal is not perfectly polished code—it's *rapid insight generation*
 ```
 
 ### Questions as Headers
 Format important questions in bold:
 
 ```markdown
-✅ **Does improving product content quality increase sales?**
-✅ How do customers move through the purchase journey?
+Good: **Does improving product content quality increase sales?**
+Good: How do customers move through the purchase journey?
 ```
 
 ---
@@ -184,18 +188,18 @@ Format important questions in bold:
 Plain text for readability:
 
 ```markdown
-✅ Simulate 100 products
-✅ A 50% increase
-❌ Simulate `100` products (over-formatted)
+Good: Simulate 100 products
+Good: A 50% increase
+Bad:  Simulate `100` products (over-formatted)
 ```
 
 ### Parameter Values
 Use code formatting:
 
 ```markdown
-✅ Set `effect_size: 0.5`
-✅ The default `num_products: 100`
-❌ Set effect_size: 0.5 (not formatted)
+Good: Set `effect_size: 0.5`
+Good: The default `num_products: 100`
+Bad:  Set effect_size: 0.5 (not formatted)
 ```
 
 ---
@@ -206,17 +210,17 @@ Use code formatting:
 Format package/tool names with link on first mention:
 
 ```markdown
-✅ The [**Online Retail Simulator**](https://github.com/eisenhauerIO/tools-catalog-generator)
-✅ We use [GitHub Copilot](https://github.com/features/copilot) to generate code.
+Good: The [**Online Retail Simulator**](https://github.com/eisenhauerIO/tools-catalog-generator)
+Good: We use [GitHub Copilot](https://github.com/features/copilot) to generate code.
 ```
 
 ### Subsequent Mentions
 Use plain bold or plain text:
 
 ```markdown
-✅ The **Online Retail Simulator** generates...
-✅ The simulator generates...
-❌ The [Online Retail Simulator] generates... (over-linked)
+Good: The **Online Retail Simulator** generates...
+Good: The simulator generates...
+Bad:  The [Online Retail Simulator] generates... (over-linked)
 ```
 
 ---
@@ -227,18 +231,18 @@ Use plain bold or plain text:
 Use em-dash for inline examples:
 
 ```markdown
-✅ `**category**` (such as Electronics, Clothing, or Books)
-✅ Brand names get premium suffixes ("Elite", "Pro")
-❌ **category** like Electronics, Clothing, or Books
+Good: `**category**` (such as Electronics, Clothing, or Books)
+Good: Brand names get premium suffixes ("Elite", "Pro")
+Bad:  **category** like Electronics, Clothing, or Books
 ```
 
 ### Code Example Values
 Use quotes for strings:
 
 ```markdown
-✅ `"2024-11-01"`
-✅ `seed: 42`
-❌ 2024-11-01 (not quoted)
+Good: `"2024-11-01"`
+Good: `seed: 42`
+Bad:  2024-11-01 (not quoted)
 ```
 
 ---
@@ -257,9 +261,9 @@ Use quotes for strings:
 
 ### Section Headers Should Be Questions (When Appropriate)
 ```markdown
-✅ ## Exploring the Generated Data
-✅ ### How is revenue distributed across categories?
-❌ ### Revenue Distribution (less engaging)
+Good: ## Exploring the Generated Data
+Good: ### How is revenue distributed across categories?
+Bad:  ### Revenue Distribution (less engaging)
 ```
 
 ### No Formulaic Summary Sections
@@ -278,21 +282,21 @@ Lectures should end naturally with the final content. Let the material speak for
 
 ### Active Voice
 ```markdown
-✅ The simulator generates a product catalog
-❌ A product catalog is generated by the simulator
+Good: The simulator generates a product catalog
+Bad:  A product catalog is generated by the simulator
 ```
 
 ### Present Tense
 ```markdown
-✅ The function writes the DataFrames to disk
-❌ The function will write the DataFrames to disk
+Good: The function writes the DataFrames to disk
+Bad:  The function will write the DataFrames to disk
 ```
 
 ### Instructional but Not Condescending
 ```markdown
-✅ Let's start by simulating 100 products
-❌ Now we're going to simulate some products (too casual)
-❌ It is necessary to simulate products (too formal)
+Good: Let's start by simulating 100 products
+Bad:  Now we're going to simulate some products (too casual)
+Bad:  It is necessary to simulate products (too formal)
 ```
 
 ---

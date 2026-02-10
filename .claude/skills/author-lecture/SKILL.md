@@ -1,3 +1,7 @@
+---
+description: Use when authoring or structuring lecture notebooks. Provides standards for Theory→Application patterns, narrative style, chapter mappings, and lecture summaries.
+---
+
 # Lecture Authoring Guide
 
 Standards for structuring lecture notebooks across the Business Decisions course.
@@ -104,8 +108,8 @@ Different pattern—introduce tools/systems, not theory-first.
 ---
 
 ## Cross-References
-- **Code:** Use `review-code.md` for Python standards
-- **Writing:** Use `review-writing.md` for prose and formatting
+- **Code:** Use `/review-code` for Python standards
+- **Writing:** Use `/review-writing` for prose and formatting
 
 ---
 

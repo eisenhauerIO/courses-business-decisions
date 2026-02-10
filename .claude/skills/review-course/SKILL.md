@@ -1,3 +1,7 @@
+---
+description: Use when performing a comprehensive validation of course materials. Builds docs, checks links, verifies references, and validates notation consistency.
+---
+
 # Course Review
 
 Comprehensive validation of course materials. **If any step fails, stop and report findings before proceeding.**

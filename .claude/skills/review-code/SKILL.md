@@ -1,3 +1,7 @@
+---
+description: Use when reviewing Python code in *.py files and Jupyter notebook code cells. Checks for bugs, clarity, style, performance, security, and docstrings.
+---
+
 # Code Review
 
 Review Python code in `*.py` files and Jupyter notebook code cells for quality and correctness.
@@ -44,10 +48,10 @@ from support import plot_revenue_by_category
 
 **Single Import:**
 ```python
-# ✅ Good
+# Good
 from online_retail_simulator.simulate.product_details_mock import simulate_product_details_mock
 
-# ❌ Bad - unnecessary parentheses
+# Bad - unnecessary parentheses
 from online_retail_simulator.simulate.product_details_mock import (
     simulate_product_details_mock,
 )
@@ -55,14 +59,14 @@ from online_retail_simulator.simulate.product_details_mock import (
 
 **Multiple Imports:**
 ```python
-# ✅ Good
+# Good
 from support import (
     plot_revenue_by_category,
     plot_daily_metrics_trend,
     plot_conversion_funnel,
 )
 
-# ❌ Bad - too long, hard to read
+# Bad - too long, hard to read
 from support import plot_revenue_by_category, plot_daily_metrics_trend, plot_conversion_funnel
 ```
 
@@ -116,12 +120,12 @@ All classes must have docstrings with Parameters and Attributes sections.
 
 ### Use Descriptive Names
 ```python
-# ✅ Good
+# Good
 daily_sales = sales.groupby("date").agg({"ordered_units": "sum"})
 category_revenue = sales.groupby("category")["revenue"].sum()
 enriched_products = products[products["enriched"] == True]
 
-# ❌ Bad
+# Bad
 ds = sales.groupby("date").agg({"ordered_units": "sum"})
 cr = sales.groupby("category")["revenue"].sum()
 ```
@@ -134,11 +138,11 @@ cr = sales.groupby("category")["revenue"].sum()
 
 ### Avoid Reusing Variable Names
 ```python
-# ❌ Bad
+# Bad
 products = results["products"]
 products = products[products["price"] > 100]  # Overwrites original
 
-# ✅ Good
+# Good
 products = results["products"]
 high_price_products = products[products["price"] > 100]
 ```
@@ -150,11 +154,11 @@ high_price_products = products[products["price"] > 100]
 ### Comment the WHY, not the WHAT
 
 ```python
-# ✅ Good
+# Good
 # Set seed for reproducible random product selection
 random.seed(42)
 
-# ❌ Bad
+# Bad
 # Set random seed to 42
 random.seed(42)
 ```
@@ -165,7 +169,7 @@ random.seed(42)
 
 ### Chain Operations Thoughtfully
 ```python
-# ✅ Good (readable chain)
+# Good (readable chain)
 top_products = (
     sales
     .groupby("product_identifier")["revenue"]
@@ -174,17 +178,17 @@ top_products = (
     .head(10)
 )
 
-# ❌ Bad (too long)
+# Bad (too long)
 result = sales.groupby("product_identifier")["revenue"].sum().sort_values(ascending=False).head(10).reset_index().merge(products, on="product_identifier")
 ```
 
 ### Explicit Column Selection
 ```python
-# ✅ Good
+# Good
 product_cols = ["product_identifier", "category", "price"]
 sample_product = products[product_cols].head(1)
 
-# ❌ Bad
+# Bad
 sample_product = products.head(1)  # What columns are we using?
 ```
 
@@ -194,7 +198,7 @@ sample_product = products.head(1)  # What columns are we using?
 
 ### Formatted Output
 ```python
-# ✅ Good
+# Good
 print("=" * 40)
 print("DATA SUMMARY")
 print("=" * 40)
@@ -203,15 +207,15 @@ print(f"Categories:      {sales['category'].nunique()}")
 print(f"Total revenue:   ${sales['revenue'].sum():,.2f}")
 print("=" * 40)
 
-# ❌ Bad
+# Bad
 print("Date range:", sales['date'].min(), "to", sales['date'].max())
 print("Categories:", sales['category'].nunique())
 ```
 
 ### Use f-strings
-- ✅ `f"Revenue: ${revenue:,.2f}"`
-- ❌ `"Revenue: $" + str(revenue)`
-- ❌ `"Revenue: ${}".format(revenue)`
+- `f"Revenue: ${revenue:,.2f}"`
+- Not `"Revenue: $" + str(revenue)`
+- Not `"Revenue: ${}".format(revenue)`
 
 ---
 
@@ -219,10 +223,10 @@ print("Categories:", sales['category'].nunique())
 
 ### Mutation Without Clarity
 ```python
-# ❌ Bad: Modifying original DataFrame
+# Bad: Modifying original DataFrame
 sales["new_column"] = sales["revenue"] * 1.1
 
-# ✅ Good: Make intent clear
+# Good: Make intent clear
 sales = sales.copy()  # If mutation intended
 # OR
 sales_with_adjustment = sales.assign(new_column=lambda x: x["revenue"] * 1.1)
@@ -230,17 +234,17 @@ sales_with_adjustment = sales.assign(new_column=lambda x: x["revenue"] * 1.1)
 
 ### Hardcoded Values
 ```python
-# ❌ Bad
+# Bad
 high_price = products[products["price"] > 500]
 
-# ✅ Good
+# Good
 PRICE_THRESHOLD = 500  # Define at top of cell or notebook
 high_price = products[products["price"] > PRICE_THRESHOLD]
 ```
 
 ### Unused Variables
 ```python
-# ❌ Bad
+# Bad
 results = load_job_results(job_info)
 products = results["products"]
 sales = results["sales"]
@@ -249,7 +253,7 @@ metadata = results["metadata"]  # Never used
 
 ### Print Debugging Left In
 ```python
-# ❌ Bad
+# Bad
 print("DEBUG: products shape:", products.shape)  # Remove before committing
 ```
 
@@ -280,7 +284,7 @@ For Measure Impact lectures that follow the Theory → Application structure, im
 **Exception:** The Directed Acyclic Graphs lecture includes simulation code in Part I (Theory) to demonstrate collider bias with the police force example. This is intentional—the simulation reinforces a key theoretical point that benefits from immediate hands-on demonstration.
 
 ```python
-# ✅ Good - imports at start of Application section
+# Good - imports at start of Application section
 ## Part II: Application
 
 # First code cell of Part II
@@ -295,7 +299,7 @@ from online_retail_simulator import simulate
 ```
 
 ```python
-# ❌ Bad - imports at notebook start pollute Theory section
+# Bad - imports at notebook start pollute Theory section
 # Cell 1: Imports (before any theory content)
 import pandas as pd
 from online_retail_simulator import simulate
@@ -333,17 +337,17 @@ sales = results["sales"]
 
 **Use `!cat` for displaying file contents** (config files, prompts, etc.):
 ```python
-# ✅ Good - clear and concise for displaying files
+# Good - clear and concise for displaying files
 ! cat "config_simulation.yaml"
 ! cat prompt_budget.txt
 ```
 
 **Avoid shell commands when Python equivalents exist:**
 ```python
-# ❌ Bad - use Python for file operations
+# Bad - use Python for file operations
 files = ! ls output/
 
-# ✅ Good
+# Good
 from pathlib import Path
 output_files = list(Path("output").glob("*"))
 ```
