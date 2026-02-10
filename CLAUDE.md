@@ -15,6 +15,16 @@ python -c "..."
 pip install ...
 ```
 
+## Jupyter Notebooks
+
+Before editing a `.ipynb` file, strip its outputs first:
+
+```bash
+hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace path/to/notebook.ipynb
+```
+
+This avoids noisy diffs from cell outputs and keeps notebooks clean in version control.
+
 ## Project Structure
 
 - Course documentation lives in `docs/source/`

@@ -48,10 +48,14 @@ def create_confounded_treatment_multi(metrics_df, true_effect=0.5, seed=42):
     price_z = (df["price"] - df["price"].mean()) / df["price"].std()
     imp_z = (df["impressions"] - df["impressions"].mean()) / df["impressions"].std()
 
-    # Treatment probability via logistic model on all three covariates.
+    # Logistic model coefficients (larger magnitude → stronger confounding on that covariate)
+    COEF_QUALITY = -0.5
+    COEF_PRICE = -0.8
+    COEF_IMPRESSIONS = -0.3
+
     # Negative coefficients: lower covariate values → higher treatment probability
     # (struggling products get content optimization)
-    logit = -0.5 * qs_z - 0.8 * price_z - 0.3 * imp_z
+    logit = COEF_QUALITY * qs_z + COEF_PRICE * price_z + COEF_IMPRESSIONS * imp_z
     treatment_prob = 1 / (1 + np.exp(-logit))
 
     df["D"] = (rng.random(len(df)) < treatment_prob).astype(int)
@@ -118,7 +122,7 @@ def plot_covariate_imbalance(df, covariates, treatment_col="D"):
 
 def plot_balance_love_plot(balance_before, balance_after):
     """
-    Love plot showing standardized mean differences before and after matching.
+    Plot standardized mean differences before and after matching (Love plot).
 
     Parameters
     ----------
@@ -157,7 +161,7 @@ def plot_balance_love_plot(balance_before, balance_after):
 
 def plot_method_comparison(estimates_dict, true_effect):
     """
-    Bar chart comparing treatment effect estimates across methods.
+    Compare treatment effect estimates across methods in a bar chart.
 
     Parameters
     ----------
@@ -169,7 +173,9 @@ def plot_method_comparison(estimates_dict, true_effect):
     methods = list(estimates_dict.keys())
     estimates = list(estimates_dict.values())
 
-    colors = ["#e74c3c" if abs(e - true_effect) > abs(true_effect) * 0.2 else "#2ecc71" for e in estimates]
+    # Color bars red if estimate deviates from truth by more than this fraction
+    ERROR_THRESHOLD = 0.2
+    colors = ["#e74c3c" if abs(e - true_effect) > abs(true_effect) * ERROR_THRESHOLD else "#2ecc71" for e in estimates]
 
     _, ax = plt.subplots(figsize=(8, 5))
     bars = ax.bar(methods, estimates, color=colors, edgecolor="black", width=0.5)
