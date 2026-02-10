@@ -2,7 +2,7 @@
 
 Lectures are provided as [Jupyter Notebooks](https://jupyter.org/). The [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine) allows us to put causal inference methods into practice.
 
-We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scott Cunningham as our foundational reference. All lectures consist of two parts. First, we cover the theory from the book. Second, we apply these concepts to product data and business decision-making contexts.
+We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scott Cunningham as our foundational reference. All lectures consist of two parts. First, we cover the theory from the book. Second, we apply these concepts to product data and business decision-making contexts. Each application section follows a common progression: we frame a causal question within the business domain and use the [**Online Retail Simulator**](https://github.com/eisenhauerIO/tools-catalog-generator) to generate data with known ground truth. We then turn to the [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine) — first with a naive experimental comparison that takes no consideration of the treatment assignment mechanism, then with the lecture's causal method to recover the true effect. Each lecture closes with a deeper exploration of method-specific diagnostics, limitations, or extensions.
 
 ```{figure} ../_static/mixtape-book.png
 :align: center
