@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 280" width="500" height="280">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+    <marker id="arrowhead-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#999"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="500" height="280" fill="white"/>
+
+  <!-- Observed Confounders (X) Node - top left -->
+  <circle cx="140" cy="68" r="50" fill="#F4A460" stroke="#333" stroke-width="2"/>
+  <text x="140" y="63" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Confounders</text>
+  <text x="140" y="83" text-anchor="middle" font-family="Arial" font-size="12">(X)</text>
+
+  <!-- Unobserved Confounders (U) Node - top right, dashed border -->
+  <circle cx="360" cy="68" r="50" fill="#F4A460" fill-opacity="0.4" stroke="#999" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="360" y="63" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#666">Confounders</text>
+  <text x="360" y="83" text-anchor="middle" font-family="Arial" font-size="12" fill="#666">(U)</text>
+
+  <!-- Treatment (D) Node - bottom left -->
+  <circle cx="120" cy="210" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="120" y="205" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Treatment</text>
+  <text x="120" y="225" text-anchor="middle" font-family="Arial" font-size="12">(D)</text>
+
+  <!-- Outcome (Y) Node - bottom right -->
+  <circle cx="380" cy="210" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="380" y="205" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Outcome</text>
+  <text x="380" y="225" text-anchor="middle" font-family="Arial" font-size="12">(Y)</text>
+
+  <!-- Edge: X → D (solid) -->
+  <line x1="130" y1="118" x2="124" y2="162" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Edge: X → Y (solid) -->
+  <line x1="185" y1="95" x2="342" y2="180" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Edge: U → D (dashed) -->
+  <line x1="315" y1="95" x2="158" y2="180" stroke="#999" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowhead-dashed)"/>
+
+  <!-- Edge: U → Y (dashed) -->
+  <line x1="370" y1="118" x2="376" y2="162" stroke="#999" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowhead-dashed)"/>
+
+  <!-- Edge: D → Y -->
+  <line x1="165" y1="210" x2="330" y2="210" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Title -->
+  <text x="250" y="270" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">Selection on Unobservables: D ← (X, U) → Y</text>
+</svg>

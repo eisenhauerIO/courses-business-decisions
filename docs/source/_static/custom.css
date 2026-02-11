@@ -1,3 +1,10 @@
+/* Float figures to the right so text wraps around them */
+.figure-float-right {
+    float: right;
+    margin: 0 0 1em 1.5em;
+    clear: right;
+}
+
 /* Bootstrap-style alert boxes for Jupyter notebooks */
 .alert {
     padding: 15px;

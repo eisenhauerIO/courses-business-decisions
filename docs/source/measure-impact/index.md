@@ -37,6 +37,13 @@ We introduce directed acyclic graphs (DAGs) as a complementary representation of
 
 ## Selection on Observables
 
+```{figure} ../_static/dag_selection_observables.svg
+:figclass: figure-float-right
+:width: 250px
+```
+
+These methods assume that all confounders are observed and measured. As the DAG illustrates, the confounding variables X that jointly influence treatment D and outcome Y are available in the data. Under the conditional independence assumption, conditioning on X is sufficient to identify causal effects. The challenge is how to condition effectively — through stratification, matching, or flexible modeling.
+
 ### Matching & Subclassification
 
 We introduce methods for causal inference under selection on observables. This section covers the conditional independence assumption, subclassification, and matching estimators. The focus is on achieving covariate balance to satisfy the backdoor criterion.
@@ -64,6 +71,13 @@ Add notebook link
 ```
 
 ## Selection on Unobservables
+
+```{figure} ../_static/dag_selection_unobservables.svg
+:figclass: figure-float-right
+:width: 280px
+```
+
+These methods address settings where unobserved confounders make the conditional independence assumption untenable. As the DAG shows, even after conditioning on observed confounders X, unobserved confounders U still create a backdoor path between treatment and outcome. Each method below exploits a different source of exogenous variation — an instrument, a threshold, a policy change, or a comparison unit — to identify causal effects despite unmeasured confounding.
 
 ### Instrumental Variables
 
