@@ -39,12 +39,14 @@ The Mixtape chapters are available at `_external/books-mixtape/`. Use these PDF 
 - Explain identification assumptions
 - Include key equations and intuition
 
-**Part II: Application** (from understand-domain)
-- Frame a business question (e.g., "Does improving product content quality increase sales?")
-- Use Online Retail Simulator to generate data with known ground truth
-- Demonstrate the method with the running example
-- Show what works and what fails (selection bias, etc.)
-- Connect results back to theory
+**Part II: Application** (Online Retail Simulator + Impact Engine)
+
+1. **Business Context** — frame the recurring causal question within the business domain (consistent across the lecture sequence)
+2. **Data Generation** — config-driven simulation (`simulate()` → `load_job_results()`), then confounded treatment assignment
+3. **Naive Comparison** — use the Impact Engine with a naive experimental estimator that ignores the treatment assignment mechanism; show the biased estimate and explain why it's wrong using Part I theory
+4. **Apply the Method** — use the Impact Engine with the lecture's causal method to recover the true effect; include an interface-to-theory mapping table when using production tools
+5. **Validation Against Ground Truth** — leverage the simulator's full potential outcomes to verify the method works
+6. **Diagnostics & Extensions** — method-specific diagnostics, limitations, or deeper exploration (e.g., balance checks, sensitivity analysis, visual comparisons)
 
 ### Narrative Style for Theory Sections
 
