@@ -210,6 +210,57 @@ def plot_balance_love_plot(balance_before, balance_after):
     plt.show()
 
 
+def plot_strata_convergence(results_df, true_att):
+    """
+    Plot ATT estimates and common support violations as a function of strata count.
+
+    Top panel shows how the ATT estimate converges toward the true effect as the
+    number of strata per covariate increases. Bottom panel shows the fraction of
+    strata dropped due to common support violations — the curse of dimensionality.
+
+    Parameters
+    ----------
+    results_df : pandas.DataFrame
+        DataFrame with columns: n_strata, estimate, n_strata_used, n_strata_dropped.
+    true_att : float
+        Ground truth ATT for reference line.
+    """
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 6), sharex=True)
+
+    n = results_df["n_strata"]
+    total = results_df["n_strata_used"] + results_df["n_strata_dropped"]
+    frac_dropped = results_df["n_strata_dropped"] / total
+
+    # Top panel: ATT estimate convergence
+    ax1.plot(n, results_df["estimate"], "o-", color="#3498db", linewidth=2, markersize=7, label="Estimated ATT")
+    ax1.axhline(y=true_att, color="black", linestyle="--", linewidth=1.5, label=f"True ATT = ${true_att:,.2f}")
+    ax1.set_ylabel("Estimated ATT ($)")
+    ax1.set_title("Subclassification: Bias vs. Curse of Dimensionality", fontsize=14, fontweight="bold")
+    ax1.legend()
+
+    # Bottom panel: common support violations
+    ax2.bar(n, frac_dropped * 100, color="#e74c3c", edgecolor="black", width=0.6)
+    ax2.set_xlabel("Number of Strata per Covariate")
+    ax2.set_ylabel("Strata Dropped (%)")
+    ax2.set_xticks(n)
+
+    # Annotate total strata on bars
+    for i, row in results_df.iterrows():
+        total_k = row["n_strata_used"] + row["n_strata_dropped"]
+        pct = row["n_strata_dropped"] / total_k * 100
+        if pct > 0:
+            ax2.text(
+                row["n_strata"],
+                pct + 1.5,
+                f"{row['n_strata_dropped']:.0f}/{total_k:.0f}",
+                ha="center",
+                fontsize=8,
+            )
+
+    plt.tight_layout()
+    plt.show()
+
+
 def plot_method_comparison(estimates_dict, true_effect):
     """
     Compare treatment effect estimates across methods in a bar chart.
