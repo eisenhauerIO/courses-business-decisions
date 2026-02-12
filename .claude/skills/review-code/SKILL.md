@@ -309,6 +309,14 @@ from online_retail_simulator import simulate
 
 **Rationale:** The Theory section should be pure exposition—definitions, notation, and intuition—without any code distractions. Code only enters when we begin the hands-on Application.
 
+### Confounded Treatment Functions (`support.py`)
+
+Functions that generate confounded treatment assignment for measure-impact lectures must follow these conventions:
+
+- Accept `metrics_df: pd.DataFrame` as input and return a product-level DataFrame
+- Required output columns: `D` (treatment), `Y0`, `Y1`, `Y_observed`, plus covariates
+- Parameters (effect size, selection coefficients) should be explicit function arguments, not hardcoded
+
 ---
 
 ### One Logical Operation Per Cell

@@ -107,6 +107,8 @@ Add notebook link
 
 We discuss synthetic control methods for comparative case studies with panel data, focusing on transparent construction of counterfactuals and assumptions about factor structures and trends.
 
-```{todo}
-Add notebook link
+```{toctree}
+:titlesonly:
+
+08-synthetic-control/lecture
 ```

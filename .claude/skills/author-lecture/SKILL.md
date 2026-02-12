@@ -42,7 +42,18 @@ The Mixtape chapters are available at `_external/books-mixtape/`. Use these PDF 
 **Part II: Application** (Online Retail Simulator + Impact Engine)
 
 1. **Business Context** — frame the recurring causal question within the business domain (consistent across the lecture sequence)
-2. **Data Generation** — config-driven simulation (`simulate()` → `load_job_results()`), then confounded treatment assignment
+2. **Data Generation** — two-stage process:
+   - **Baseline data:** config-driven simulation (`simulate()` → `load_job_results()`)
+   - **Confounded treatment:** self-contained function in `support.py` that takes `metrics_df`
+     and returns a product-level DataFrame with columns `D`, `Y0`, `Y1`, `Y_observed`
+     (plus covariates). Show the function source with `inspect.getsource()` so students
+     see the selection mechanism explicitly.
+
+   *Why not the enrichment pipeline?* The `enrich()` pipeline operates at record-level
+   granularity (product × date) for metric mutation (e.g., boosting units sold). Confounded
+   treatment assignment operates at product-level granularity for selection bias generation.
+   These are different concerns — keeping them separate preserves function readability
+   and avoids format conversion boilerplate.
 3. **Naive Comparison** — use the Impact Engine with a naive experimental estimator that ignores the treatment assignment mechanism; show the biased estimate and explain why it's wrong using Part I theory
 4. **Apply the Method** — use the Impact Engine with the lecture's causal method to recover the true effect; include an interface-to-theory mapping table when using production tools
 5. **Validation Against Ground Truth** — leverage the simulator's full potential outcomes to verify the method works
@@ -80,7 +91,9 @@ Lectures should focus purely on content. **Do NOT include:**
 
 Let the content speak for itself. Students absorb concepts through the theory and application—wrap-up sections add length without value.
 
-### Chapter-to-Lecture Mapping
+### Chapter-to-Lecture Mapping (Measure Impact)
+
+The measure-impact lectures each map to a specific Mixtape chapter as their primary source. Other lecture groups draw from numerous sources rather than a single textbook.
 
 | Lecture | Mixtape Chapter | Pages | Domain Example |
 |---------|-----------------|-------|----------------|
@@ -198,3 +211,7 @@ When reviewing a measure-impact lecture, verify:
 - [ ] Identification assumptions explained
 - [ ] At least one worked example with code
 - [ ] Interpretation of results discussed
+
+**Data Generation**
+- [ ] Confounded treatment function in `support.py` with standard output columns (`D`, `Y0`, `Y1`, `Y_observed`)
+- [ ] Treatment function source shown via `inspect.getsource()`
