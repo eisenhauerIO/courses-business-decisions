@@ -1,9 +1,13 @@
 """Support functions for the Matching and Subclassification lecture."""
 
+# Standard library
+import logging
+
 # Third-party packages
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from impact_engine.models.subclassification import SubclassificationAdapter
 
 
 def create_confounded_treatment_multi(
@@ -97,6 +101,61 @@ def compute_ground_truth_att(df):
     """
     treated = df[df["D"] == 1]
     return (treated["Y1"] - treated["Y0"]).mean()
+
+
+def sweep_strata(confounded_products, strata_values, covariate_columns):
+    """
+    Sweep across strata counts and collect subclassification ATT estimates.
+
+    Fit the SubclassificationAdapter for each value of K, recording the
+    estimated treatment effect and the number of strata used vs. dropped
+    due to common support violations.
+
+    Parameters
+    ----------
+    confounded_products : pandas.DataFrame
+        Product-level DataFrame with treatment, outcome, and covariate columns.
+    strata_values : list of int
+        Values of K (strata per covariate) to sweep over.
+    covariate_columns : list of str
+        Covariate column names to condition on.
+
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame with columns: n_strata, estimate, n_strata_used, n_strata_dropped.
+    """
+    records = []
+
+    # Suppress adapter warnings during the sweep
+    logger = logging.getLogger("impact_engine")
+    original_level = logger.level
+    logger.setLevel(logging.ERROR)
+
+    for k in strata_values:
+        adapter = SubclassificationAdapter()
+        adapter.connect(
+            {
+                "treatment_column": "D",
+                "covariate_columns": covariate_columns,
+                "dependent_variable": "Y_observed",
+                "n_strata": k,
+                "estimand": "att",
+            }
+        )
+        result = adapter.fit(confounded_products)
+        records.append(
+            {
+                "n_strata": k,
+                "estimate": result.data["impact_estimates"]["treatment_effect"],
+                "n_strata_used": result.data["impact_estimates"]["n_strata"],
+                "n_strata_dropped": result.data["impact_estimates"]["n_strata_dropped"],
+            }
+        )
+
+    logger.setLevel(original_level)
+
+    return pd.DataFrame(records)
 
 
 def plot_treatment_rates(df, covariates, treatment_col="D", n_bins=5):
@@ -245,9 +304,9 @@ def plot_strata_convergence(results_df, true_att):
     ax2.set_xticks(n)
 
     # Annotate total strata on bars
-    for i, row in results_df.iterrows():
-        total_k = row["n_strata_used"] + row["n_strata_dropped"]
-        pct = row["n_strata_dropped"] / total_k * 100
+    for idx, row in results_df.iterrows():
+        pct = frac_dropped.iloc[idx] * 100
+        total_k = total.iloc[idx]
         if pct > 0:
             ax2.text(
                 row["n_strata"],
