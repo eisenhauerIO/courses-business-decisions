@@ -46,18 +46,31 @@ The Mixtape chapters are available at `_external/books-mixtape/`. Use these PDF 
    - **Baseline data:** config-driven simulation (`simulate()` → `load_job_results()`)
    - **Confounded treatment:** self-contained function in `support.py` that takes `metrics_df`
      and returns a product-level DataFrame with columns `D`, `Y0`, `Y1`, `Y_observed`
-     (plus covariates). Show the function source with `inspect.getsource()` so students
-     see the selection mechanism explicitly.
+     (plus covariates).
 
    *Why not the enrichment pipeline?* The `enrich()` pipeline operates at record-level
    granularity (product × date) for metric mutation (e.g., boosting units sold). Confounded
    treatment assignment operates at product-level granularity for selection bias generation.
    These are different concerns — keeping them separate preserves function readability
    and avoids format conversion boilerplate.
-3. **Naive Comparison** — use the Impact Engine with a naive experimental estimator that ignores the treatment assignment mechanism; show the biased estimate and explain why it's wrong using Part I theory
-4. **Apply the Method** — use the Impact Engine with the lecture's causal method to recover the true effect; include an interface-to-theory mapping table when using production tools
-5. **Validation Against Ground Truth** — leverage the simulator's full potential outcomes to verify the method works
-6. **Diagnostics & Extensions** — method-specific diagnostics, limitations, or deeper exploration (e.g., balance checks, sensitivity analysis, visual comparisons)
+3. **The Assignment Mechanism** — explain the treatment selection process and why it
+   creates confounding. This section is the bridge between the business context and the
+   estimation methods — it justifies every methodological choice that follows.
+   - Describe the business decision: what variables drove treatment selection, and why
+   - Introduce the statistical model (e.g., logistic regression) that operationalizes
+     the selection process. Provide enough exposition for students to understand the
+     functional form and interpret the parameters.
+   - Show the `support.py` function source with `inspect.getsource()` so students see
+     the selection mechanism explicitly. Selection coefficients should be exposed as
+     function arguments (not hardcoded) so they are visible in the signature.
+   - Connect to the identifying assumption: if assignment depends only on observed $X$,
+     then conditioning on $X$ removes confounding (CIA). State this explicitly.
+   - Visualize the assignment mechanism (e.g., treatment rates by covariate quintile)
+     so students can see the selection pattern before encountering its consequences.
+4. **Naive Comparison** — use the Impact Engine with a naive experimental estimator that ignores the treatment assignment mechanism; show the biased estimate and explain why it's wrong *as a consequence of the assignment mechanism*
+5. **Apply the Method** — use the Impact Engine with the lecture's causal method to recover the true effect; include an interface-to-theory mapping table when using production tools. Explain how the method addresses the specific confounding structure created by the assignment mechanism.
+6. **Validation Against Ground Truth** — leverage the simulator's full potential outcomes to verify the method works
+7. **Diagnostics & Extensions** — method-specific diagnostics, limitations, or deeper exploration (e.g., balance checks, sensitivity analysis, visual comparisons)
 
 ### Narrative Style for Theory Sections
 

@@ -3,9 +3,17 @@
 # Third-party packages
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 
-def create_confounded_treatment_multi(metrics_df, true_effect=0.5, seed=42):
+def create_confounded_treatment_multi(
+    metrics_df,
+    true_effect=0.5,
+    seed=42,
+    coef_quality=-0.5,
+    coef_price=-0.8,
+    coef_impressions=-0.3,
+):
     """
     Create confounded treatment assignment based on multiple continuous covariates.
 
@@ -24,6 +32,15 @@ def create_confounded_treatment_multi(metrics_df, true_effect=0.5, seed=42):
         True proportional causal effect of treatment on revenue.
     seed : int
         Random seed for reproducibility.
+    coef_quality : float
+        Logistic model coefficient for quality_score. Negative values mean
+        lower quality increases treatment probability.
+    coef_price : float
+        Logistic model coefficient for price. Negative values mean lower
+        price increases treatment probability.
+    coef_impressions : float
+        Logistic model coefficient for impressions. Negative values mean
+        fewer impressions increases treatment probability.
 
     Returns
     -------
@@ -43,19 +60,13 @@ def create_confounded_treatment_multi(metrics_df, true_effect=0.5, seed=42):
     )
     df = product_revenue.merge(covariates, on="product_identifier")
 
-    # Standardize covariates so each contributes meaningfully
+    # Standardize covariates so each contributes on a common scale
     qs_z = (df["quality_score"] - df["quality_score"].mean()) / df["quality_score"].std()
     price_z = (df["price"] - df["price"].mean()) / df["price"].std()
     imp_z = (df["impressions"] - df["impressions"].mean()) / df["impressions"].std()
 
-    # Logistic model coefficients (larger magnitude → stronger confounding on that covariate)
-    COEF_QUALITY = -0.5
-    COEF_PRICE = -0.8
-    COEF_IMPRESSIONS = -0.3
-
-    # Negative coefficients: lower covariate values → higher treatment probability
-    # (struggling products get content optimization)
-    logit = COEF_QUALITY * qs_z + COEF_PRICE * price_z + COEF_IMPRESSIONS * imp_z
+    # Logistic model: covariates → treatment probability via sigmoid
+    logit = coef_quality * qs_z + coef_price * price_z + coef_impressions * imp_z
     treatment_prob = 1 / (1 + np.exp(-logit))
 
     df["D"] = (rng.random(len(df)) < treatment_prob).astype(int)
@@ -86,6 +97,46 @@ def compute_ground_truth_att(df):
     """
     treated = df[df["D"] == 1]
     return (treated["Y1"] - treated["Y0"]).mean()
+
+
+def plot_treatment_rates(df, covariates, treatment_col="D", n_bins=5):
+    """
+    Plot average treatment rate within covariate quintiles.
+
+    Shows how the assignment mechanism maps covariate values to treatment
+    probability: each panel bins a covariate into quantiles and displays
+    the observed treatment rate per bin.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame with treatment indicator and covariate columns.
+    covariates : list of str
+        Covariate column names to plot.
+    treatment_col : str
+        Name of the binary treatment column.
+    n_bins : int
+        Number of quantile bins per covariate.
+    """
+    _, axes = plt.subplots(1, len(covariates), figsize=(5 * len(covariates), 4))
+    if len(covariates) == 1:
+        axes = [axes]
+
+    for ax, cov in zip(axes, covariates):
+        bins = pd.qcut(df[cov], q=n_bins, duplicates="drop")
+        rates = df.groupby(bins, observed=True)[treatment_col].mean()
+
+        labels = [f"Q{i + 1}" for i in range(len(rates))]
+        ax.bar(labels, rates, color="#3498db", edgecolor="black", width=0.6)
+        ax.set_xlabel(cov)
+        ax.set_ylabel("Treatment Rate")
+        ax.set_ylim(0, 1)
+        ax.axhline(y=df[treatment_col].mean(), color="black", linestyle="--", linewidth=1, label="Overall rate")
+        ax.legend(fontsize=9)
+
+    plt.suptitle("Treatment Rate by Covariate Quintile", fontsize=14, fontweight="bold")
+    plt.tight_layout()
+    plt.show()
 
 
 def plot_covariate_imbalance(df, covariates, treatment_col="D"):
