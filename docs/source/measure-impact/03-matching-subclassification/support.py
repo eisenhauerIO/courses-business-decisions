@@ -7,7 +7,7 @@ import logging
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from impact_engine.models.subclassification import SubclassificationAdapter
+from impact_engine_measure.models.subclassification import SubclassificationAdapter
 
 
 def create_confounded_treatment_multi(
@@ -128,7 +128,7 @@ def sweep_strata(confounded_products, strata_values, covariate_columns):
     records = []
 
     # Suppress adapter warnings during the sweep
-    logger = logging.getLogger("impact_engine")
+    logger = logging.getLogger("impact_engine_measure")
     original_level = logger.level
     logger.setLevel(logging.ERROR)
 
