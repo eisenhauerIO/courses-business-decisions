@@ -24,11 +24,4 @@ To explore these challenges in a controlled setting, we first introduce a simula
 We introduce the <img src="../_static/online-retail-simulator.svg" alt="ORS" style="height: 1em; vertical-align: middle;"> **[Online Retail Simulator](https://github.com/eisenhauerIO/tools-catalog-generator)** as a simulation tool that generates realistic product catalogs, shopper behavior, and sales transactions with known ground truth. This section explores how treatment effects can be injected and measured within this controlled environment, enabling validation of causal inference methods before applying them to real-world data. The goal is to establish a realistic testing ground where hypotheses about product data quality can be measured against observable outcomes across the conversion funnel.
 
 
-- [Online Retail Simulator](01-online-retail-simulator/lecture.ipynb)
-
-```{toctree}
-:maxdepth: 2
-:hidden:
-
-01-online-retail-simulator/lecture
-```
+- [Online Retail Simulator Tutorial](https://eisenhauerio.github.io/tools-online-retail-simulator/notebooks/tutorial.html)
