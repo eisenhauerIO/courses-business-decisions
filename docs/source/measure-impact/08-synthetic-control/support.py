@@ -117,7 +117,7 @@ def compute_ground_truth_att(panel, treated_product, treatment_date):
     return (post["revenue"] - post["revenue_counterfactual"]).mean()
 
 
-def plot_treated_vs_synthetic(panel, treated_product, sc_result, treatment_date):
+def plot_treated_vs_synthetic(panel, treated_product, impact_data, treatment_date):
     """Plot the treated unit's time series against its synthetic control.
 
     Parameters
@@ -126,8 +126,9 @@ def plot_treated_vs_synthetic(panel, treated_product, sc_result, treatment_date)
         Panel data with product_identifier, date, and revenue columns.
     treated_product : str
         The product_identifier of the treated unit.
-    sc_result : ModelResult
-        Result from SyntheticControlAdapter.fit().
+    impact_data : dict
+        The ``impact_results["data"]`` dict containing ``model_summary``
+        with ``weights``.
     treatment_date : str or pandas.Timestamp
         Treatment date for the vertical line.
 
@@ -142,7 +143,7 @@ def plot_treated_vs_synthetic(panel, treated_product, sc_result, treatment_date)
     treated_ts = panel[panel["product_identifier"] == treated_product].set_index("date")["revenue"].sort_index()
 
     # Construct synthetic control as weighted average of donor units
-    weights = _parse_weights(sc_result.data["model_summary"]["weights"])
+    weights = _parse_weights(impact_data["model_summary"]["weights"])
     control_data = panel[panel["product_identifier"] != treated_product]
 
     synthetic_ts = pd.Series(0.0, index=treated_ts.index)
@@ -236,17 +237,18 @@ def plot_gap(panel, treated_product, synthetic_ts, treatment_date):
     plt.show()
 
 
-def plot_weights(sc_result, top_n=15):
+def plot_weights(impact_data, top_n=15):
     """Plot donor unit weights as a horizontal bar chart.
 
     Parameters
     ----------
-    sc_result : ModelResult
-        Result from SyntheticControlAdapter.fit().
+    impact_data : dict
+        The ``impact_results["data"]`` dict containing ``model_summary``
+        with ``weights``.
     top_n : int
         Show only the top_n units by weight.
     """
-    weights = _parse_weights(sc_result.data["model_summary"]["weights"])
+    weights = _parse_weights(impact_data["model_summary"]["weights"])
     weights_series = pd.Series(weights).sort_values(ascending=True)
 
     # Keep only top_n
@@ -273,6 +275,8 @@ def plot_weights(sc_result, top_n=15):
 
 def plot_method_comparison(estimates_dict, true_effect):
     """Compare treatment effect estimates across methods in a bar chart.
+
+    NOTE: Duplicated in ../03-matching-subclassification/support.py.
 
     Parameters
     ----------

@@ -7,7 +7,6 @@ import logging
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from impact_engine_measure.models.subclassification import SubclassificationAdapter
 
 
 def create_confounded_treatment_multi(
@@ -125,6 +124,8 @@ def sweep_strata(confounded_products, strata_values, covariate_columns):
     pandas.DataFrame
         DataFrame with columns: n_strata, estimate, n_strata_used, n_strata_dropped.
     """
+    from impact_engine_measure.models.subclassification import SubclassificationAdapter
+
     records = []
 
     # Suppress adapter warnings during the sweep
@@ -242,11 +243,13 @@ def plot_balance_love_plot(balance_before, balance_after):
     balance_after : pandas.DataFrame
         Output of create_table_one() on matched data.
     """
-    # Drop the 'n' row (sample size, not a covariate)
-    covariates = [idx for idx in balance_before.index if idx != "n"]
+    # Drop the 'n' row (sample size, not a covariate) and rows with empty SMD
+    covariates = [
+        idx for idx in balance_before.index if idx != "n" and str(balance_before.loc[idx, "SMD"]).strip() != ""
+    ]
 
-    smd_before = balance_before.loc[covariates, "SMD"].astype(float).abs()
-    smd_after = balance_after.loc[covariates, "SMD"].astype(float).abs()
+    smd_before = pd.to_numeric(balance_before.loc[covariates, "SMD"], errors="coerce").abs()
+    smd_after = pd.to_numeric(balance_after.loc[covariates, "SMD"], errors="coerce").abs()
 
     y_pos = np.arange(len(covariates))
 
@@ -321,8 +324,9 @@ def plot_strata_convergence(results_df, true_att):
 
 
 def plot_method_comparison(estimates_dict, true_effect):
-    """
-    Compare treatment effect estimates across methods in a bar chart.
+    """Compare treatment effect estimates across methods in a bar chart.
+
+    NOTE: Duplicated in ../08-synthetic-control/support.py.
 
     Parameters
     ----------

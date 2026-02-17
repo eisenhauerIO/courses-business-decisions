@@ -1,0 +1,14 @@
+DATA:
+  SOURCE:
+    type: file
+    CONFIG:
+      path: treated_data.csv
+      date_column: null
+  TRANSFORM:
+    FUNCTION: passthrough
+    PARAMS: {}
+
+MEASUREMENT:
+  MODEL: experiment
+  PARAMS:
+    formula: "revenue ~ post"

@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+
+# Notebook execution artifacts
+output/
+*.csv
+
+# Sphinx build
+docs/build/
+
+# Dynamic configs (generated at runtime)
+docs/source/measure-impact/08-synthetic-control/config_synthetic_control.yaml

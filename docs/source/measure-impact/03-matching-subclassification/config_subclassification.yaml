@@ -1,0 +1,20 @@
+DATA:
+  SOURCE:
+    type: file
+    CONFIG:
+      path: confounded_products.csv
+  TRANSFORM:
+    FUNCTION: passthrough
+    PARAMS: {}
+
+MEASUREMENT:
+  MODEL: subclassification
+  PARAMS:
+    treatment_column: D
+    covariate_columns:
+      - quality_score
+      - price
+      - impressions
+    dependent_variable: Y_observed
+    n_strata: 4
+    estimand: att
