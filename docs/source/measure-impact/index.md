@@ -35,9 +35,11 @@ We introduce directed acyclic graphs (DAGs) as a complementary representation of
 02-directed-acyclic-graphs/lecture
 ```
 
-## Impact Engine [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue.svg?logo=github)](https://github.com/eisenhauerIO/tools-impact-engine)
+## Tooling
 
-The [**Impact Engine Measure**](https://eisenhauerio.github.io/tools-impact-engine-measure/) package centralizes causal impact measurement behind one stable interface. It manages the complete measurement pipeline — from data sources through estimation to storage and output — so that swapping an estimation method requires changing a single configuration line rather than rewriting connectors or downstream systems. The package wraps established libraries such as [statsmodels](https://www.statsmodels.org/), [causalml](https://causalml.readthedocs.io/), and [pysyncon](https://sdfordham.github.io/pysyncon/) and produces self-describing result bundles that downstream consumers can interpret regardless of the method used. Its [documentation](https://eisenhauerio.github.io/tools-impact-engine-measure/) covers usage, configuration, system design, and a full API reference, alongside demo projects that apply the methods introduced in this course.
+### Impact Engine
+
+The [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine) puts the causal inference methods from this course into practice. It provides a unified interface for estimating causal effects — each measurement method is configured through a single YAML file and produces standardized results, so that switching between estimation strategies requires changing one configuration line. Its [documentation](https://eisenhauerio.github.io/tools-impact-engine-measure/) covers usage, configuration, and system design.
 
 ## Selection on Observables
 
