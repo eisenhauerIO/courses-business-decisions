@@ -1,9 +1,6 @@
 """Sphinx configuration for Business Decisions course documentation."""
 
 import os
-import sys
-
-sys.path.insert(0, os.path.abspath(".."))
 
 project = "Business Decisions — Course"
 author = "eisenhauerIO"

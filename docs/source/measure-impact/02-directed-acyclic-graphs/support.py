@@ -88,7 +88,7 @@ def draw_police_force_example(df, figsize=(12, 5)):
 
     rng = np.random.default_rng(42)  # For jitter only
 
-    fig, axes = plt.subplots(1, 2, figsize=figsize)
+    _, axes = plt.subplots(1, 2, figsize=figsize)
 
     # Left: Full population
     axes[0].scatter(
@@ -287,7 +287,7 @@ def plot_confounding_bar(df, title=None):
     title : str, optional
         Plot title.
     """
-    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+    _, axes = plt.subplots(1, 2, figsize=(14, 5))
 
     # Left: Treatment rates by quality (showing selection bias)
     low_quality = df[df["quality"] == "Low"]

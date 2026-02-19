@@ -77,6 +77,31 @@ def print_bias_decomposition(baseline_bias, differential_effect_bias, naive_esti
     print(f"\nActual bias (Naive - ATE):      ${actual_bias:,.2f}")
 
 
+def print_balance_summary(df, covariates, treatment_col="D"):
+    """
+    Print mean covariate values by treatment status.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame with covariates and treatment indicator.
+    covariates : list of str
+        Column names to summarize.
+    treatment_col : str, optional
+        Column name for treatment indicator. Default is 'D'.
+    """
+    treated = df[df[treatment_col] == 1]
+    control = df[df[treatment_col] == 0]
+
+    print("\nBalance Summary (Mean by Treatment Status):")
+    print("-" * 50)
+    for cov in covariates:
+        ctrl_mean = control[cov].mean()
+        treat_mean = treated[cov].mean()
+        diff = treat_mean - ctrl_mean
+        print(f"{cov:20s}: Control={ctrl_mean:8.2f}, Treated={treat_mean:8.2f}, Diff={diff:+8.2f}")
+
+
 # =============================================================================
 # Data Generation Functions
 # =============================================================================
@@ -173,7 +198,7 @@ def plot_individual_effects_distribution(effects, true_effect=None, title=None):
     title : str, optional
         Custom title for the plot.
     """
-    fig, ax = plt.subplots(figsize=(10, 6))
+    _, ax = plt.subplots(figsize=(10, 6))
 
     ax.hist(effects, bins="auto", edgecolor="black", alpha=0.7, color="#3498db")
 
@@ -204,7 +229,7 @@ def plot_randomization_comparison(random_estimates, biased_estimates, true_ate):
     true_ate : float
         True Average Treatment Effect.
     """
-    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+    _, axes = plt.subplots(1, 2, figsize=(14, 5))
 
     # Random selection (unbiased)
     axes[0].hist(random_estimates, bins=30, alpha=0.7, color="#2ecc71", edgecolor="black")
@@ -251,7 +276,7 @@ def plot_balance_check(df, covariates, treatment_col="D", title=None, percentile
     control = df[df[treatment_col] == 0]
 
     n_covs = len(covariates)
-    fig, axes = plt.subplots(1, n_covs, figsize=(5 * n_covs, 5))
+    _, axes = plt.subplots(1, n_covs, figsize=(5 * n_covs, 5))
 
     if n_covs == 1:
         axes = [axes]
@@ -309,14 +334,7 @@ def plot_balance_check(df, covariates, treatment_col="D", title=None, percentile
     plt.tight_layout()
     plt.show()
 
-    # Also print summary statistics
-    print("\nBalance Summary (Mean by Treatment Status):")
-    print("-" * 50)
-    for cov in covariates:
-        ctrl_mean = control[cov].mean()
-        treat_mean = treated[cov].mean()
-        diff = treat_mean - ctrl_mean
-        print(f"{cov:20s}: Control={ctrl_mean:8.2f}, Treated={treat_mean:8.2f}, Diff={diff:+8.2f}")
+    print_balance_summary(df, covariates, treatment_col)
 
 
 def plot_sample_size_convergence(sample_sizes, estimates_by_size, true_ate):
@@ -332,7 +350,7 @@ def plot_sample_size_convergence(sample_sizes, estimates_by_size, true_ate):
     true_ate : float
         True Average Treatment Effect.
     """
-    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+    _, axes = plt.subplots(1, 2, figsize=(14, 5))
 
     # Left panel: distributions at each sample size
     colors = plt.cm.viridis(np.linspace(0.2, 0.8, len(sample_sizes)))

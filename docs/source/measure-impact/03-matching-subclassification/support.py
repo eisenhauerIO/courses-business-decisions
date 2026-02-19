@@ -1,12 +1,21 @@
 """Support functions for the Matching and Subclassification lecture."""
 
 # Standard library
+import importlib.util
 import logging
+from pathlib import Path
 
 # Third-party packages
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+# Shared utilities (re-exported so notebooks can import from support)
+_shared_path = Path(__file__).resolve().parent.parent / "shared.py"
+_spec = importlib.util.spec_from_file_location("shared", _shared_path)
+_shared = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_shared)
+plot_method_comparison = _shared.plot_method_comparison  # noqa: F811
 
 
 def create_confounded_treatment_multi(
@@ -287,7 +296,7 @@ def plot_strata_convergence(results_df, true_att):
     true_att : float
         Ground truth ATT for reference line.
     """
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 6), sharex=True)
+    _, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 6), sharex=True)
 
     n = results_df["n_strata"]
     total = results_df["n_strata_used"] + results_df["n_strata_dropped"]
@@ -319,50 +328,5 @@ def plot_strata_convergence(results_df, true_att):
                 fontsize=8,
             )
 
-    plt.tight_layout()
-    plt.show()
-
-
-def plot_method_comparison(estimates_dict, true_effect):
-    """Compare treatment effect estimates across methods in a bar chart.
-
-    NOTE: Duplicated in ../08-synthetic-control/support.py.
-
-    Parameters
-    ----------
-    estimates_dict : dict
-        Mapping of method name to estimated treatment effect (float).
-    true_effect : float
-        Ground truth ATT for reference line.
-    """
-    methods = list(estimates_dict.keys())
-    estimates = list(estimates_dict.values())
-
-    # Color bars red if estimate deviates from truth by more than this fraction
-    ERROR_THRESHOLD = 0.2
-    colors = ["#e74c3c" if abs(e - true_effect) > abs(true_effect) * ERROR_THRESHOLD else "#2ecc71" for e in estimates]
-
-    _, ax = plt.subplots(figsize=(8, 5))
-    bars = ax.bar(methods, estimates, color=colors, edgecolor="black", width=0.5)
-    ax.axhline(y=true_effect, color="black", linestyle="--", linewidth=2, label=f"True ATT = ${true_effect:,.0f}")
-
-    # Error annotations
-    for bar, est in zip(bars, estimates):
-        error = est - true_effect
-        pct_error = (error / true_effect) * 100
-        y_pos = est + (true_effect * 0.03 if est >= 0 else -true_effect * 0.06)
-        ax.text(
-            bar.get_x() + bar.get_width() / 2,
-            y_pos,
-            f"${est:,.0f}\n({pct_error:+.1f}%)",
-            ha="center",
-            fontsize=10,
-            fontweight="bold",
-        )
-
-    ax.set_ylabel("Estimated Treatment Effect ($)")
-    ax.set_title("Method Comparison: Estimated vs. True ATT", fontsize=14, fontweight="bold")
-    ax.legend()
-    ax.axhline(y=0, color="gray", linewidth=0.5)
     plt.tight_layout()
     plt.show()

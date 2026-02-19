@@ -25,11 +25,11 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Install linters
-      run: pip install ruff
+    - name: Install hatch
+      run: pip install hatch
 
     - name: Run Ruff linter
-      run: ruff check .
+      run: hatch run ruff check .
 
     - name: Run Ruff formatter check
-      run: ruff format --check .
+      run: hatch run ruff format --check .
