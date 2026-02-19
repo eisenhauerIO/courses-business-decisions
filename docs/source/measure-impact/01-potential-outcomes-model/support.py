@@ -82,6 +82,50 @@ def print_bias_decomposition(baseline_bias, differential_effect_bias, naive_esti
 # =============================================================================
 
 
+def create_confounded_treatment(metrics_df, treatment_fraction=0.3, true_effect=0.5, seed=42):
+    """
+    Create confounded treatment assignment from raw simulator metrics.
+
+    Aggregates revenue per product, generates a quality score, then assigns
+    treatment deterministically to the lowest-quality products (struggling
+    products get optimized). This creates negative selection bias: treated
+    products have lower baseline revenue.
+
+    Parameters
+    ----------
+    metrics_df : pandas.DataFrame
+        Metrics DataFrame with ``product_identifier`` and ``revenue`` columns.
+    treatment_fraction : float
+        Fraction of products to treat (selected from the bottom by quality).
+    true_effect : float
+        True causal effect of treatment (proportional increase in revenue).
+    seed : int
+        Random seed for reproducibility.
+
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame with columns ``product_identifier``, ``quality_score``,
+        ``D``, ``Y0``, ``Y1``, ``Y_observed``.
+    """
+    product_revenue = metrics_df.groupby("product_identifier")["revenue"].sum().reset_index()
+    product_revenue.columns = ["product_identifier", "baseline_revenue"]
+
+    product_revenue["quality_score"] = generate_quality_score(product_revenue["baseline_revenue"], seed=seed)
+
+    # Treat bottom fraction by quality (struggling products get optimized)
+    n_treat = int(len(product_revenue) * treatment_fraction)
+    treated_ids = set(product_revenue.nsmallest(n_treat, "quality_score")["product_identifier"])
+    product_revenue["D"] = product_revenue["product_identifier"].isin(treated_ids).astype(int)
+
+    # Potential outcomes
+    product_revenue["Y0"] = product_revenue["baseline_revenue"]
+    product_revenue["Y1"] = product_revenue["baseline_revenue"] * (1 + true_effect)
+    product_revenue["Y_observed"] = np.where(product_revenue["D"] == 1, product_revenue["Y1"], product_revenue["Y0"])
+
+    return product_revenue[["product_identifier", "quality_score", "D", "Y0", "Y1", "Y_observed"]]
+
+
 def generate_quality_score(revenue, seed=42, noise_std=0.5):
     """
     Generate quality score correlated with revenue.
@@ -147,108 +191,6 @@ def plot_individual_effects_distribution(effects, true_effect=None, title=None):
     plt.show()
 
 
-def plot_treatment_parameters(ate, att, atc, title=None):
-    """
-    Visualize ATE, ATT, ATC as bar chart.
-
-    Parameters
-    ----------
-    ate : float
-        Average Treatment Effect.
-    att : float
-        Average Treatment on Treated.
-    atc : float
-        Average Treatment on Control.
-    title : str, optional
-        Custom title for the plot.
-    """
-    fig, ax = plt.subplots(figsize=(8, 5))
-
-    params = {"ATE": ate, "ATT": att, "ATC": atc}
-    colors = ["#2ecc71", "#e74c3c", "#3498db"]
-
-    bars = ax.bar(params.keys(), params.values(), color=colors, edgecolor="black")
-
-    for bar, value in zip(bars, params.values()):
-        ax.text(
-            bar.get_x() + bar.get_width() / 2,
-            bar.get_height() + max(params.values()) * 0.02,
-            f"${value:,.0f}",
-            ha="center",
-            va="bottom",
-            fontsize=12,
-            fontweight="bold",
-        )
-
-    ax.set_ylabel("Treatment Effect ($)")
-    ax.set_title(title or "Population-Level Treatment Parameters")
-    ax.axhline(0, color="black", linewidth=0.5)
-    plt.tight_layout()
-    plt.show()
-
-
-def plot_bias_decomposition(ate, baseline_bias, naive_estimate, selection_on_gains=None, title=None):
-    """
-    Create bar chart showing bias decomposition.
-
-    Parameters
-    ----------
-    ate : float
-        True Average Treatment Effect.
-    baseline_bias : float
-        Baseline (selection) bias component.
-    naive_estimate : float
-        Naive difference-in-means estimate.
-    selection_on_gains : float, optional
-        Selection on gains component.
-    title : str, optional
-        Custom title for the plot.
-    """
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    if selection_on_gains is not None:
-        components = {
-            "True ATE": ate,
-            "Baseline Bias": baseline_bias,
-            "Selection on Gains": selection_on_gains,
-            "Naive Estimate": naive_estimate,
-        }
-        colors = ["#2ecc71", "#e74c3c", "#9b59b6", "#3498db"]
-    else:
-        components = {
-            "True ATE": ate,
-            "Baseline Bias": baseline_bias,
-            "Naive Estimate": naive_estimate,
-        }
-        colors = ["#2ecc71", "#e74c3c", "#3498db"]
-
-    x_pos = np.arange(len(components))
-
-    bars = ax.bar(x_pos, components.values(), color=colors, edgecolor="black")
-
-    for bar, (_, value) in zip(bars, components.items()):
-        y_offset = max(abs(v) for v in components.values()) * 0.02
-        y_pos = bar.get_height() + y_offset if value >= 0 else bar.get_height() - y_offset
-        va = "bottom" if value >= 0 else "top"
-        ax.text(
-            bar.get_x() + bar.get_width() / 2,
-            y_pos,
-            f"${value:,.0f}",
-            ha="center",
-            va=va,
-            fontsize=11,
-            fontweight="bold",
-        )
-
-    ax.set_xticks(x_pos)
-    ax.set_xticklabels(components.keys())
-    ax.set_ylabel("Dollar Amount")
-    ax.set_title(title or "Bias Decomposition: Why Naive Estimation Fails")
-    ax.axhline(0, color="black", linewidth=0.5)
-    plt.tight_layout()
-    plt.show()
-
-
 def plot_randomization_comparison(random_estimates, biased_estimates, true_ate):
     """
     Create side-by-side histograms comparing random vs biased selection.
@@ -284,94 +226,6 @@ def plot_randomization_comparison(random_estimates, biased_estimates, true_ate):
     axes[1].set_ylabel("Frequency")
     axes[1].legend()
 
-    plt.tight_layout()
-    plt.show()
-
-
-def plot_bootstrap_distribution(estimates, true_ate=None, title=None):
-    """
-    Plot bootstrap distribution with confidence interval.
-
-    Parameters
-    ----------
-    estimates : array-like
-        Bootstrap estimates.
-    true_ate : float, optional
-        True ATE to show as vertical line.
-    title : str, optional
-        Custom title for the plot.
-
-    Returns
-    -------
-    tuple
-        Lower and upper bounds of 95% confidence interval (ci_low, ci_high).
-    """
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    ax.hist(estimates, bins=40, edgecolor="black", alpha=0.7, color="#9b59b6")
-
-    if true_ate is not None:
-        ax.axvline(true_ate, color="red", linestyle="--", linewidth=2, label=f"True ATE = ${true_ate:,.0f}")
-
-    mean_est = np.mean(estimates)
-    ax.axvline(mean_est, color="blue", linestyle="-", linewidth=2, label=f"Bootstrap Mean = ${mean_est:,.0f}")
-
-    # Confidence interval
-    ci_low, ci_high = np.percentile(estimates, [2.5, 97.5])
-    ax.axvspan(ci_low, ci_high, alpha=0.2, color="blue", label=f"95% CI: [${ci_low:,.0f}, ${ci_high:,.0f}]")
-
-    ax.set_xlabel("Estimated Treatment Effect ($)")
-    ax.set_ylabel("Frequency")
-    ax.set_title(title or "Bootstrap Distribution of Treatment Effect Estimate")
-    ax.legend()
-    plt.tight_layout()
-    plt.show()
-
-    return ci_low, ci_high
-
-
-def plot_outcome_by_treatment(treated_outcomes, control_outcomes, title=None):
-    """
-    Plot overlapping histograms of outcomes by treatment status.
-
-    Parameters
-    ----------
-    treated_outcomes : array-like
-        Outcomes for treated group.
-    control_outcomes : array-like
-        Outcomes for control group.
-    title : str, optional
-        Custom title for the plot.
-    """
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    ax.hist(
-        control_outcomes,
-        bins=30,
-        alpha=0.6,
-        color="#3498db",
-        edgecolor="black",
-        label=f"Control (n={len(control_outcomes)})",
-    )
-    ax.hist(
-        treated_outcomes,
-        bins=30,
-        alpha=0.6,
-        color="#e74c3c",
-        edgecolor="black",
-        label=f"Treated (n={len(treated_outcomes)})",
-    )
-
-    # Add mean lines
-    control_mean, treated_mean = np.mean(control_outcomes), np.mean(treated_outcomes)
-    ax.axvline(control_mean, color="#3498db", linestyle="--", linewidth=2, label=f"Control Mean = ${control_mean:,.0f}")
-    ax.axvline(treated_mean, color="#e74c3c", linestyle="--", linewidth=2, label=f"Treated Mean = ${treated_mean:,.0f}")
-
-    ax.set_xlabel("Revenue ($)")
-    ax.set_ylabel("Number of Products")
-    ax.set_title(title or "Distribution of Outcomes by Treatment Status")
-    ax.legend()
-    ax.set_xlim(0, None)
     plt.tight_layout()
     plt.show()
 
@@ -516,32 +370,3 @@ def plot_sample_size_convergence(sample_sizes, estimates_by_size, true_ate):
 
     plt.tight_layout()
     plt.show()
-
-
-def plot_fundamental_problem_table(df, n_rows=10):
-    """
-    Display table showing observed/missing potential outcomes.
-
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        DataFrame with columns 'asin', 'D', 'Y', 'Y_1', 'Y_0'.
-    n_rows : int, optional
-        Number of rows to display. Default is 10.
-
-    Returns
-    -------
-    pandas.DataFrame
-        Styled DataFrame showing the fundamental problem.
-    """
-    display_df = df[["asin", "D", "Y", "Y_1", "Y_0"]].head(n_rows).copy()
-
-    # Mask counterfactuals
-    display_df["Y_1_obs"] = np.where(display_df["D"] == 1, display_df["Y_1"], np.nan)
-    display_df["Y_0_obs"] = np.where(display_df["D"] == 0, display_df["Y_0"], np.nan)
-
-    result = display_df[["asin", "D", "Y", "Y_1_obs", "Y_0_obs"]].copy()
-    result.columns = ["Product", "D", "Observed (Y)", "Y(1)", "Y(0)"]
-    result["D"] = result["D"].map({1: "Treated", 0: "Control"})
-
-    return result

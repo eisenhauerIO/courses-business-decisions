@@ -157,7 +157,44 @@ def draw_police_force_example(df, figsize=(12, 5)):
 # =============================================================================
 
 
-def create_binary_quality(metrics_df):
+def create_confounded_treatment(metrics_df, prob_treat_low=0.6, prob_treat_high=0.2, true_effect=0.5, seed=42):
+    """
+    Create confounded treatment assignment from raw simulator metrics.
+
+    Aggregates revenue per product, assigns binary quality (High/Low) by median
+    split, then assigns treatment confounded by quality: struggling products
+    (low quality) are more likely to receive content optimization.
+
+    Parameters
+    ----------
+    metrics_df : pandas.DataFrame
+        Metrics DataFrame with ``product_identifier`` and ``revenue`` columns.
+    prob_treat_low : float
+        Probability of treatment for low quality products.
+    prob_treat_high : float
+        Probability of treatment for high quality products.
+    true_effect : float
+        True causal effect of treatment (proportional increase in revenue).
+    seed : int
+        Random seed for reproducibility.
+
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame with columns ``product_identifier``, ``quality``,
+        ``baseline_revenue``, ``D``, ``Y0``, ``Y1``, ``Y_observed``.
+    """
+    quality_df = _create_binary_quality(metrics_df)
+    return _apply_confounded_treatment(
+        quality_df,
+        prob_treat_low=prob_treat_low,
+        prob_treat_high=prob_treat_high,
+        true_effect=true_effect,
+        seed=seed,
+    )
+
+
+def _create_binary_quality(metrics_df):
     """
     Create binary quality (High/Low) for each product based on baseline revenue.
 
@@ -188,7 +225,7 @@ def create_binary_quality(metrics_df):
     return product_revenue[["product_identifier", "quality", "baseline_revenue"]]
 
 
-def apply_confounded_treatment(quality_df, prob_treat_low=0.6, prob_treat_high=0.2, true_effect=0.5, seed=42):
+def _apply_confounded_treatment(quality_df, prob_treat_low=0.6, prob_treat_high=0.2, true_effect=0.5, seed=42):
     """
     Apply treatment assignment that is confounded by binary quality.
 

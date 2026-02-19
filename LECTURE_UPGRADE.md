@@ -10,7 +10,7 @@ Three skill reviews (`/author-lecture`, `/review-code`, `/review-writing`) found
 
 ## Lecture 03 (Matching) — Quick Fixes
 
-Closest to compliance. Two remaining edits.
+Closest to compliance. One remaining edit.
 
 ### ~~3A. Fix page range in header~~ DONE
 
@@ -20,45 +20,27 @@ Closest to compliance. Two remaining edits.
 
 ### ~~3D. Rename `df` to `confounded_products`~~ DONE
 
-### 3E. Add standalone Diagnostics & Extensions section
-**File:** `docs/source/measure-impact/03-matching-subclassification/lecture.ipynb`
-- Promote the existing "### Covariate Balance Diagnostics" (cell 40) and Love plot (cells 41-42) out of Section 4 into a new `## 6. Diagnostics & Extensions` section
-- Add brief intro markdown: "A key advantage of matching is that we can directly assess covariate balance..."
-- Section 5 ("Which Method Best Recovers the True Effect?") stays as the Validation step
+### ~~3E. Add standalone Diagnostics & Extensions section~~ DONE
+Promoted balance diagnostics and Love plot from Section 6 subsection into new `## 8. Diagnostics & Extensions` top-level section. Section 7 (method comparison) stays as validation step.
 
-### 3F. Fix import alphabetization
-**File:** same notebook, cell 21
-- Reorder: `impact_engine` imports before `IPython` (case-insensitive sort)
+### ~~3F. Fix import alphabetization~~ DONE
+Moved `import pandas as pd` before `from` imports in cell 21 (standard isort ordering).
 
 ---
 
 ## Lecture 02 (DAGs) — Moderate Changes
 
-### 2A. Show `apply_confounded_treatment` source via `inspect.getsource()`
-**File:** `docs/source/measure-impact/02-directed-acyclic-graphs/lecture.ipynb`
-- After cell 30 ("Creating the Confounded Treatment Assignment" markdown), before cell 31 (the function call), insert a new code cell:
-  ```python
-  Code(inspect.getsource(apply_confounded_treatment), language="python")
-  ```
+### ~~2A. Show `create_confounded_treatment` source via `inspect.getsource()`~~ DONE
+Inserted code cell after "Creating the Confounded Treatment Assignment" markdown showing the consolidated function source.
 
-### 2B. Consolidate two-step treatment function into one
-**File:** `docs/source/measure-impact/02-directed-acyclic-graphs/support.py`
-- Create `create_confounded_treatment(metrics_df, prob_treat_low=0.6, prob_treat_high=0.2, true_effect=0.5, seed=42)` that:
-  1. Aggregates revenue per product (from `create_binary_quality`)
-  2. Assigns binary quality High/Low by median split (from `create_binary_quality`)
-  3. Assigns confounded treatment (from `apply_confounded_treatment`)
-  4. Returns DataFrame with `product_identifier, quality, D, Y0, Y1, Y_observed`
-- Keep old functions but mark private (`_create_binary_quality`, `_apply_confounded_treatment`) since `compute_effects` and plotting functions still need the same columns
-- Update notebook cell 31 to call the single consolidated function
+### ~~2B. Consolidate two-step treatment function into one~~ DONE
+Created `create_confounded_treatment(metrics_df, ...)` in `support.py` that calls `_create_binary_quality` and `_apply_confounded_treatment` internally. Old functions renamed to private. Notebook updated to use single call.
 
-### 2C. Remove summary output (cell 39)
-**File:** same notebook
-- Replace the SUMMARY print block in cell 39 with a simple comparison table (like L03's approach in cell 45): a `pd.DataFrame` showing Naive vs Conditional estimates, errors, and % errors
-- Remove the "SUMMARY:" header and `=` separators
+### ~~2C. Remove summary output (cell 39)~~ DONE
+Replaced SUMMARY print block with `pd.DataFrame` comparison table showing Naive vs Conditional estimates, errors, and % errors.
 
-### 2D. Remove unused `plt` import
-**File:** same notebook, cell 21
-- Remove `import matplotlib.pyplot as plt` (all plotting goes through `support.py` functions)
+### ~~2D. Remove unused `plt` import~~ DONE
+Removed `import matplotlib.pyplot as plt` from notebook imports.
 
 ### ~~2E. Rename `confounded_products` variable consistently~~ DONE
 
@@ -66,66 +48,20 @@ Closest to compliance. Two remaining edits.
 
 ## Lecture 01 (Potential Outcomes) — Major Restructure
 
-### Current structure (8 sections):
-1. Business Question → 2. Data Generation → 3. Simulator Advantage: Full Information → 4. Scenario 1: Random Treatment Assignment → 5. Scenario 2: Quality-Based Selection (The Real World) → 6. Monte Carlo Demonstration → 7. SUTVA Considerations for E-commerce → 8. Additional resources
+### ~~1A. Create confounded treatment function in `support.py`~~ DONE
+Added `create_confounded_treatment(metrics_df, treatment_fraction=0.3, true_effect=0.5, seed=42)` that aggregates revenue, generates quality score, and assigns treatment to bottom fraction by quality (struggling products get optimized).
 
-### Target 6-step structure:
-1. **Business Context** — content optimization question (reuse from current)
-2. **Data Generation** — simulate + confounded treatment via `support.py` function + `inspect.getsource()`
-3. **Naive Comparison** — simple difference-in-means on confounded data; show the biased estimate; explain using Part I's selection bias decomposition
-4. **The Simulator's Advantage** — this is L01's unique "method": leverage known potential outcomes (Y0, Y1) to directly compute true ATE, decompose selection bias, and show *why* the naive estimate fails. This replaces "Apply the Method" for L01 since L01's contribution is understanding the problem, not solving it with an estimator.
-5. **Validation: Randomization Recovers the Truth** — show that random assignment eliminates selection bias (the naive estimator becomes unbiased under randomization). This is L01's ground-truth validation.
-6. **Diagnostics & Extensions** — Monte Carlo simulations (random vs biased), covariate balance under randomization, sample size convergence
+### ~~1B. Remove dead functions from `support.py`~~ DONE
+Deleted: `plot_treatment_parameters`, `plot_bias_decomposition`, `plot_bootstrap_distribution`, `plot_outcome_by_treatment`, `plot_fundamental_problem_table`.
 
-> **Decision needed:** L01's Part II was restructured into an 8-section scenario-based layout (random vs. quality-based selection) rather than the 6-step concept-based structure planned above. The current structure already covers the same material but organizes it differently. Decide whether to keep the current 8-section layout (and drop this item) or reorganize into the planned 6-step pattern for cross-lecture consistency.
-
-### 1A. Create confounded treatment function in `support.py`
-**File:** `docs/source/measure-impact/01-potential-outcomes-model/support.py`
-- Add `create_confounded_treatment(metrics_df, treatment_fraction=0.3, true_effect=0.5, seed=42)`:
-  - Accepts `metrics_df`, aggregates revenue per product
-  - Generates `quality_score` via existing `generate_quality_score()`
-  - Assigns treatment to top `treatment_fraction` by quality (deterministic selection — struggling products get optimized)
-  - Returns DataFrame with `product_identifier, quality_score, D, Y0, Y1, Y_observed`
-- This replaces the inline treatment assignment currently in cells 36–37
-
-### 1B. Remove dead functions from `support.py`
-**File:** same
-- Delete: `plot_treatment_parameters`, `plot_bias_decomposition`, `plot_bootstrap_distribution`, `plot_outcome_by_treatment`
-- These are never imported in the notebook
-
-### 1C. Restructure Part II notebook cells
-**File:** `docs/source/measure-impact/01-potential-outcomes-model/lecture.ipynb`
-
-Strip outputs first, then restructure Part II into 6 sections:
-
-**Section 1: Business Context** (reuse current cell 9 content)
-- "What would be the effect on sales if we improved product content quality?"
-
-**Section 2: Data Generation**
-- `simulate()` + `load_job_results()` → baseline metrics
-- `Code(inspect.getsource(create_confounded_treatment), language="python")` — show selection mechanism
-- Call `create_confounded_treatment(metrics)` → `confounded_products`
-- Print treatment/control counts
-
-**Section 3: Naive Comparison**
-- Compute `E[Y|D=1] - E[Y|D=0]` on confounded data
-- Show biased estimate, note it underestimates (or wrong sign)
-- Explain using Part I's selection bias decomposition: $E[Y|D=1] - E[Y|D=0] = \text{ATE} + \text{Selection Bias} + \text{HTE Bias}$
-
-**Section 4: The Simulator's Advantage — Known Potential Outcomes**
-- Access `Y0`, `Y1` columns directly (the "god's eye view")
-- Compute true ATE, ATT, ATC from potential outcomes
-- Numerically verify the bias decomposition formula
-- Show fundamental problem table (what we observe vs what's hidden)
-
-**Section 5: Randomization Recovers the Truth**
-- Create randomly assigned treatment (use enrichment pipeline or simple random assignment)
-- Show naive estimator is now unbiased (E[Y|D=1] - E[Y|D=0] ≈ true ATE)
-- Covariate balance check: quality_score distributions equal across groups
-
-**Section 6: Diagnostics & Extensions**
-- Monte Carlo: 500 simulations comparing random vs biased assignment distributions
-- Sample size convergence: SE ∝ 1/√n demonstration
+### ~~1C. Restructure Part II notebook cells~~ DONE
+Reorganized Part II from 8-section scenario-based layout into 6-step concept-based structure:
+1. **Business Context** — content optimization question
+2. **Data Generation** — simulate + confounded treatment via `support.py` + `inspect.getsource()`
+3. **Naive Comparison** — difference-in-means on confounded data, explain negative selection bias
+4. **The Simulator's Advantage** — fundamental problem table, ITE, ATE/ATT/ATC, bias decomposition verification
+5. **Randomization Recovers the Truth** — enrichment pipeline, naive estimator unbiased, covariate balance
+6. **Diagnostics & Extensions** — Monte Carlo (random vs biased), sample size convergence
 
 ### ~~1D. Keep enrichment pipeline for random treatment~~ DONE
 The `enrich()` call with `config_enrichment_random.yaml` is present and functional.
@@ -137,44 +73,40 @@ The `enrich()` call with `config_enrichment_random.yaml` is present and function
 ### ~~N1. Independence symbol~~ DONE
 L03 already uses `\perp\!\!\!\perp` throughout.
 
-### N2. Treatment effect symbol
-- All three lectures use δ (delta) — **already consistent**
-- The earlier review incorrectly flagged τ (tau) in L02; exploration confirmed L02 uses `\hat{\tau}` in cell 20 for the naive/conditional estimators
-- **Fix:** L02 cell 20: change `\hat{\tau}_{\text{naive}}` → `\hat{\delta}_{\text{naive}}` and `\hat{\tau}_{\text{conditional}}` → `\hat{\delta}_{\text{conditional}}`
+### ~~N2. Treatment effect symbol~~ DONE
+Changed `\hat{\tau}_{\text{naive}}` → `\hat{\delta}_{\text{naive}}` and `\hat{\tau}_{\text{conditional}}` → `\hat{\delta}_{\text{conditional}}` in L02 cell 20.
 
-### N3. Part I section numbering
-- **Standard:** Numbered headers (`## 1. Title`) — matches L02 and L03 (majority)
-- L01 Part I: add numbers to main section headers
-  - `## The Potential Outcome Framework` → `## 1. The Potential Outcome Framework`
-  - `## The Fundamental Problem of Causal Inference` → `## 2. The Fundamental Problem of Causal Inference`
-  - etc. for remaining Part I sections
+### ~~N3. Part I section numbering~~ DONE
+Added numbered headers to L01 Part I sections (1–7), matching L02 and L03 convention.
 
 ---
 
 ## Execution Order
 
-1. **L03 remaining fixes** (3E–3F) — lowest risk
-2. **L02 moderate changes** (2A–2D)
-3. **L01 major restructure** (1A–1C) — pending decision on 1C scope
-4. **Cross-lecture notation** (N2–N3) — do last since L01/L02 cells may shift
-5. **Verify:** `hatch run pytest` after each lecture
+All items completed:
+
+1. ~~**L03 remaining fixes** (3F)~~ DONE
+2. ~~**L02 moderate changes** (2A–2D)~~ DONE
+3. ~~**L01 major restructure** (1A–1C)~~ DONE
+4. ~~**Cross-lecture notation** (N2–N3)~~ DONE
+5. ~~**Verify:** `hatch run pytest` after each lecture~~ DONE
 
 ---
 
 ## Verification
 
-After all changes:
+All checks passed:
 ```bash
-hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace docs/source/measure-impact/*/lecture.ipynb
-hatch run ruff format docs/source/measure-impact/*/support.py
-hatch run ruff check docs/source/measure-impact/*/support.py
-hatch run pytest
+hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace docs/source/measure-impact/*/lecture.ipynb  # ✓
+hatch run ruff format docs/source/measure-impact/*/support.py  # ✓
+hatch run ruff check docs/source/measure-impact/*/support.py  # ✓
+hatch run pytest  # ✓ 4 passed in 21.26s
 ```
 
-Success criteria:
-- All 4 notebooks pass `nbmake` tests
-- `ruff format` and `ruff check` clean
-- Each lecture's Part II follows the 6-step pattern (adapted for L01's scope)
-- All `support.py` treatment functions accept `metrics_df`, return `D/Y0/Y1/Y_observed`
-- `inspect.getsource()` used for treatment function in all three lectures
-- Notation consistent: `\perp\!\!\!\perp`, `\hat{\delta}`, numbered Part I headers
+Success criteria — all met:
+- ✓ All 4 notebooks pass `nbmake` tests
+- ✓ `ruff format` and `ruff check` clean
+- ✓ Each lecture's Part II follows the 6-step pattern (adapted for L01's scope)
+- ✓ All `support.py` treatment functions accept `metrics_df`, return `D/Y0/Y1/Y_observed`
+- ✓ `inspect.getsource()` used for treatment function in all three lectures
+- ✓ Notation consistent: `\perp\!\!\!\perp`, `\hat{\delta}`, numbered Part I headers
