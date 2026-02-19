@@ -10,29 +10,18 @@ Three skill reviews (`/author-lecture`, `/review-code`, `/review-writing`) found
 
 ## Lecture 03 (Matching) — Quick Fixes
 
-Closest to compliance. Four targeted edits, no structural changes.
+Closest to compliance. Two remaining edits.
 
-### 3A. Fix page range in header
-**File:** `docs/source/measure-impact/03-matching-subclassification/lecture.ipynb` (cell 0)
-- Change `pp. 175-206` → `pp. 175-230`
+### ~~3A. Fix page range in header~~ DONE
 
-### 3B. Add business question to header
-**File:** same cell 0
-- Append to the opening paragraph: `We apply these concepts using the Online Retail Simulator to answer: **Can subclassification and matching recover the true treatment effect when confounding involves multiple continuous covariates?**`
+### ~~3B. Add business question to header~~ DONE
 
-### 3C. Expose selection coefficients as function arguments
-**File:** `docs/source/measure-impact/03-matching-subclassification/support.py`
-- Add `coef_quality=-0.5, coef_price=-0.8, coef_impressions=-0.3` as explicit keyword arguments to `create_confounded_treatment_multi()`
-- Replace hardcoded `COEF_QUALITY`, `COEF_PRICE`, `COEF_IMPRESSIONS` locals with the parameters
-- Update the NumPy docstring to document them
+### ~~3C. Expose selection coefficients as function arguments~~ DONE
 
-### 3D. Rename `df` to `confounded_products`
-**File:** `docs/source/measure-impact/03-matching-subclassification/lecture.ipynb`
-- Cells 26, 28, 30, 34, 39: replace `df` → `confounded_products` throughout Part II
-- Cell 28: `treated = confounded_products[confounded_products["D"] == 1]` etc.
+### ~~3D. Rename `df` to `confounded_products`~~ DONE
 
 ### 3E. Add standalone Diagnostics & Extensions section
-**File:** same notebook
+**File:** `docs/source/measure-impact/03-matching-subclassification/lecture.ipynb`
 - Promote the existing "### Covariate Balance Diagnostics" (cell 40) and Love plot (cells 41-42) out of Section 4 into a new `## 6. Diagnostics & Extensions` section
 - Add brief intro markdown: "A key advantage of matching is that we can directly assess covariate balance..."
 - Section 5 ("Which Method Best Recovers the True Effect?") stays as the Validation step
@@ -71,16 +60,14 @@ Closest to compliance. Four targeted edits, no structural changes.
 **File:** same notebook, cell 21
 - Remove `import matplotlib.pyplot as plt` (all plotting goes through `support.py` functions)
 
-### 2E. Rename `confounded_products` variable consistently
-**File:** same notebook
-- Already uses `confounded_products` — verify consistency across all cells
+### ~~2E. Rename `confounded_products` variable consistently~~ DONE
 
 ---
 
 ## Lecture 01 (Potential Outcomes) — Major Restructure
 
-### Current structure (cells 9–47):
-1. Setup/Imports → 2. Simulate baseline → 3. Enrich (random treatment) → 4. Fundamental problem demo → 5. True parameters (ITE, ATE) → 6. Random assignment validation → 7. Biased selection + bias decomposition → 8. Monte Carlo → 9. Convergence
+### Current structure (8 sections):
+1. Business Question → 2. Data Generation → 3. Simulator Advantage: Full Information → 4. Scenario 1: Random Treatment Assignment → 5. Scenario 2: Quality-Based Selection (The Real World) → 6. Monte Carlo Demonstration → 7. SUTVA Considerations for E-commerce → 8. Additional resources
 
 ### Target 6-step structure:
 1. **Business Context** — content optimization question (reuse from current)
@@ -89,6 +76,8 @@ Closest to compliance. Four targeted edits, no structural changes.
 4. **The Simulator's Advantage** — this is L01's unique "method": leverage known potential outcomes (Y0, Y1) to directly compute true ATE, decompose selection bias, and show *why* the naive estimate fails. This replaces "Apply the Method" for L01 since L01's contribution is understanding the problem, not solving it with an estimator.
 5. **Validation: Randomization Recovers the Truth** — show that random assignment eliminates selection bias (the naive estimator becomes unbiased under randomization). This is L01's ground-truth validation.
 6. **Diagnostics & Extensions** — Monte Carlo simulations (random vs biased), covariate balance under randomization, sample size convergence
+
+> **Decision needed:** L01's Part II was restructured into an 8-section scenario-based layout (random vs. quality-based selection) rather than the 6-step concept-based structure planned above. The current structure already covers the same material but organizes it differently. Decide whether to keep the current 8-section layout (and drop this item) or reorganize into the planned 6-step pattern for cross-lecture consistency.
 
 ### 1A. Create confounded treatment function in `support.py`
 **File:** `docs/source/measure-impact/01-potential-outcomes-model/support.py`
@@ -138,20 +127,15 @@ Strip outputs first, then restructure Part II into 6 sections:
 - Monte Carlo: 500 simulations comparing random vs biased assignment distributions
 - Sample size convergence: SE ∝ 1/√n demonstration
 
-### 1D. Keep enrichment pipeline for random treatment
-- The `enrich()` call with `config_enrichment_random.yaml` stays for Section 5 (randomization)
-- It's pedagogically useful to show how the simulator handles random assignment
-- Confounded treatment uses the new `support.py` function (Section 2)
+### ~~1D. Keep enrichment pipeline for random treatment~~ DONE
+The `enrich()` call with `config_enrichment_random.yaml` is present and functional.
 
 ---
 
 ## Cross-Lecture Notation Standardization
 
-### N1. Independence symbol
-- **Standard:** `\perp\!\!\!\perp` for unconditional; `\perp\!\!\!\perp` with `\mid` for conditional
-- L01 cell 7: already uses `\perp\!\!\!\perp` — correct
-- L03 cell 2: change `\perp` → `\perp\!\!\!\perp` (two occurrences in CIA definition)
-- L02: no independence symbols (DAG-only) — no change needed
+### ~~N1. Independence symbol~~ DONE
+L03 already uses `\perp\!\!\!\perp` throughout.
 
 ### N2. Treatment effect symbol
 - All three lectures use δ (delta) — **already consistent**
@@ -169,10 +153,10 @@ Strip outputs first, then restructure Part II into 6 sections:
 
 ## Execution Order
 
-1. **L03 quick fixes** (3A–3F) — lowest risk, validates the pattern
-2. **L02 moderate changes** (2A–2E)
-3. **L01 major restructure** (1A–1D)
-4. **Cross-lecture notation** (N1–N3) — do last since L01/L02 cells may shift
+1. **L03 remaining fixes** (3E–3F) — lowest risk
+2. **L02 moderate changes** (2A–2D)
+3. **L01 major restructure** (1A–1C) — pending decision on 1C scope
+4. **Cross-lecture notation** (N2–N3) — do last since L01/L02 cells may shift
 5. **Verify:** `hatch run pytest` after each lecture
 
 ---

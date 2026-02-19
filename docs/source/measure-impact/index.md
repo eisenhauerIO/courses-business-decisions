@@ -11,9 +11,11 @@ We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scot
 ***Causal Inference: The Mixtape***
 ```
 
-The material is organized in three parts. We begin with foundational causal models that clarify what causal effects mean and under which assumptions they are identified. We then study methods that rely on selection on observables, followed by methods designed to address selection on unobservables.
+The material is organized in four parts. We begin with foundational causal models that clarify what causal effects mean and under which assumptions they are identified. A dedicated tooling section introduces the software infrastructure that supports the applied work throughout the course. We then study methods that rely on selection on observables, followed by methods designed to address selection on unobservables.
 
 ## Foundations
+
+These lectures establish the formal frameworks for defining and reasoning about causal effects. We introduce two complementary perspectives — the potential outcomes model, which provides an algebraic language for causal quantities, and directed acyclic graphs, which encode causal assumptions visually. Together, they supply the conceptual foundation for all identification strategies that follow.
 
 ### Potential Outcomes Model
 
@@ -36,6 +38,8 @@ We introduce directed acyclic graphs (DAGs) as a complementary representation of
 ```
 
 ## Tooling
+
+This section covers the software tools that support applying causal methods in practice. While the lectures develop theory and walk through worked examples, the tools introduced here provide the infrastructure for moving from method to measurement — configuring estimation strategies, producing standardized results, and simulating data with known ground truth.
 
 ### Impact Engine
 
@@ -60,22 +64,6 @@ We introduce methods for causal inference under selection on observables. This s
 03-matching-subclassification/lecture
 ```
 
-### Machine Learning for Causal Inference
-
-We explore how machine learning methods can improve causal inference, focusing on high-dimensional covariate settings. Topics include LASSO-based covariate selection and double machine learning, with an emphasis on separating prediction from causal identification.
-
-```{todo}
-Add notebook link
-```
-
-### Pooled Ordinary Least Squares (OLS)
-
-We discuss pooled OLS estimation with panel data and clarify the assumptions under which it can be interpreted causally. The section emphasizes when pooled regression is valid and when it fails due to unobserved heterogeneity or dynamic selection.
-
-```{todo}
-Add notebook link
-```
-
 ## Selection on Unobservables
 
 ```{figure} ../_static/dag_selection_unobservables.svg
@@ -84,30 +72,6 @@ Add notebook link
 ```
 
 These methods address settings where unobserved confounders make the conditional independence assumption untenable. As the DAG shows, even after conditioning on observed confounders X, unobserved confounders U still create a backdoor path between treatment and outcome. Each method below exploits a different source of exogenous variation — an instrument, a threshold, a policy change, or a comparison unit — to identify causal effects despite unmeasured confounding.
-
-### Instrumental Variables
-
-We introduce instrumental variables as a method for causal inference when unobserved confounding is present. The focus is on identification assumptions, interpretation of local average treatment effects, and the role of instruments in causal inference.
-
-```{todo}
-Add notebook link
-```
-
-### Regression Discontinuity
-
-We discuss regression discontinuity designs that exploit sharp or fuzzy thresholds in treatment assignment. The section emphasizes identification at the cutoff and the interpretation of local causal effects.
-
-```{todo}
-Add notebook link
-```
-
-### Difference-in-Differences
-
-We present difference-in-differences methods for panel data, including the parallel trends assumption and recent methodological advances. Connections to selection models and potential outcomes are made explicit.
-
-```{todo}
-Add notebook link
-```
 
 ### Synthetic Control
 
