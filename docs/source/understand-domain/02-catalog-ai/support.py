@@ -82,7 +82,6 @@ def plot_treatment_effect(metrics, enriched, enrichment_start, figsize=(12, 6)):
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.show()
-    plt.close()
 
 
 def plot_positioning_comparison(baseline_metrics, budget_enriched, luxury_enriched, treatment_start, figsize=(12, 6)):
@@ -112,8 +111,11 @@ def plot_positioning_comparison(baseline_metrics, budget_enriched, luxury_enrich
     """
     # Aggregate revenue by date for all three scenarios
     baseline_daily = baseline_metrics.groupby("date")["revenue"].sum().reset_index()
+    baseline_daily["date"] = pd.to_datetime(baseline_daily["date"])
     budget_daily = budget_enriched.groupby("date")["revenue"].sum().reset_index()
+    budget_daily["date"] = pd.to_datetime(budget_daily["date"])
     luxury_daily = luxury_enriched.groupby("date")["revenue"].sum().reset_index()
+    luxury_daily["date"] = pd.to_datetime(luxury_daily["date"])
 
     # Create comparison plot
     fig, ax = plt.subplots(figsize=figsize)
@@ -144,7 +146,7 @@ def plot_positioning_comparison(baseline_metrics, budget_enriched, luxury_enrich
         color="#d62728",
     )
     ax.axvline(
-        x=treatment_start,
+        x=pd.to_datetime(treatment_start),
         color="red",
         linestyle=":",
         linewidth=2,
@@ -160,7 +162,6 @@ def plot_positioning_comparison(baseline_metrics, budget_enriched, luxury_enrich
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.show()
-    plt.close()
 
     # Calculate lift statistics
     baseline_before = baseline_metrics[baseline_metrics["date"] < treatment_start]["revenue"].mean()
