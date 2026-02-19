@@ -317,6 +317,37 @@ Functions that generate confounded treatment assignment for measure-impact lectu
 - Required output columns: `D` (treatment), `Y0`, `Y1`, `Y_observed`, plus covariates
 - Parameters (effect size, selection coefficients) should be explicit function arguments, not hardcoded
 
+### Support Module Conventions (`support.py`)
+
+Each measure-impact lecture has a `support.py` with these conventions:
+
+**Function categories and naming:**
+- Data generation: `create_confounded_treatment*` or `create_*_data` prefix
+- Ground truth: `compute_ground_truth_att()` — extracts true ATT from potential outcomes
+- Visualization: `plot_` prefix for all plotting functions
+- Print helpers: `print_` prefix for formatted output functions
+- Private helpers: `_` prefix (e.g., `_create_binary_quality`, `_parse_weights`)
+
+**Module structure:**
+- Module-level docstring describing the file's purpose
+- Imports grouped by standard library / third-party / local
+
+**Seed handling:**
+- Public functions accept a `seed` parameter (default `42`)
+- The notebook's import cell sets `np.random.seed(42)` for top-level random operations
+
+### Impact Engine Import Convention
+
+Impact Engine lectures add these imports:
+```python
+from impact_engine_measure import evaluate_impact, load_results
+```
+
+Dynamic config generation adds:
+```python
+import yaml
+```
+
 ---
 
 ### One Logical Operation Per Cell
@@ -386,6 +417,11 @@ Before finalizing code:
 - [ ] No debug print statements left in
 - [ ] DataFrame operations are clear and explicit
 - [ ] NumPy-style docstrings on all public functions
+- [ ] Simulation pipeline follows standard sequence: `!cat` config → `simulate()` → `load_job_results()` → print verification
+- [ ] `inspect.getsource()` shown before first use of each `support.py` function
+- [ ] Impact Engine calls follow: save CSV → display config → `evaluate_impact()` → `load_results()` → extract results
+- [ ] `TRUE_EFFECT` defined as a named constant (not inlined in function calls)
+- [ ] Ground truth ATT computed and stored before method comparisons
 
 ---
 

@@ -375,6 +375,32 @@ For Measure Impact lectures:
 - [ ] Results answer the business question
 - [ ] Limitations and caveats are discussed
 
+### Measure-Impact Narrative Conventions
+
+When reviewing measure-impact lectures, check for these recurring narrative elements:
+
+**The Selection Paradox Frame**
+- The true treatment effect is POSITIVE
+- The naive estimate is NEGATIVE (or severely biased)
+- The method studied in the lecture recovers the positive truth
+- This paradox should be explicitly stated in the Business Context or Naive Comparison section
+
+**"God's Eye View" Language**
+- The simulator provides both potential outcomes for every unit
+- This enables numerical verification of theoretical decompositions
+- Use language like "the simulator gives us a god's eye view" or "we observe both potential outcomes"
+- Frame this as a pedagogical advantage: "In real data, we would not have this luxury"
+
+**Theory-to-Application Bridge**
+- The Part II introduction should explicitly connect to Part I concepts
+- Name the specific theoretical tools being applied (e.g., "the bias decomposition from Part I", "the CIA from Section 1")
+- The Assignment Mechanism section bridges business context and methodology — it should explain WHY the method works for this specific confounding structure
+
+**Consistent Business Framing**
+- All measure-impact lectures share the same domain (e-commerce content optimization)
+- Verify consistency: "content optimization" for the treatment, "revenue" as the outcome variable
+- Selection always operates through product characteristics creating negative bias
+
 ---
 
 ## Engagement and Clarity
@@ -431,6 +457,12 @@ For Measure Impact lectures:
 - [ ] Examples are realistic and explained
 - [ ] Results are interpreted, not just shown
 - [ ] No placeholder or TODO content
+- [ ] Selection paradox is explicit: true effect is positive, naive estimate is negative/biased
+- [ ] Notation table present in Business Context (Variable | Notation | Description)
+- [ ] Assignment mechanism section explains WHY naive comparison fails
+- [ ] Interface-to-theory mapping table present for each Impact Engine method call
+- [ ] "God's eye view" framing used when introducing simulator potential outcomes
+- [ ] Part II introduction references specific Part I concepts by name
 
 ---
 

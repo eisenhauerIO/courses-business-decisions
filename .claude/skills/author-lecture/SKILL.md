@@ -41,7 +41,22 @@ The Mixtape chapters are available at `_external/books-mixtape/`. Use these PDF 
 
 **Part II: Application** (Online Retail Simulator + Impact Engine)
 
-1. **Business Context** — frame the recurring causal question within the business domain (consistent across the lecture sequence)
+1. **Business Context** — frame the recurring causal question within the business domain (consistent across the lecture sequence). All measure-impact lectures share a consistent scenario:
+   - **Domain**: E-commerce product catalog
+   - **Treatment**: Content optimization (better descriptions, images, metadata)
+   - **Outcome**: Revenue
+   - **Selection mechanism**: Company prioritizes struggling products, creating negative selection bias
+   - **The paradox**: True effect is POSITIVE, but naive estimate is NEGATIVE because treated products were already underperforming
+
+   Include a **notation table** mapping variables to mathematical notation:
+
+   | Variable | Notation | Description |
+   |----------|----------|-------------|
+   | Treatment | $D=1$ | Product receives content optimization |
+   | Control | $D=0$ | Product keeps original content |
+   | Outcome | $Y$ | Product revenue |
+
+   The simulator provides both potential outcomes ("god's eye view"), enabling numerical verification of theoretical results from Part I. Frame this as a pedagogical advantage: in real data, we would not have this luxury.
 2. **Data Generation** — two-stage process:
    - **Baseline data:** config-driven simulation (`simulate()` → `load_job_results()`)
    - **Confounded treatment:** self-contained function in `support.py` that takes `metrics_df`
@@ -53,6 +68,22 @@ The Mixtape chapters are available at `_external/books-mixtape/`. Use these PDF 
    treatment assignment operates at product-level granularity for selection bias generation.
    These are different concerns — keeping them separate preserves function readability
    and avoids format conversion boilerplate.
+
+   The simulation pipeline follows a fixed code sequence across all lectures:
+
+   ```python
+   # Cell: display config
+   ! cat "config_simulation.yaml"
+   ```
+
+   ```python
+   # Cell: run simulation and load results
+   job_info = simulate("config_simulation.yaml")
+   metrics = load_job_results(job_info)["metrics"]
+
+   print(f"Metrics records: {len(metrics)}")
+   print(f"Unique products: {metrics['product_identifier'].nunique()}")
+   ```
 3. **The Assignment Mechanism** — explain the treatment selection process and why it
    creates confounding. This section is the bridge between the business context and the
    estimation methods — it justifies every methodological choice that follows.
@@ -67,10 +98,63 @@ The Mixtape chapters are available at `_external/books-mixtape/`. Use these PDF 
      then conditioning on $X$ removes confounding (CIA). State this explicitly.
    - Visualize the assignment mechanism (e.g., treatment rates by covariate quintile)
      so students can see the selection pattern before encountering its consequences.
+   - Define `TRUE_EFFECT` as a named constant (not inlined in function calls) so it is
+     visible and reusable for later comparisons.
 4. **Naive Comparison** — use the Impact Engine with a naive experimental estimator that ignores the treatment assignment mechanism; show the biased estimate and explain why it's wrong *as a consequence of the assignment mechanism*
 5. **Apply the Method** — use the Impact Engine with the lecture's causal method to recover the true effect; include an interface-to-theory mapping table when using production tools. Explain how the method addresses the specific confounding structure created by the assignment mechanism.
-6. **Validation Against Ground Truth** — leverage the simulator's full potential outcomes to verify the method works
+6. **Validation Against Ground Truth** — leverage the simulator's full potential outcomes to verify the method works. Compute ground truth ATT from potential outcomes before comparing with method estimates.
 7. **Diagnostics & Extensions** — method-specific diagnostics, limitations, or deeper exploration (e.g., balance checks, sensitivity analysis, visual comparisons)
+
+### Section Numbering
+
+Both Part I and Part II use numbered `##` headings:
+
+- Part I: `## 1. Topic`, `## 2. Topic`, etc.
+- Part II: `## 1. Business Context`, `## 2. Data Generation`, etc.
+
+Numbering restarts at 1 for Part II. The exact section titles may vary by lecture (e.g., "What Does the Naive Comparison Tell Us?" instead of "Naive Comparison"), but the functional ordering above is fixed.
+
+### Source Code Display Convention
+
+Before calling any `support.py` function for the first time, display its source code so students can see the implementation:
+
+```python
+Code(inspect.getsource(function_name), language="python")
+```
+
+This applies to all public functions from `support.py` — not just the confounded treatment function. Show the source, then call the function in the next cell.
+
+### Impact Engine Pipeline (Lectures 3+)
+
+Lectures that use the [**Impact Engine**](https://github.com/eisenhauerIO/impact-engine) follow a standard pipeline:
+
+1. **Save data**: `data.to_csv("filename.csv", index=False)` so the YAML config can reference the file
+2. **Display config**: `! cat "config_method.yaml"`
+3. **Run pipeline**:
+   ```python
+   job = evaluate_impact("config_method.yaml", storage_url="./output/method_name")
+   result = load_results(job)
+   ```
+4. **Extract and print results** from `result.impact_results["data"]`
+
+When the Impact Engine config depends on runtime values (e.g., a dynamically selected treated unit), generate the config dict in Python and write it to YAML before displaying it:
+
+```python
+config = { ... }
+with open("config_method.yaml", "w") as f:
+    yaml.dump(config, f, default_flow_style=False, sort_keys=False)
+! cat "config_method.yaml"
+```
+
+### Interface-to-Theory Mapping Tables
+
+When using the Impact Engine, include a markdown table mapping YAML `MEASUREMENT.PARAMS` fields to their Part I theoretical concepts. Place this table immediately before the config display cell. Example:
+
+| YAML Config Field | Part I Concept |
+|-------------------|----------------|
+| `treatment_column` | Binary treatment indicator $D$ |
+| `covariate_columns` | Conditioning set $X$ from CIA |
+| `dependent_variable` | Observed outcome $Y$ |
 
 ### Narrative Style for Theory Sections
 
@@ -103,6 +187,10 @@ Lectures should focus purely on content. **Do NOT include:**
 - "Summary" sections
 
 Let the content speak for itself. Students absorb concepts through the theory and application—wrap-up sections add length without value.
+
+### Additional Resources Section
+
+Every lecture ends with an `## Additional resources` section (lowercase "r"). This is the final section of the notebook — nothing follows it. See `/review-writing` for the citation format standard.
 
 ### Chapter-to-Lecture Mapping (Measure Impact)
 
@@ -228,3 +316,18 @@ When reviewing a measure-impact lecture, verify:
 **Data Generation**
 - [ ] Confounded treatment function in `support.py` with standard output columns (`D`, `Y0`, `Y1`, `Y_observed`)
 - [ ] Treatment function source shown via `inspect.getsource()`
+- [ ] Simulation pipeline follows standard sequence: `!cat` config → `simulate()` → `load_job_results()` → print verification
+- [ ] `inspect.getsource()` shown before first use of each `support.py` function
+- [ ] `TRUE_EFFECT` defined as a named constant
+
+**Impact Engine (Lectures 3+)**
+- [ ] Data saved to CSV before Impact Engine config references it
+- [ ] Interface-to-theory mapping table present before each config display
+- [ ] Impact Engine pipeline follows: display config → `evaluate_impact()` → `load_results()` → extract results
+- [ ] Ground truth ATT computed before method comparisons
+
+**Narrative**
+- [ ] Notation table in Business Context (Variable | Notation | Description)
+- [ ] Selection paradox explicit: positive true effect, negative/biased naive estimate
+- [ ] "God's eye view" framing used when introducing simulator potential outcomes
+- [ ] Part II introduction references specific Part I concepts by name
