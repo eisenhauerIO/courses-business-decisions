@@ -36,6 +36,5 @@ We introduce **Catalog AI** as a generative AI system for creating product conte
 :maxdepth: 2
 :hidden:
 
-01-online-retail-simulator/lecture
 02-catalog-ai/lecture
 ```
