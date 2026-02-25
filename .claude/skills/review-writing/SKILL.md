@@ -1,4 +1,5 @@
 ---
+name: review-writing
 description: Use when reviewing prose in markdown files and Jupyter notebook markdown cells. Checks formatting, style, clarity, and pedagogical effectiveness.
 ---
 
@@ -11,26 +12,6 @@ Review prose in markdown files (`.md`) and Jupyter notebook markdown cells for f
 ---
 
 # Part I: Formatting Standards
-
-## Terminology Conventions
-
-- Use "shoppers" (not "customers") when referring to end-users in e-commerce context
-- Verify consistency across all documentation
-
----
-
-## Data Columns and DataFrame Fields
-
-**Use backticks** for column/field names:
-
-```markdown
-Good: Each product has a unique `product_identifier`, a `category`, and a `price`.
-Good: The `impressions` column tracks how many times a product was shown.
-Bad:  Each product has a unique product_identifier (missing formatting)
-Bad:  The **impressions** column (bold alone - use backticks instead)
-```
-
----
 
 ## Code Elements in Markdown
 
@@ -60,6 +41,16 @@ Use backticks:
 Good: The `effect_size` parameter controls...
 Good: Set `num_products` to 100...
 Bad:  The effect_size parameter controls...
+```
+
+### Object Types and Return Values
+
+Use backticks for types:
+
+```markdown
+Good: Returns a `JobInfo` object
+Good: Returns a `DataFrame`
+Bad:  Returns a JobInfo object
 ```
 
 ---
@@ -93,63 +84,15 @@ Good: `src/simulate/`
 Bad:  output
 ```
 
----
+### Data Columns and DataFrame Fields
 
-## Configuration Sections (YAML)
-
-### Top-Level Sections
-Use **BOLD UPPERCASE** in prose:
+**Use backticks** for column/field names:
 
 ```markdown
-Good: The **PRODUCTS** section generates...
-Good: The **PARAMS** subsection controls...
-Bad:  The PRODUCTS section generates...
-Bad:  The products section generates...
-```
-
-### Specific Keys
-Use backticks in technical context:
-
-```markdown
-Good: The `effect_size` parameter controls...
-Good: Set `enrichment_fraction` to 1.0...
-Bad:  The effect_size parameter controls...
-```
-
----
-
-## Simulation Phases vs YAML Sections
-
-### Conceptual Phases
-Use **bold lowercase**:
-
-```markdown
-Good: "the **products** phase"
-Good: "the **product_details** phase"
-Bad:  "the products phase" (not bold)
-Bad:  "the PRODUCTS phase" (wrong case)
-```
-
-### YAML Configuration Sections
-Use **bold uppercase**:
-
-```markdown
-Good: "The **PRODUCTS** section in the YAML config..."
-Bad:  "The products section in the YAML..." (lowercase)
-```
-
-**Rule:** Phase names (concepts) = lowercase bold. YAML sections = uppercase bold.
-
----
-
-## Object Types and Return Values
-
-Use backticks for types:
-
-```markdown
-Good: Returns a `JobInfo` object
-Good: Returns a `DataFrame`
-Bad:  Returns a JobInfo object
+Good: Each product has a unique `product_identifier`, a `category`, and a `price`.
+Good: The `impressions` column tracks how many times a product was shown.
+Bad:  Each product has a unique product_identifier (missing formatting)
+Bad:  The **impressions** column (bold alone - use backticks instead)
 ```
 
 ---
@@ -251,13 +194,11 @@ Bad:  2024-11-01 (not quoted)
 
 ### Header Hierarchy
 ```markdown
-# Main Title (once per notebook - the lecture title only)
+# Main Title (once per document)
 ## Major Section
 ### Subsection
 #### Rare: only for deeply nested content
 ```
-
-**Important:** Each lecture notebook should have exactly ONE `#` heading - the lecture title. All other sections should use `##` or lower. This ensures proper document structure and navigation.
 
 ### Section Headers Should Be Questions (When Appropriate)
 ```markdown
@@ -268,13 +209,13 @@ Bad:  ### Revenue Distribution (less engaging)
 
 ### No Formulaic Summary Sections
 
-Do **not** add structured summary sections at the end of lectures. Avoid:
-- "Summary" with bullet points recapping the lecture
+Do **not** add structured summary sections at the end of documents. Avoid:
+- "Summary" with bullet points recapping the content
 - "Key Concepts" or "Key Takeaways" lists
 - "Practical Implications" sections
 - "Looking Ahead" or "Next Steps" sections
 
-Lectures should end naturally with the final content. Let the material speak for itself.
+Let the material speak for itself.
 
 ---
 
@@ -310,14 +251,64 @@ Bad:  It is necessary to simulate products (too formal)
 | Variable | `` `variable` `` | `job_info` |
 | Parameter | `` `parameter` `` | `effect_size` |
 | Config file | `` `"file.yaml"` `` | `"config_simulation.yaml"` |
-| Phase (concept) | **phase** | **products** |
-| YAML section | **SECTION** | **PRODUCTS** |
 | Object type | `` `Type` `` | `DataFrame` |
 | Directory | `` `dir/` `` | `output/` |
 
 ---
 
-# Part II: Pedagogical Clarity
+# Part II: Documentation Structure and Infrastructure
+
+## Find Guidelines
+
+Locate the project's documentation guidelines file. Look for:
+- `documentation/GUIDELINES.md`
+- `docs/GUIDELINES.md`
+- `docs/source/GUIDELINES.md`
+
+If no guidelines file exists, report this as the first finding and suggest creating one.
+
+## Check Structure Compliance
+
+Read the guidelines and verify the actual docs match:
+- Do all pages listed in the guidelines exist?
+- Are all pages registered in the toctree (index.md)?
+- Do notebooks follow the prescribed structure (step sequence, naming)?
+- Are configs named according to convention?
+- Is the writing style consistent across pages?
+
+## Check Inline Formatting
+
+If the guidelines include a text formatting table, audit every doc page against it:
+- Are code identifiers (functions, variables, config keys, file names) in backticks?
+- Are classes, interfaces, and source files linked with markdown links?
+- Are design patterns and key concepts in bold?
+- Are library/package names linked to their documentation sites?
+- Are tools and format names in plain text?
+
+## Check Rendered Output
+
+If docs use Sphinx or another build system, inspect the built HTML for rendering problems:
+- **Broken links**: Check that relative links in included files resolve correctly in the built HTML.
+- **Anchor-only hrefs**: Search the built HTML for `href="#` patterns that look like failed relative links.
+- **Missing formatting**: Verify that inline code, bold, italic, and links render as intended.
+- **Image/badge rendering**: Confirm badges, diagrams, and images load correctly.
+
+## Check Infrastructure
+
+Verify standard docs tooling is in place:
+
+| Check | What to look for |
+|-------|-----------------|
+| Sphinx builds clean | Run the docs build command, check for warnings |
+| nbstripout | Pre-commit hook configured to strip notebook outputs |
+| nbmake | Notebooks tested via pytest in pre-commit or CI |
+| Matplotlib config | Consistent plot rendering config (matplotlibrc) |
+| CI/CD | Docs build workflow in .github/workflows/ |
+| Pre-commit | .pre-commit-config.yaml includes docs-related hooks |
+
+---
+
+# Part III: Pedagogical Clarity
 
 ## Content Accuracy
 
@@ -326,13 +317,6 @@ Bad:  It is necessary to simulate products (too formal)
 - [ ] Equations and derivations are accurate
 - [ ] Statistical concepts are properly explained
 - [ ] Data/statistics cited are accurate and sourced
-
-### Source Alignment
-For Measure Impact lectures:
-- [ ] Theory matches the referenced Mixtape chapter
-- [ ] Key concepts from the chapter are covered
-- [ ] Notation follows the source material
-- [ ] No contradictions with established methodology
 
 ---
 
@@ -369,38 +353,6 @@ For Measure Impact lectures:
 - [ ] Steps are explained, not just shown
 - [ ] Results are interpreted, not just displayed
 
-### Business Context (for applied lectures)
-- [ ] Business question is clearly stated
-- [ ] Data generation connects to the business scenario
-- [ ] Results answer the business question
-- [ ] Limitations and caveats are discussed
-
-### Measure-Impact Narrative Conventions
-
-When reviewing measure-impact lectures, check for these recurring narrative elements:
-
-**The Selection Paradox Frame**
-- The true treatment effect is POSITIVE
-- The naive estimate is NEGATIVE (or severely biased)
-- The method studied in the lecture recovers the positive truth
-- This paradox should be explicitly stated in the Business Context or Naive Comparison section
-
-**"God's Eye View" Language**
-- The simulator provides both potential outcomes for every unit
-- This enables numerical verification of theoretical decompositions
-- Use language like "the simulator gives us a god's eye view" or "we observe both potential outcomes"
-- Frame this as a pedagogical advantage: "In real data, we would not have this luxury"
-
-**Theory-to-Application Bridge**
-- The Part II introduction should explicitly connect to Part I concepts
-- Name the specific theoretical tools being applied (e.g., "the bias decomposition from Part I", "the CIA from Section 1")
-- The Assignment Mechanism section bridges business context and methodology — it should explain WHY the method works for this specific confounding structure
-
-**Consistent Business Framing**
-- All measure-impact lectures share the same domain (e-commerce content optimization)
-- Verify consistency: "content optimization" for the treatment, "revenue" as the outcome variable
-- Selection always operates through product characteristics creating negative bias
-
 ---
 
 ## Engagement and Clarity
@@ -433,22 +385,18 @@ When reviewing measure-impact lectures, check for these recurring narrative elem
 
 ---
 
-# Part III: Checklists
+# Part IV: Checklists
 
 ## Formatting Checklist
 
 - [ ] All column names use `` `column_name` `` format
 - [ ] All functions use `` `function_name()` `` format
 - [ ] All file references use `` `"filename.ext"` `` format
-- [ ] Phase names are lowercase bold (**products**)
-- [ ] YAML sections are uppercase bold (**PRODUCTS**)
 - [ ] Object types use backticks (`` `DataFrame` ``, `` `JobInfo` ``)
 - [ ] First introduction of concepts uses **bold**
 - [ ] Links use meaningful text, not "click here"
 - [ ] Headers are questions when exploring data
 - [ ] Active voice, present tense throughout
-- [ ] Uses "shoppers" not "customers" for e-commerce end-users
-- [ ] Additional resources section uses correct format: `## Additional resources` header, bullet points with **Author (Year)**. [Title](url). *Journal*, volume(issue), pages.
 
 ## Pedagogy Checklist
 
@@ -457,6 +405,142 @@ When reviewing measure-impact lectures, check for these recurring narrative elem
 - [ ] Examples are realistic and explained
 - [ ] Results are interpreted, not just shown
 - [ ] No placeholder or TODO content
+
+---
+
+## Review Questions
+
+When reviewing, ask yourself:
+
+1. **Would a reader understand this?** Not just follow along, but actually grasp the concept.
+
+2. **Is the "why" explained?** Not just what the method does, but why it works and when to use it.
+
+3. **Are assumptions made explicit?** Readers should know what conditions must hold.
+
+4. **What would confuse someone?** Identify potential stumbling blocks before readers hit them.
+
+---
+
+## Output Format
+
+For each issue found:
+1. **Location**: File and line/section reference
+2. **Issue**: What's wrong
+3. **Suggestion**: How to fix it
+
+
+---
+
+# Course-Specific Writing Conventions
+
+## Terminology
+
+- Use "shoppers" (not "customers") when referring to end-users in e-commerce context
+- Verify consistency across all documentation
+
+---
+
+## Configuration Sections (YAML)
+
+### Top-Level Sections
+Use **BOLD UPPERCASE** in prose:
+
+```markdown
+Good: The **PRODUCTS** section generates...
+Good: The **PARAMS** subsection controls...
+Bad:  The PRODUCTS section generates...
+Bad:  The products section generates...
+```
+
+### Specific Keys
+Use backticks in technical context:
+
+```markdown
+Good: The `effect_size` parameter controls...
+Good: Set `enrichment_fraction` to 1.0...
+Bad:  The effect_size parameter controls...
+```
+
+---
+
+## Simulation Phases vs YAML Sections
+
+### Conceptual Phases
+Use **bold lowercase**:
+
+```markdown
+Good: "the **products** phase"
+Good: "the **product_details** phase"
+Bad:  "the products phase" (not bold)
+Bad:  "the PRODUCTS phase" (wrong case)
+```
+
+### YAML Configuration Sections
+Use **bold uppercase**:
+
+```markdown
+Good: "The **PRODUCTS** section in the YAML config..."
+Bad:  "The products section in the YAML..." (lowercase)
+```
+
+**Rule:** Phase names (concepts) = lowercase bold. YAML sections = uppercase bold.
+
+---
+
+## Source Alignment
+
+For Measure Impact lectures:
+- [ ] Theory matches the referenced Mixtape chapter
+- [ ] Key concepts from the chapter are covered
+- [ ] Notation follows the source material
+- [ ] No contradictions with established methodology
+
+---
+
+## Measure-Impact Narrative Conventions
+
+### The Selection Paradox Frame
+- The true treatment effect is POSITIVE
+- The naive estimate is NEGATIVE (or severely biased)
+- The method studied in the lecture recovers the positive truth
+- This paradox should be explicitly stated in the Business Context or Naive Comparison section
+
+### "God's Eye View" Language
+- The simulator provides both potential outcomes for every unit
+- This enables numerical verification of theoretical decompositions
+- Use language like "the simulator gives us a god's eye view" or "we observe both potential outcomes"
+- Frame this as a pedagogical advantage: "In real data, we would not have this luxury"
+
+### Theory-to-Application Bridge
+- The Part II introduction should explicitly connect to Part I concepts
+- Name the specific theoretical tools being applied (e.g., "the bias decomposition from Part I", "the CIA from Section 1")
+- The Assignment Mechanism section bridges business context and methodology — it should explain WHY the method works for this specific confounding structure
+
+### Consistent Business Framing
+- All measure-impact lectures share the same domain (e-commerce content optimization)
+- Verify consistency: "content optimization" for the treatment, "revenue" as the outcome variable
+- Selection always operates through product characteristics creating negative bias
+
+---
+
+## Additional Resources Section
+
+Every lecture ends with an `## Additional resources` section (lowercase "r"). This is the final section of the notebook — nothing follows it. Format: bullet points with **Author (Year)**. [Title](url). *Journal*, volume(issue), pages.
+
+---
+
+## Course-Specific Checklists
+
+### Formatting Checklist (additions)
+
+- [ ] Phase names are lowercase bold (**products**)
+- [ ] YAML sections are uppercase bold (**PRODUCTS**)
+- [ ] Uses "shoppers" not "customers" for e-commerce end-users
+- [ ] Additional resources section uses correct format
+
+### Pedagogy Checklist (additions)
+
 - [ ] Selection paradox is explicit: true effect is positive, naive estimate is negative/biased
 - [ ] Notation table present in Business Context (Variable | Notation | Description)
 - [ ] Assignment mechanism section explains WHY naive comparison fails
@@ -466,19 +550,12 @@ When reviewing measure-impact lectures, check for these recurring narrative elem
 
 ---
 
-## Review Questions
+## Quick Reference (additions)
 
-When reviewing, ask yourself:
-
-1. **Would a student understand this?** Not just follow along, but actually grasp the concept.
-
-2. **Is the "why" explained?** Not just what the method does, but why it works and when to use it.
-
-3. **Are assumptions made explicit?** Students should know what conditions must hold.
-
-4. **Is the business relevance clear?** For applied lectures, the connection to decisions should be obvious.
-
-5. **What would confuse someone?** Identify potential stumbling blocks before students hit them.
+| Element | Format | Example |
+|---------|--------|---------|
+| Phase (concept) | **phase** | **products** |
+| YAML section | **SECTION** | **PRODUCTS** |
 
 ---
 
@@ -500,12 +577,3 @@ This checks for untracked files, formats code, checks for linting issues, builds
 - [ ] `hatch run ruff format .` completes without changes
 - [ ] `hatch run ruff check .` passes with no errors
 - [ ] `hatch run build` completes successfully
-
----
-
-## Output Format
-
-For each issue found:
-1. **Location**: File and line/section reference
-2. **Issue**: What's wrong
-3. **Suggestion**: How to fix it

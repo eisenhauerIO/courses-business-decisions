@@ -6,8 +6,8 @@ from pathlib import Path
 
 # Third-party packages
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
+import yaml
 
 # Shared utilities (re-exported so notebooks can import from support)
 _shared_path = Path(__file__).resolve().parent.parent / "shared.py"
@@ -43,42 +43,87 @@ def _parse_weights(weights_dict):
     return parsed
 
 
-def create_synthetic_control_data(metrics_df, treatment_date="2024-11-15", true_effect=50.0, seed=42):
-    """Create panel data with a single treated product for synthetic control analysis.
-
-    Aggregates daily revenue per product from the simulator output, selects one
-    product as the treated unit, and applies an additive treatment effect from
-    treatment_date onward. A common upward time trend is added to all products
-    so that naive before-after estimators are visibly biased.
+def write_sc_config(
+    treated_unit, treatment_time, panel_path="panel_data.csv", output_path="config_synthetic_control.yaml"
+):
+    """Write a synthetic control config YAML for the Impact Engine.
 
     Parameters
     ----------
-    metrics_df : pandas.DataFrame
-        Metrics DataFrame from the Online Retail Simulator with
-        product_identifier, date, and revenue columns.
-    treatment_date : str
+    treated_unit : str
+        Product identifier of the treated unit.
+    treatment_time : str
+        Treatment date string (YYYY-MM-DD).
+    panel_path : str, optional
+        Path to the panel CSV file.
+    output_path : str, optional
+        Path for the output YAML config file.
+    """
+    config = {
+        "DATA": {
+            "SOURCE": {"type": "file", "CONFIG": {"path": panel_path, "date_column": None}},
+            "TRANSFORM": {"FUNCTION": "passthrough", "PARAMS": {}},
+        },
+        "MEASUREMENT": {
+            "MODEL": "synthetic_control",
+            "PARAMS": {
+                "unit_column": "product_identifier",
+                "time_column": "date",
+                "outcome_column": "revenue",
+                "treated_unit": treated_unit,
+                "treatment_time": treatment_time,
+                "optim_method": "Nelder-Mead",
+                "optim_initial": "equal",
+            },
+        },
+    }
+    with open(output_path, "w") as f:
+        yaml.dump(config, f, default_flow_style=False, sort_keys=False)
+
+
+def build_panel(enriched_metrics, potential_outcomes, treatment_date="2024-11-15", trend_slope=5.0):
+    """Build analysis-ready panel from enriched simulator output.
+
+    Aggregates daily revenue per product, adds a common upward time trend
+    (so naive before-after estimators are visibly biased), and computes
+    counterfactual revenue from the simulator's potential outcomes.
+
+    Parameters
+    ----------
+    enriched_metrics : pandas.DataFrame
+        Enriched metrics from the simulator with product_identifier, date,
+        revenue, and enriched columns.
+    potential_outcomes : pandas.DataFrame
+        Potential outcomes from the simulator with product_identifier, date,
+        Y0_revenue, and Y1_revenue columns.
+    treatment_date : str, optional
         Date string (YYYY-MM-DD) when the intervention occurs.
-    true_effect : float
-        True additive causal effect on daily revenue from treatment_date onward.
-    seed : int
-        Random seed for reproducibility of treated product selection.
+    trend_slope : float, optional
+        Slope of the common daily time trend added to all products.
 
     Returns
     -------
     panel : pandas.DataFrame
         Balanced panel with product_identifier, date, revenue, and
         revenue_counterfactual columns.
-    treated_product : str
-        The product_identifier of the treated unit.
+    treated_products : list of str
+        Product identifiers that received treatment.
+    control_products : list of str
+        Product identifiers in the donor pool.
     """
-    rng = np.random.default_rng(seed)
-
     # Aggregate revenue per product per date
-    daily = metrics_df.groupby(["product_identifier", "date"])["revenue"].sum().reset_index()
+    daily = enriched_metrics.groupby(["product_identifier", "date"])["revenue"].sum().reset_index()
     daily["date"] = pd.to_datetime(daily["date"])
     daily["product_identifier"] = daily["product_identifier"].astype(str)
 
-    treatment_date_ts = pd.Timestamp(treatment_date)
+    # Aggregate counterfactual revenue (Y0) per product per date
+    po = potential_outcomes.copy()
+    po["date"] = pd.to_datetime(po["date"])
+    po["product_identifier"] = po["product_identifier"].astype(str)
+    daily_y0 = po.groupby(["product_identifier", "date"])["Y0_revenue"].sum().reset_index()
+
+    # Merge counterfactual
+    daily = daily.merge(daily_y0, on=["product_identifier", "date"], how="left")
 
     # Build balanced panel (fill missing product-date pairs with 0)
     products = sorted(daily["product_identifier"].unique())
@@ -86,35 +131,34 @@ def create_synthetic_control_data(metrics_df, treatment_date="2024-11-15", true_
     idx = pd.MultiIndex.from_product([products, dates], names=["product_identifier", "date"])
     panel = daily.set_index(["product_identifier", "date"]).reindex(idx, fill_value=0.0).reset_index()
 
-    # Add common time trend (affects all products equally).
-    # This makes naive before-after estimators biased upward.
+    # Add common time trend (affects all products equally)
     days_since_start = (panel["date"] - panel["date"].min()).dt.days
-    panel["revenue"] = panel["revenue"] + 0.3 * days_since_start
+    panel["revenue"] = panel["revenue"] + trend_slope * days_since_start
+    panel["Y0_revenue"] = panel["Y0_revenue"] + trend_slope * days_since_start
 
-    # Select treated product: pick one with above-median average revenue
-    avg_rev = panel.groupby("product_identifier")["revenue"].mean()
-    candidates = avg_rev[avg_rev >= avg_rev.median()].index.tolist()
-    treated_product = str(rng.choice(candidates))
+    # Counterfactual: Y0 for all products (what revenue would be without treatment)
+    panel["revenue_counterfactual"] = panel["Y0_revenue"]
 
-    # Store counterfactual (true untreated revenue)
-    panel["revenue_counterfactual"] = panel["revenue"].copy()
+    # Identify treated vs control products
+    treated_products = sorted(
+        enriched_metrics[enriched_metrics["enriched"]]["product_identifier"].astype(str).unique().tolist()
+    )
+    control_products = sorted([p for p in products if p not in treated_products])
 
-    # Apply additive treatment effect post-treatment
-    mask = (panel["product_identifier"] == treated_product) & (panel["date"] >= treatment_date_ts)
-    panel.loc[mask, "revenue"] = panel.loc[mask, "revenue"] + true_effect
+    panel = panel.drop(columns=["Y0_revenue"])
 
-    return panel, treated_product
+    return panel, treated_products, control_products
 
 
-def compute_ground_truth_att(panel, treated_product, treatment_date):
+def compute_ground_truth_att(panel, treated_products, treatment_date):
     """Compute the true ATT from known potential outcomes.
 
     Parameters
     ----------
     panel : pandas.DataFrame
         Panel with revenue and revenue_counterfactual columns.
-    treated_product : str
-        The product_identifier of the treated unit.
+    treated_products : str or list of str
+        Product identifier(s) of the treated unit(s).
     treatment_date : str or pandas.Timestamp
         Treatment date.
 
@@ -123,8 +167,10 @@ def compute_ground_truth_att(panel, treated_product, treatment_date):
     float
         True average treatment effect on the treated in the post period.
     """
+    if isinstance(treated_products, str):
+        treated_products = [treated_products]
     treatment_date = pd.Timestamp(treatment_date)
-    post = panel[(panel["product_identifier"] == treated_product) & (panel["date"] >= treatment_date)]
+    post = panel[(panel["product_identifier"].isin(treated_products)) & (panel["date"] >= treatment_date)]
     return (post["revenue"] - post["revenue_counterfactual"]).mean()
 
 
@@ -256,7 +302,7 @@ def plot_weights(impact_data, top_n=15):
     impact_data : dict
         The ``impact_results["data"]`` dict containing ``model_summary``
         with ``weights``.
-    top_n : int
+    top_n : int, optional
         Show only the top_n units by weight.
     """
     weights = _parse_weights(impact_data["model_summary"]["weights"])
@@ -280,5 +326,49 @@ def plot_weights(impact_data, top_n=15):
     ax.set_xlabel("Weight")
     ax.set_title("Donor Unit Weights (Synthetic Control)", fontsize=14, fontweight="bold")
     ax.axvline(x=0, color="black", linewidth=0.5)
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_average_fit(panel, treated_products, control_products, treatment_date):
+    """Plot average revenue for treated vs. control groups over time.
+
+    Shows aggregate-level tracking between treated and control products
+    before treatment, and divergence after treatment.
+
+    Parameters
+    ----------
+    panel : pandas.DataFrame
+        Panel with product_identifier, date, and revenue columns.
+    treated_products : list of str
+        Product identifiers of treated units.
+    control_products : list of str
+        Product identifiers of control units.
+    treatment_date : str or pandas.Timestamp
+        Treatment date for the vertical line.
+    """
+    treatment_date = pd.Timestamp(treatment_date)
+
+    treated_avg = (
+        panel[panel["product_identifier"].isin(treated_products)].groupby("date")["revenue"].mean().sort_index()
+    )
+    control_avg = (
+        panel[panel["product_identifier"].isin(control_products)].groupby("date")["revenue"].mean().sort_index()
+    )
+
+    _, ax = plt.subplots(figsize=(12, 5))
+    ax.plot(treated_avg.index, treated_avg.values, color="#e74c3c", linewidth=2, label="Treated (avg)")
+    ax.plot(control_avg.index, control_avg.values, color="#3498db", linewidth=2, label="Control (avg)")
+    ax.axvline(
+        x=treatment_date,
+        color="black",
+        linestyle=":",
+        linewidth=1.5,
+        label=f"Treatment ({treatment_date.date()})",
+    )
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Average Revenue ($)")
+    ax.set_title("Average Revenue: Treated vs. Control Products", fontsize=14, fontweight="bold")
+    ax.legend()
     plt.tight_layout()
     plt.show()

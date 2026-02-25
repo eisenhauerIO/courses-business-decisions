@@ -1,4 +1,5 @@
 ---
+name: review-code
 description: Use when reviewing Python code in *.py files and Jupyter notebook code cells. Checks for bugs, clarity, style, performance, security, and docstrings.
 ---
 
@@ -7,6 +8,19 @@ description: Use when reviewing Python code in *.py files and Jupyter notebook c
 Review Python code in `*.py` files and Jupyter notebook code cells for quality and correctness.
 
 **Exclude:** `_external/` directory.
+
+---
+
+## Automated Checks
+
+Run these first to catch mechanical issues:
+
+```bash
+pre-commit run --all-files   # Formatting, linting, hooks
+ruff check .                 # Python linting
+```
+
+Report any failures in your review. These are **[BLOCKING]** issues.
 
 ---
 
@@ -35,8 +49,7 @@ import pandas as pd
 import numpy as np
 
 # Local imports
-from online_retail_simulator import simulate, load_job_results
-from support import plot_revenue_by_category
+from mypackage import helpers
 ```
 
 **Rules:**
@@ -49,11 +62,11 @@ from support import plot_revenue_by_category
 **Single Import:**
 ```python
 # Good
-from online_retail_simulator.simulate.product_details_mock import simulate_product_details_mock
+from mypackage.submodule import some_function
 
 # Bad - unnecessary parentheses
-from online_retail_simulator.simulate.product_details_mock import (
-    simulate_product_details_mock,
+from mypackage.submodule import (
+    some_function,
 )
 ```
 
@@ -61,13 +74,13 @@ from online_retail_simulator.simulate.product_details_mock import (
 ```python
 # Good
 from support import (
-    plot_revenue_by_category,
-    plot_daily_metrics_trend,
-    plot_conversion_funnel,
+    helper_one,
+    helper_two,
+    helper_three,
 )
 
 # Bad - too long, hard to read
-from support import plot_revenue_by_category, plot_daily_metrics_trend, plot_conversion_funnel
+from support import helper_one, helper_two, helper_three
 ```
 
 ---
@@ -123,7 +136,6 @@ All classes must have docstrings with Parameters and Attributes sections.
 # Good
 daily_sales = sales.groupby("date").agg({"ordered_units": "sum"})
 category_revenue = sales.groupby("category")["revenue"].sum()
-enriched_products = products[products["enriched"] == True]
 
 # Bad
 ds = sales.groupby("date").agg({"ordered_units": "sum"})
@@ -277,79 +289,6 @@ sample = df.sample(n=100, random_state=42)
 
 ## Notebook-Specific Standards
 
-### Import Placement in Lecture Notebooks
-
-For Measure Impact lectures that follow the Theory → Application structure, imports should **not** appear at the beginning of the notebook. Instead, place all imports at the start of Part II (Application) to keep Part I (Theory) completely clean of code.
-
-**Exception:** The Directed Acyclic Graphs lecture includes simulation code in Part I (Theory) to demonstrate collider bias with the police force example. This is intentional—the simulation reinforces a key theoretical point that benefits from immediate hands-on demonstration.
-
-```python
-# Good - imports at start of Application section
-## Part II: Application
-
-# First code cell of Part II
-# Standard Library
-import inspect
-
-# Third-party packages
-import pandas as pd
-
-# Local imports
-from online_retail_simulator import simulate
-```
-
-```python
-# Bad - imports at notebook start pollute Theory section
-# Cell 1: Imports (before any theory content)
-import pandas as pd
-from online_retail_simulator import simulate
-
-# ... Theory section with no code ...
-```
-
-**Rationale:** The Theory section should be pure exposition—definitions, notation, and intuition—without any code distractions. Code only enters when we begin the hands-on Application.
-
-### Confounded Treatment Functions (`support.py`)
-
-Functions that generate confounded treatment assignment for measure-impact lectures must follow these conventions:
-
-- Accept `metrics_df: pd.DataFrame` as input and return a product-level DataFrame
-- Required output columns: `D` (treatment), `Y0`, `Y1`, `Y_observed`, plus covariates
-- Parameters (effect size, selection coefficients) should be explicit function arguments, not hardcoded
-
-### Support Module Conventions (`support.py`)
-
-Each measure-impact lecture has a `support.py` with these conventions:
-
-**Function categories and naming:**
-- Data generation: `create_confounded_treatment*` or `create_*_data` prefix
-- Ground truth: `compute_ground_truth_att()` — extracts true ATT from potential outcomes
-- Visualization: `plot_` prefix for all plotting functions
-- Print helpers: `print_` prefix for formatted output functions
-- Private helpers: `_` prefix (e.g., `_create_binary_quality`, `_parse_weights`)
-
-**Module structure:**
-- Module-level docstring describing the file's purpose
-- Imports grouped by standard library / third-party / local
-
-**Seed handling:**
-- Public functions accept a `seed` parameter (default `42`)
-- The notebook's import cell sets `np.random.seed(42)` for top-level random operations
-
-### Impact Engine Import Convention
-
-Impact Engine lectures add these imports:
-```python
-from impact_engine_measure import evaluate_impact, load_results
-```
-
-Dynamic config generation adds:
-```python
-import yaml
-```
-
----
-
 ### One Logical Operation Per Cell
 ```python
 # Cell 1: Run simulation
@@ -395,10 +334,23 @@ output_files = list(Path("output").glob("*"))
 
 ## Output Format
 
+Structure your review as:
+
+### Automated Checks
+- Pre-commit: Pass/Fail
+- Linting: Pass/Fail (X issues)
+
+### Issues
+
 For each issue found:
 1. **File**: path and line number
 2. **Issue**: brief description
 3. **Suggestion**: how to fix it
+
+Use severity tags:
+- **[BLOCKING]** Must be fixed before merge
+- **[SUGGESTION]** Recommended improvement
+- **[NITPICK]** Minor style preference
 
 ---
 
@@ -417,6 +369,112 @@ Before finalizing code:
 - [ ] No debug print statements left in
 - [ ] DataFrame operations are clear and explicit
 - [ ] NumPy-style docstrings on all public functions
+
+---
+
+## Verification
+
+After making changes, always run:
+
+```bash
+git status
+ruff format .
+ruff check .
+```
+
+This checks for untracked files, formats code, and checks for linting issues.
+
+**Success criteria:**
+- [ ] All new files are under version control
+- [ ] `ruff format .` completes without changes
+- [ ] `ruff check .` passes with no errors
+
+
+---
+
+# Course-Specific Code Conventions
+
+## Import Placement in Lecture Notebooks
+
+For lectures that follow the Theory → Application structure, imports should **not** appear at the beginning of the notebook. Instead, place all imports at the start of Part II (Application) to keep Part I (Theory) completely clean of code.
+
+**Exception:** The Directed Acyclic Graphs lecture includes simulation code in Part I (Theory) to demonstrate collider bias with the police force example. This is intentional—the simulation reinforces a key theoretical point that benefits from immediate hands-on demonstration.
+
+```python
+# Good - imports at start of Application section
+## Part II: Application
+
+# First code cell of Part II
+# Standard Library
+import inspect
+
+# Third-party packages
+import pandas as pd
+
+# Local imports
+from online_retail_simulator import simulate
+```
+
+```python
+# Bad - imports at notebook start pollute Theory section
+# Cell 1: Imports (before any theory content)
+import pandas as pd
+from online_retail_simulator import simulate
+
+# ... Theory section with no code ...
+```
+
+**Rationale:** The Theory section should be pure exposition—definitions, notation, and intuition—without any code distractions. Code only enters when we begin the hands-on Application.
+
+---
+
+## Confounded Treatment Functions (`support.py`)
+
+Functions that generate confounded treatment assignment for measure-impact lectures must follow these conventions:
+
+- Accept `metrics_df: pd.DataFrame` as input and return a product-level DataFrame
+- Required output columns: `D` (treatment), `Y0`, `Y1`, `Y_observed`, plus covariates
+- Parameters (effect size, selection coefficients) should be explicit function arguments, not hardcoded
+
+---
+
+## Support Module Conventions (`support.py`)
+
+Each measure-impact lecture has a `support.py` with these conventions:
+
+**Function categories and naming:**
+- Data generation: `create_confounded_treatment*` or `create_*_data` prefix
+- Ground truth: `compute_ground_truth_att()` — extracts true ATT from potential outcomes
+- Visualization: `plot_` prefix for all plotting functions
+- Print helpers: `print_` prefix for formatted output functions
+- Private helpers: `_` prefix (e.g., `_create_binary_quality`, `_parse_weights`)
+
+**Module structure:**
+- Module-level docstring describing the file's purpose
+- Imports grouped by standard library / third-party / local
+
+**Seed handling:**
+- Public functions accept a `seed` parameter (default `42`)
+- The notebook's import cell sets `np.random.seed(42)` for top-level random operations
+
+---
+
+## Impact Engine Import Convention
+
+Impact Engine lectures add these imports:
+```python
+from impact_engine_measure import evaluate_impact, load_results
+```
+
+Dynamic config generation adds:
+```python
+import yaml
+```
+
+---
+
+## Course-Specific Checklist
+
 - [ ] Simulation pipeline follows standard sequence: `!cat` config → `simulate()` → `load_job_results()` → print verification
 - [ ] `inspect.getsource()` shown before first use of each `support.py` function
 - [ ] Impact Engine calls follow: save CSV → display config → `evaluate_impact()` → `load_results()` → extract results
