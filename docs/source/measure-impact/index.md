@@ -1,14 +1,14 @@
 # Measure Impact
 
-Lectures are provided as [Jupyter Notebooks](https://jupyter.org/). The [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine) allows us to put causal inference methods into practice.
+Lectures are provided as [Jupyter Notebooks](https://jupyter.org/). We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scott Cunningham as our foundational reference. All lectures consist of two parts. First, we cover the theory from the book. Second, we apply these concepts to product data and business decision-making contexts using the [**Online Retail Simulator**](https://github.com/eisenhauerIO/tools-catalog-generator) and the [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine).
 
-We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scott Cunningham as our foundational reference. All lectures consist of two parts. First, we cover the theory from the book. Second, we apply these concepts to product data and business decision-making contexts. Each application section follows a common progression: we frame a causal question within the business domain and use the [**Online Retail Simulator**](https://github.com/eisenhauerIO/tools-catalog-generator) to generate data with known ground truth. We then turn to the [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine) — first with a naive experimental comparison that takes no consideration of the treatment assignment mechanism, then with the lecture's causal method to recover the true effect. Each lecture closes with a deeper exploration of method-specific diagnostics, limitations, or extensions.
+Each application lecture follows the same five-step workflow. We frame a causal question in a business context, simulate data with known ground truth using the Online Retail Simulator, measure the treatment effect — first with a naive approach, then with a causal method — using the Impact Engine, evaluate how well each method recovers the truth, and tune the method's parameters to understand how configuration choices affect the reliability of causal estimates.
 
-```{figure} ../_static/mixtape-book.png
+```{figure} ../_static/lecture-structure.svg
 :align: center
-:width: 150px
+:width: 800px
 
-***Causal Inference: The Mixtape***
+***Lecture Structure***
 ```
 
 The material is organized in four parts. We begin with foundational causal models that clarify what causal effects mean and under which assumptions they are identified. A dedicated tooling section introduces the software infrastructure that supports the applied work throughout the course. We then study methods that rely on selection on observables, followed by methods designed to address selection on unobservables.
@@ -47,7 +47,7 @@ The [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine) put
 
 ## Selection on Observables
 
-```{figure} ../_static/dag_selection_observables.svg
+```{figure} ../_static/dag-selection-observables.svg
 :figclass: figure-float-right
 :width: 250px
 ```
@@ -66,7 +66,7 @@ We introduce methods for causal inference under selection on observables. This s
 
 ## Selection on Unobservables
 
-```{figure} ../_static/dag_selection_unobservables.svg
+```{figure} ../_static/dag-selection-unobservables.svg
 :figclass: figure-float-right
 :width: 280px
 ```
