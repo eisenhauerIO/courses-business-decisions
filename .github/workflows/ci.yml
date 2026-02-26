@@ -26,7 +26,7 @@ jobs:
         python-version: '3.11'
 
     - name: Install hatch
-      run: pip install hatch
+      run: pip install hatch "virtualenv<21"
 
     - name: Run Ruff linter
       run: hatch run ruff check .

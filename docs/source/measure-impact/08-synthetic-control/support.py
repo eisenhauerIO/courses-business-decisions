@@ -6,6 +6,7 @@ from pathlib import Path
 
 # Third-party packages
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import yaml
 
@@ -370,5 +371,201 @@ def plot_average_fit(panel, treated_products, control_products, treatment_date):
     ax.set_ylabel("Average Revenue ($)")
     ax.set_title("Average Revenue: Treated vs. Control Products", fontsize=14, fontweight="bold")
     ax.legend()
+    plt.tight_layout()
+    plt.show()
+
+
+def run_placebo_tests(panel, treated_product, control_products, treatment_date, n_placebos=20):
+    """Run placebo-in-space tests for synthetic control inference.
+
+    Fits a synthetic control for each placebo unit (pretending it is
+    treated) and for the actual treated unit, then computes RMSPE ratios
+    to construct a permutation-based p-value.
+
+    Parameters
+    ----------
+    panel : pandas.DataFrame
+        Panel data with product_identifier, date, and revenue columns.
+    treated_product : str
+        The product_identifier of the actual treated unit.
+    control_products : list of str
+        Product identifiers in the donor pool.
+    treatment_date : str or pandas.Timestamp
+        Treatment date.
+    n_placebos : int, optional
+        Number of placebo units to sample from the donor pool.
+
+    Returns
+    -------
+    dict
+        ``"summary"`` : DataFrame with columns unit, rmspe_pre,
+        rmspe_post, ratio, is_treated.
+        ``"gaps"`` : dict mapping each unit to its gap Series
+        (actual minus synthetic).
+    """
+    from pysyncon import Dataprep, Synth
+
+    treatment_date = pd.Timestamp(treatment_date)
+    rng = np.random.default_rng(42)
+
+    n_sample = min(n_placebos, len(control_products))
+    placebo_units = sorted(rng.choice(control_products, size=n_sample, replace=False).tolist())
+    units_to_evaluate = placebo_units + [treated_product]
+
+    all_times = sorted(panel["date"].unique())
+    pre_times = [t for t in all_times if t < treatment_date]
+
+    rows = []
+    gaps = {}
+
+    for i, unit in enumerate(units_to_evaluate, 1):
+        is_treated = unit == treated_product
+        donors = [p for p in control_products if p != unit]
+
+        df = panel[panel["product_identifier"].isin([unit] + donors)].copy()
+        try:
+            dataprep = Dataprep(
+                foo=df,
+                predictors=["revenue"],
+                predictors_op="mean",
+                dependent="revenue",
+                unit_variable="product_identifier",
+                time_variable="date",
+                treatment_identifier=unit,
+                controls_identifier=donors,
+                time_predictors_prior=pre_times,
+                time_optimize_ssr=pre_times,
+            )
+
+            synth = Synth()
+            synth.fit(dataprep=dataprep, optim_method="Nelder-Mead", optim_initial="equal")
+
+            rmspe_pre = float(synth.mspe()) ** 0.5
+
+            # Reconstruct synthetic series from weights
+            weights = _parse_weights(synth.weights(round=6).to_dict())
+            unit_ts = df[df["product_identifier"] == unit].set_index("date")["revenue"].sort_index()
+            synthetic_ts = pd.Series(0.0, index=unit_ts.index)
+            for donor, w in weights.items():
+                if abs(w) < 1e-8:
+                    continue
+                donor_ts = (
+                    df[df["product_identifier"] == donor]
+                    .set_index("date")["revenue"]
+                    .reindex(unit_ts.index, fill_value=0.0)
+                )
+                synthetic_ts += w * donor_ts
+
+            gap = unit_ts - synthetic_ts
+            gaps[unit] = gap
+
+            post_gap = gap[gap.index >= treatment_date]
+            rmspe_post = float((post_gap**2).mean() ** 0.5)
+            ratio = rmspe_post / rmspe_pre if rmspe_pre > 1e-10 else float("inf")
+
+            rows.append(
+                {
+                    "unit": unit,
+                    "rmspe_pre": rmspe_pre,
+                    "rmspe_post": rmspe_post,
+                    "ratio": ratio,
+                    "is_treated": is_treated,
+                }
+            )
+            label = " <- treated" if is_treated else ""
+            print(f"  [{i}/{len(units_to_evaluate)}] {unit} — ratio: {ratio:.2f}{label}")
+        except Exception as e:
+            print(f"  [{i}/{len(units_to_evaluate)}] {unit} — FAILED: {e}")
+
+    return {"summary": pd.DataFrame(rows), "gaps": gaps}
+
+
+def plot_placebo_gaps(placebo_results, treatment_date):
+    """Spaghetti plot of placebo and treated unit gaps over time.
+
+    Parameters
+    ----------
+    placebo_results : dict
+        Output from ``run_placebo_tests``.
+    treatment_date : str or pandas.Timestamp
+        Treatment date for the vertical line.
+    """
+    treatment_date = pd.Timestamp(treatment_date)
+    gaps = placebo_results["gaps"]
+    summary = placebo_results["summary"]
+    treated_unit = summary.loc[summary["is_treated"], "unit"].iloc[0]
+
+    _, ax = plt.subplots(figsize=(12, 5))
+
+    for unit, gap in gaps.items():
+        if unit == treated_unit:
+            continue
+        ax.plot(gap.index, gap.values, color="#bdc3c7", linewidth=0.8, alpha=0.6)
+
+    # Plot a single gray entry for the legend
+    ax.plot([], [], color="#bdc3c7", linewidth=0.8, label="Placebo units")
+
+    if treated_unit in gaps:
+        treated_gap = gaps[treated_unit]
+        ax.plot(
+            treated_gap.index,
+            treated_gap.values,
+            color="#e74c3c",
+            linewidth=2.5,
+            label=f"Treated ({treated_unit})",
+        )
+
+    ax.axvline(
+        x=treatment_date,
+        color="black",
+        linestyle=":",
+        linewidth=1.5,
+        label=f"Treatment ({treatment_date.date()})",
+    )
+    ax.axhline(y=0, color="gray", linestyle="-", linewidth=0.8)
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Revenue Gap ($)")
+    ax.set_title("Placebo-in-Space Test: Gap Plots", fontsize=14, fontweight="bold")
+    ax.legend()
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_rmspe_ratios(placebo_results):
+    """Horizontal bar chart of RMSPE ratios with exact p-value.
+
+    Parameters
+    ----------
+    placebo_results : dict
+        Output from ``run_placebo_tests``.
+    """
+    summary = placebo_results["summary"].sort_values("ratio", ascending=True).reset_index(drop=True)
+
+    colors = ["#e74c3c" if row["is_treated"] else "#bdc3c7" for _, row in summary.iterrows()]
+
+    _, ax = plt.subplots(figsize=(8, max(3, len(summary) * 0.35)))
+    ax.barh(range(len(summary)), summary["ratio"].values, color=colors, edgecolor="black", linewidth=0.5)
+    ax.set_yticks(range(len(summary)))
+    ax.set_yticklabels(summary["unit"].values, fontsize=9)
+    ax.set_xlabel("RMSPE Ratio (Post / Pre)")
+    ax.set_title("RMSPE Ratio Distribution", fontsize=14, fontweight="bold")
+
+    # Compute and annotate exact p-value
+    treated_row = summary[summary["is_treated"]]
+    if not treated_row.empty:
+        treated_ratio = treated_row["ratio"].iloc[0]
+        n_total = len(summary)
+        n_extreme = int((summary["ratio"] >= treated_ratio).sum())
+        p_value = n_extreme / n_total
+        ax.annotate(
+            f"p-value = {n_extreme}/{n_total} = {p_value:.3f}",
+            xy=(0.95, 0.05),
+            xycoords="axes fraction",
+            ha="right",
+            fontsize=11,
+            fontweight="bold",
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="gray"),
+        )
+
     plt.tight_layout()
     plt.show()
