@@ -85,9 +85,12 @@ def write_sc_config(
 def build_panel(enriched_metrics, potential_outcomes, treatment_date="2024-11-15", trend_slope=5.0):
     """Build analysis-ready panel from enriched simulator output.
 
-    Aggregates daily revenue per product, adds a common upward time trend
-    (so naive before-after estimators are visibly biased), and computes
-    counterfactual revenue from the simulator's potential outcomes.
+    Adds a common upward time trend (so naive before-after estimators are
+    visibly biased) and computes counterfactual revenue from the simulator's
+    potential outcomes.
+
+    The simulator already produces a balanced panel with one row per product
+    per day, so no aggregation or reindexing is needed.
 
     Parameters
     ----------
@@ -105,32 +108,22 @@ def build_panel(enriched_metrics, potential_outcomes, treatment_date="2024-11-15
     Returns
     -------
     panel : pandas.DataFrame
-        Balanced panel with product_identifier, date, revenue, and
+        Panel with product_identifier, date, revenue, and
         revenue_counterfactual columns.
     treated_products : list of str
         Product identifiers that received treatment.
     control_products : list of str
         Product identifiers in the donor pool.
     """
-    # Aggregate revenue per product per date
-    daily = enriched_metrics.groupby(["product_identifier", "date"])["revenue"].sum().reset_index()
-    daily["date"] = pd.to_datetime(daily["date"])
-    daily["product_identifier"] = daily["product_identifier"].astype(str)
+    panel = enriched_metrics[["product_identifier", "date", "revenue"]].copy()
+    panel["date"] = pd.to_datetime(panel["date"])
+    panel["product_identifier"] = panel["product_identifier"].astype(str)
 
-    # Aggregate counterfactual revenue (Y0) per product per date
-    po = potential_outcomes.copy()
+    # Merge counterfactual revenue (Y0) from potential outcomes
+    po = potential_outcomes[["product_identifier", "date", "Y0_revenue"]].copy()
     po["date"] = pd.to_datetime(po["date"])
     po["product_identifier"] = po["product_identifier"].astype(str)
-    daily_y0 = po.groupby(["product_identifier", "date"])["Y0_revenue"].sum().reset_index()
-
-    # Merge counterfactual
-    daily = daily.merge(daily_y0, on=["product_identifier", "date"], how="left")
-
-    # Build balanced panel (fill missing product-date pairs with 0)
-    products = sorted(daily["product_identifier"].unique())
-    dates = pd.date_range(daily["date"].min(), daily["date"].max(), freq="D")
-    idx = pd.MultiIndex.from_product([products, dates], names=["product_identifier", "date"])
-    panel = daily.set_index(["product_identifier", "date"]).reindex(idx, fill_value=0.0).reset_index()
+    panel = panel.merge(po, on=["product_identifier", "date"], how="left")
 
     # Add common time trend (affects all products equally)
     days_since_start = (panel["date"] - panel["date"].min()).dt.days
@@ -139,14 +132,14 @@ def build_panel(enriched_metrics, potential_outcomes, treatment_date="2024-11-15
 
     # Counterfactual: Y0 for all products (what revenue would be without treatment)
     panel["revenue_counterfactual"] = panel["Y0_revenue"]
+    panel = panel.drop(columns=["Y0_revenue"])
 
     # Identify treated vs control products
+    products = sorted(panel["product_identifier"].unique())
     treated_products = sorted(
         enriched_metrics[enriched_metrics["enriched"]]["product_identifier"].astype(str).unique().tolist()
     )
     control_products = sorted([p for p in products if p not in treated_products])
-
-    panel = panel.drop(columns=["Y0_revenue"])
 
     return panel, treated_products, control_products
 
