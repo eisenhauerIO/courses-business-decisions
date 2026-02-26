@@ -11,289 +11,56 @@ Review prose in markdown files (`.md`) and Jupyter notebook markdown cells for f
 
 ---
 
-# Part I: Formatting Standards
+# Step 1: Load Guidelines
 
-## Code Elements in Markdown
+Read the project's writing guidelines file at `docs/source/GUIDELINES.md`. This is the single source of truth for all formatting, terminology, and structural conventions. Every check below should be measured against the standards defined there.
 
-### Functions and Methods
-Use backticks with parentheses:
-
-```markdown
-Good: `simulate()`
-Good: `load_job_results()`
-Bad:  simulate()
-Bad:  simulate
-```
-
-### Variables and Objects
-Use backticks:
-
-```markdown
-Good: The `job_info` object contains...
-Good: Pass the `results` to the next function...
-Bad:  The job_info object contains...
-```
-
-### Parameters and Arguments
-Use backticks:
-
-```markdown
-Good: The `effect_size` parameter controls...
-Good: Set `num_products` to 100...
-Bad:  The effect_size parameter controls...
-```
-
-### Object Types and Return Values
-
-Use backticks for types:
-
-```markdown
-Good: Returns a `JobInfo` object
-Good: Returns a `DataFrame`
-Bad:  Returns a JobInfo object
-```
+If the file does not exist, report this as the first finding.
 
 ---
 
-## File References
+# Step 2: Formatting Audit
 
-### Config Files
-Use backticks with quotes:
+Using the inline formatting table and emphasis rules from the guidelines, audit the target file(s):
 
-```markdown
-Good: `"config_simulation.yaml"`
-Bad:  config_simulation.yaml
-Bad:  "config_simulation.yaml"
-```
-
-### Python Modules
-Use backticks:
-
-```markdown
-Good: `products_rule_based.py`
-Good: `online_retail_simulator`
-Bad:  products_rule_based.py
-```
-
-### Directories
-Use backticks with trailing slash:
-
-```markdown
-Good: `output/`
-Good: `src/simulate/`
-Bad:  output
-```
-
-### Data Columns and DataFrame Fields
-
-**Use backticks** for column/field names:
-
-```markdown
-Good: Each product has a unique `product_identifier`, a `category`, and a `price`.
-Good: The `impressions` column tracks how many times a product was shown.
-Bad:  Each product has a unique product_identifier (missing formatting)
-Bad:  The **impressions** column (bold alone - use backticks instead)
-```
+- [ ] All column names use `` `column_name` `` format
+- [ ] All functions use `` `function_name()` `` format
+- [ ] All file references use `` `"filename.ext"` `` format
+- [ ] Object types use backticks (`` `DataFrame` ``, `` `JobInfo` ``)
+- [ ] First introduction of concepts uses **bold**
+- [ ] Links use meaningful text, not "click here"
+- [ ] Headers are questions when exploring data
+- [ ] Active voice, present tense throughout
+- [ ] Phase names are lowercase bold (**products**)
+- [ ] YAML sections are uppercase bold (**PRODUCTS**)
+- [ ] Uses "shoppers" not "customers" for e-commerce end-users
+- [ ] Additional resources section uses correct format
 
 ---
 
-## Emphasis and Highlighting
+# Step 3: Structure Compliance
 
-### Bold for Concepts
-Use on first introduction:
+Check that the document follows the structural conventions from the guidelines:
 
-```markdown
-Good: The **conversion funnel** tracks customer behavior. The conversion funnel includes...
-Bad:  The conversion funnel tracks... (not bold on first use)
-```
-
-### Italics for Subtle Emphasis
-Use sparingly for meta-comments:
-
-```markdown
-Good: Describe *what* you want in natural language
-Good: The goal is not perfectly polished code—it's *rapid insight generation*
-```
-
-### Questions as Headers
-Format important questions in bold:
-
-```markdown
-Good: **Does improving product content quality increase sales?**
-Good: How do customers move through the purchase journey?
-```
+- Do notebooks follow the prescribed structure (Theory → Application, notation tables, assignment mechanism)?
+- Are configs named according to convention (`config_*.yaml`)?
+- Is the writing style consistent with other lectures?
+- Are all config files displayed to the reader (via `! cat`) before use?
 
 ---
 
-## Numbers and Values
-
-### Inline Numbers
-Plain text for readability:
-
-```markdown
-Good: Simulate 100 products
-Good: A 50% increase
-Bad:  Simulate `100` products (over-formatted)
-```
-
-### Parameter Values
-Use code formatting:
-
-```markdown
-Good: Set `effect_size: 0.5`
-Good: The default `num_products: 100`
-Bad:  Set effect_size: 0.5 (not formatted)
-```
-
----
-
-## Links and References
-
-### External Links
-Format package/tool names with link on first mention:
-
-```markdown
-Good: The [**Online Retail Simulator**](https://github.com/eisenhauerIO/tools-catalog-generator)
-Good: We use [GitHub Copilot](https://github.com/features/copilot) to generate code.
-```
-
-### Subsequent Mentions
-Use plain bold or plain text:
-
-```markdown
-Good: The **Online Retail Simulator** generates...
-Good: The simulator generates...
-Bad:  The [Online Retail Simulator] generates... (over-linked)
-```
-
----
-
-## Lists and Examples
-
-### Parenthetical Examples
-Use em-dash for inline examples:
-
-```markdown
-Good: `**category**` (such as Electronics, Clothing, or Books)
-Good: Brand names get premium suffixes ("Elite", "Pro")
-Bad:  **category** like Electronics, Clothing, or Books
-```
-
-### Code Example Values
-Use quotes for strings:
-
-```markdown
-Good: `"2024-11-01"`
-Good: `seed: 42`
-Bad:  2024-11-01 (not quoted)
-```
-
----
-
-## Headers and Structure
-
-### Header Hierarchy
-```markdown
-# Main Title (once per document)
-## Major Section
-### Subsection
-#### Rare: only for deeply nested content
-```
-
-### Section Headers Should Be Questions (When Appropriate)
-```markdown
-Good: ## Exploring the Generated Data
-Good: ### How is revenue distributed across categories?
-Bad:  ### Revenue Distribution (less engaging)
-```
-
-### No Formulaic Summary Sections
-
-Do **not** add structured summary sections at the end of documents. Avoid:
-- "Summary" with bullet points recapping the content
-- "Key Concepts" or "Key Takeaways" lists
-- "Practical Implications" sections
-- "Looking Ahead" or "Next Steps" sections
-
-Let the material speak for itself.
-
----
-
-## Tone and Voice
-
-### Active Voice
-```markdown
-Good: The simulator generates a product catalog
-Bad:  A product catalog is generated by the simulator
-```
-
-### Present Tense
-```markdown
-Good: The function writes the DataFrames to disk
-Bad:  The function will write the DataFrames to disk
-```
-
-### Instructional but Not Condescending
-```markdown
-Good: Let's start by simulating 100 products
-Bad:  Now we're going to simulate some products (too casual)
-Bad:  It is necessary to simulate products (too formal)
-```
-
----
-
-## Quick Reference
-
-| Element | Format | Example |
-|---------|--------|---------|
-| Column name | `` `name` `` | `product_identifier` |
-| Function | `` `function()` `` | `simulate()` |
-| Variable | `` `variable` `` | `job_info` |
-| Parameter | `` `parameter` `` | `effect_size` |
-| Config file | `` `"file.yaml"` `` | `"config_simulation.yaml"` |
-| Object type | `` `Type` `` | `DataFrame` |
-| Directory | `` `dir/` `` | `output/` |
-
----
-
-# Part II: Documentation Structure and Infrastructure
-
-## Find Guidelines
-
-Locate the project's documentation guidelines file. Look for:
-- `documentation/GUIDELINES.md`
-- `docs/GUIDELINES.md`
-- `docs/source/GUIDELINES.md`
-
-If no guidelines file exists, report this as the first finding and suggest creating one.
-
-## Check Structure Compliance
-
-Read the guidelines and verify the actual docs match:
-- Do all pages listed in the guidelines exist?
-- Are all pages registered in the toctree (index.md)?
-- Do notebooks follow the prescribed structure (step sequence, naming)?
-- Are configs named according to convention?
-- Is the writing style consistent across pages?
-
-## Check Inline Formatting
-
-If the guidelines include a text formatting table, audit every doc page against it:
-- Are code identifiers (functions, variables, config keys, file names) in backticks?
-- Are classes, interfaces, and source files linked with markdown links?
-- Are design patterns and key concepts in bold?
-- Are library/package names linked to their documentation sites?
-- Are tools and format names in plain text?
-
-## Check Rendered Output
+# Step 4: Check Rendered Output
 
 If docs use Sphinx or another build system, inspect the built HTML for rendering problems:
+
 - **Broken links**: Check that relative links in included files resolve correctly in the built HTML.
 - **Anchor-only hrefs**: Search the built HTML for `href="#` patterns that look like failed relative links.
 - **Missing formatting**: Verify that inline code, bold, italic, and links render as intended.
 - **Image/badge rendering**: Confirm badges, diagrams, and images load correctly.
 
-## Check Infrastructure
+---
+
+# Step 5: Check Infrastructure
 
 Verify standard docs tooling is in place:
 
@@ -308,238 +75,60 @@ Verify standard docs tooling is in place:
 
 ---
 
-# Part III: Pedagogical Clarity
+# Step 6: Pedagogical Clarity
 
 ## Content Accuracy
 
-### Technical Correctness
 - [ ] Definitions and notation are mathematically correct
 - [ ] Equations and derivations are accurate
 - [ ] Statistical concepts are properly explained
 - [ ] Data/statistics cited are accurate and sourced
 
----
-
 ## Structure and Flow
 
-### Logical Progression
 - [ ] Concepts build on each other in a sensible order
 - [ ] Prerequisites are introduced before they're needed
 - [ ] Transitions between sections are clear
 - [ ] The narrative has a clear beginning, middle, and end
-
-### Section Balance
 - [ ] Theory and application sections are appropriately balanced
 - [ ] No section is disproportionately long or short
-- [ ] Complex topics get adequate depth
-- [ ] Simple topics aren't over-explained
 
-### Narrative Depth
+## Narrative Depth
 
 - [ ] Concepts are explained thoroughly with multiple paragraphs, not just stated
 - [ ] Mathematical derivations show intermediate steps, not just final results
 - [ ] The "why" is explained, not just the "what"
 - [ ] Tables organize definitions, parameters, and comparisons
 - [ ] Formal definitions use precise LaTeX notation
-- [ ] Complex ideas are decomposed into named components
-
----
 
 ## Examples and Applications
 
-### Worked Examples
 - [ ] At least one complete worked example with code
 - [ ] Example is realistic and relatable
 - [ ] Steps are explained, not just shown
 - [ ] Results are interpreted, not just displayed
 
----
-
 ## Engagement and Clarity
 
-### Accessibility
 - [ ] Technical jargon is explained on first use
 - [ ] Assumes appropriate (not excessive) prior knowledge
 - [ ] Difficult concepts have intuitive explanations
-- [ ] Analogies or visual aids are used where helpful
-
-### Active Learning
 - [ ] Headers pose questions where appropriate
 - [ ] Students can run code and see results
-- [ ] Opportunities for exploration or modification exist
-
----
 
 ## Completeness
 
-### No Missing Pieces
 - [ ] All referenced concepts are defined
 - [ ] No "TODO" or placeholder content in final version
 - [ ] All code cells are complete and runnable
 - [ ] Figures and tables are labeled and explained
-
-### Appropriate Scope
 - [ ] Covers the topic adequately for the course level
-- [ ] Doesn't try to cover too much in one lecture
-- [ ] Points to additional resources for deeper exploration
 
 ---
 
-# Part IV: Checklists
+# Step 7: Measure-Impact Pedagogy Checklist
 
-## Formatting Checklist
-
-- [ ] All column names use `` `column_name` `` format
-- [ ] All functions use `` `function_name()` `` format
-- [ ] All file references use `` `"filename.ext"` `` format
-- [ ] Object types use backticks (`` `DataFrame` ``, `` `JobInfo` ``)
-- [ ] First introduction of concepts uses **bold**
-- [ ] Links use meaningful text, not "click here"
-- [ ] Headers are questions when exploring data
-- [ ] Active voice, present tense throughout
-
-## Pedagogy Checklist
-
-- [ ] Concepts build logically
-- [ ] Technical jargon is explained
-- [ ] Examples are realistic and explained
-- [ ] Results are interpreted, not just shown
-- [ ] No placeholder or TODO content
-
----
-
-## Review Questions
-
-When reviewing, ask yourself:
-
-1. **Would a reader understand this?** Not just follow along, but actually grasp the concept.
-
-2. **Is the "why" explained?** Not just what the method does, but why it works and when to use it.
-
-3. **Are assumptions made explicit?** Readers should know what conditions must hold.
-
-4. **What would confuse someone?** Identify potential stumbling blocks before readers hit them.
-
----
-
-## Output Format
-
-For each issue found:
-1. **Location**: File and line/section reference
-2. **Issue**: What's wrong
-3. **Suggestion**: How to fix it
-
-
----
-
-# Course-Specific Writing Conventions
-
-## Terminology
-
-- Use "shoppers" (not "customers") when referring to end-users in e-commerce context
-- Verify consistency across all documentation
-
----
-
-## Configuration Sections (YAML)
-
-### Top-Level Sections
-Use **BOLD UPPERCASE** in prose:
-
-```markdown
-Good: The **PRODUCTS** section generates...
-Good: The **PARAMS** subsection controls...
-Bad:  The PRODUCTS section generates...
-Bad:  The products section generates...
-```
-
-### Specific Keys
-Use backticks in technical context:
-
-```markdown
-Good: The `effect_size` parameter controls...
-Good: Set `enrichment_fraction` to 1.0...
-Bad:  The effect_size parameter controls...
-```
-
----
-
-## Simulation Phases vs YAML Sections
-
-### Conceptual Phases
-Use **bold lowercase**:
-
-```markdown
-Good: "the **products** phase"
-Good: "the **product_details** phase"
-Bad:  "the products phase" (not bold)
-Bad:  "the PRODUCTS phase" (wrong case)
-```
-
-### YAML Configuration Sections
-Use **bold uppercase**:
-
-```markdown
-Good: "The **PRODUCTS** section in the YAML config..."
-Bad:  "The products section in the YAML..." (lowercase)
-```
-
-**Rule:** Phase names (concepts) = lowercase bold. YAML sections = uppercase bold.
-
----
-
-## Source Alignment
-
-For Measure Impact lectures:
-- [ ] Theory matches the referenced Mixtape chapter
-- [ ] Key concepts from the chapter are covered
-- [ ] Notation follows the source material
-- [ ] No contradictions with established methodology
-
----
-
-## Measure-Impact Narrative Conventions
-
-### The Selection Paradox Frame
-- The true treatment effect is POSITIVE
-- The naive estimate is NEGATIVE (or severely biased)
-- The method studied in the lecture recovers the positive truth
-- This paradox should be explicitly stated in the Business Context or Naive Comparison section
-
-### "God's Eye View" Language
-- The simulator provides both potential outcomes for every unit
-- This enables numerical verification of theoretical decompositions
-- Use language like "the simulator gives us a god's eye view" or "we observe both potential outcomes"
-- Frame this as a pedagogical advantage: "In real data, we would not have this luxury"
-
-### Theory-to-Application Bridge
-- The Part II introduction should explicitly connect to Part I concepts
-- Name the specific theoretical tools being applied (e.g., "the bias decomposition from Part I", "the CIA from Section 1")
-- The Assignment Mechanism section bridges business context and methodology — it should explain WHY the method works for this specific confounding structure
-
-### Consistent Business Framing
-- All measure-impact lectures share the same domain (e-commerce content optimization)
-- Verify consistency: "content optimization" for the treatment, "revenue" as the outcome variable
-- Selection always operates through product characteristics creating negative bias
-
----
-
-## Additional Resources Section
-
-Every lecture ends with an `## Additional resources` section (lowercase "r"). This is the final section of the notebook — nothing follows it. Format: bullet points with **Author (Year)**. [Title](url). *Journal*, volume(issue), pages.
-
----
-
-## Course-Specific Checklists
-
-### Formatting Checklist (additions)
-
-- [ ] Phase names are lowercase bold (**products**)
-- [ ] YAML sections are uppercase bold (**PRODUCTS**)
-- [ ] Uses "shoppers" not "customers" for e-commerce end-users
-- [ ] Additional resources section uses correct format
-
-### Pedagogy Checklist (additions)
+For lectures under `docs/source/measure-impact/`, also verify:
 
 - [ ] Selection paradox is explicit: true effect is positive, naive estimate is negative/biased
 - [ ] Notation table present in Business Context (Variable | Notation | Description)
@@ -547,19 +136,32 @@ Every lecture ends with an `## Additional resources` section (lowercase "r"). Th
 - [ ] Interface-to-theory mapping table present for each Impact Engine method call
 - [ ] "God's eye view" framing used when introducing simulator potential outcomes
 - [ ] Part II introduction references specific Part I concepts by name
+- [ ] Source code shown via `inspect.getsource()` for key support functions
+- [ ] Theory matches the referenced Mixtape chapter
 
 ---
 
-## Quick Reference (additions)
+# Review Questions
 
-| Element | Format | Example |
-|---------|--------|---------|
-| Phase (concept) | **phase** | **products** |
-| YAML section | **SECTION** | **PRODUCTS** |
+When reviewing, ask yourself:
+
+1. **Would a reader understand this?** Not just follow along, but actually grasp the concept.
+2. **Is the "why" explained?** Not just what the method does, but why it works and when to use it.
+3. **Are assumptions made explicit?** Readers should know what conditions must hold.
+4. **What would confuse someone?** Identify potential stumbling blocks before readers hit them.
 
 ---
 
-## Verification
+# Output Format
+
+For each issue found:
+1. **Location**: File and line/section reference
+2. **Issue**: What's wrong
+3. **Suggestion**: How to fix it
+
+---
+
+# Verification
 
 After making changes, always run:
 
@@ -570,10 +172,8 @@ hatch run ruff check .
 hatch run build
 ```
 
-This checks for untracked files, formats code, checks for linting issues, builds the documentation and executes all notebooks, confirming that changes don't break anything.
-
 **Success criteria:**
-- [ ] All new files are under version control (`git status` shows no untracked files that should be committed)
+- [ ] All new files are under version control
 - [ ] `hatch run ruff format .` completes without changes
 - [ ] `hatch run ruff check .` passes with no errors
 - [ ] `hatch run build` completes successfully
