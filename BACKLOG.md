@@ -4,6 +4,11 @@
 
 - [ ] Synthetic control lecture: switch presentation order — present weights first, then the role of unobservables
 
+- [ ] Lecture 08: assignment mechanism narrative claims quality-based selection but simulator uses random selection
+  - The notebook says "treated products are selected based on their content quality scores — products with the weakest listings are prioritized"
+  - The simulator's `quantity_boost` in `enrichment_library.py` uses `rng.choice()` (uniform random)
+  - Either fix the narrative to match the code (random assignment → no selection bias story) or update the simulator to select by quality score
+
 - [ ] Incorporate review feedback
   - **Blocking**
     - Add notation table (Variable | Notation | Description) to Business Context in lectures 02 (DAGs) and 03 (Matching)
