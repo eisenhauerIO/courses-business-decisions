@@ -111,7 +111,7 @@ Do **not** add structured summary sections at the end of documents. Avoid "Summa
 
 Every lecture ends with an `## Additional resources` section (lowercase "r"). This is the final section of the notebook — nothing follows it.
 
-Format: bullet points with **Author (Year)**. [Title](url). *Journal*, volume(issue), pages.
+Format: bullet points with **Author (Year)**. `[Title](url)`. *Journal*, volume(issue), pages.
 
 ---
 
@@ -132,7 +132,7 @@ All measure-impact lectures share the same domain:
 
 - **Treatment**: content optimization campaign on a subset of products
 - **Outcome**: revenue
-- **Selection**: operates through product characteristics, creating negative bias
+- **Selection**: operates through product characteristics, creating bias in naive estimates
 
 ### Notation Table
 
@@ -147,7 +147,7 @@ Every Business Context section includes a notation table:
 ## The Selection Paradox Frame
 
 - The true treatment effect is **positive** (content optimization helps)
-- The naive estimate is **negative** (or severely biased)
+- The naive estimate is **severely biased** (direction depends on the confounding structure)
 - The method studied in the lecture recovers the positive truth
 - This paradox should be explicitly stated in the Business Context or Naive Comparison section
 

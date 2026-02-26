@@ -473,6 +473,26 @@ import yaml
 
 ---
 
+## Lecture Self-Containment
+
+Each lecture directory must be fully self-contained — all files required to run the notebook must exist in the same directory.
+
+**Expected structure:**
+```
+docs/source/<section>/<lecture-name>/
+├── lecture.ipynb          # Main notebook
+├── support.py             # Local helper functions (if imported)
+├── config_*.yaml          # Configuration files (if referenced)
+└── output/                # Generated outputs (gitignored)
+```
+
+**Checks:**
+- For each `from support import ...` in the notebook, verify `support.py` exists in the same directory
+- For each `config_*.yaml` referenced (via `! cat` or Python), verify the file exists in the same directory
+- No imports from other lecture directories
+
+---
+
 ## Course-Specific Checklist
 
 - [ ] Simulation pipeline follows standard sequence: `!cat` config → `simulate()` → `load_job_results()` → print verification
@@ -480,6 +500,7 @@ import yaml
 - [ ] Impact Engine calls follow: save CSV → display config → `evaluate_impact()` → `load_results()` → extract results
 - [ ] `TRUE_EFFECT` defined as a named constant (not inlined in function calls)
 - [ ] Ground truth ATT computed and stored before method comparisons
+- [ ] Lecture directory is self-contained (all referenced files present)
 
 ---
 

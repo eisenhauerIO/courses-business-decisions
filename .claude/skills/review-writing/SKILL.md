@@ -49,14 +49,43 @@ Check that the document follows the structural conventions from the guidelines:
 
 ---
 
-# Step 4: Check Rendered Output
+# Step 4: Check Links and References
 
-If docs use Sphinx or another build system, inspect the built HTML for rendering problems:
+## External URLs
 
-- **Broken links**: Check that relative links in included files resolve correctly in the built HTML.
-- **Anchor-only hrefs**: Search the built HTML for `href="#` patterns that look like failed relative links.
-- **Missing formatting**: Verify that inline code, bold, italic, and links render as intended.
-- **Image/badge rendering**: Confirm badges, diagrams, and images load correctly.
+Find all external URLs in the target file(s):
+
+```bash
+# In markdown files
+grep -rhoE 'https?://[^)>"]+' FILE --include="*.md" | sort -u
+
+# In notebooks (JSON format)
+grep -rhoE 'https?://[^)>"\\]+' FILE --include="*.ipynb" | sort -u
+```
+
+For each unique URL, verify accessibility:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}" "URL"
+```
+
+**Expected:** 200 OK. **Flag:** 404 (broken), 403 (restricted — OK for paywalled academic content), 3xx (redirect).
+
+## Internal References
+
+Verify that all image and file references resolve:
+
+- Image files referenced via `![](path)` or `<img src="path">` exist at the expected path
+- Notebook cross-references (e.g., `toctree` entries, relative links) point to existing files
+- SVG/PNG files referenced in `{figure}` directives exist in `_static/`
+
+## Rendered Output
+
+If docs use Sphinx, inspect the built HTML for rendering problems:
+
+- **Anchor-only hrefs**: Search for `href="#` patterns that look like failed relative links
+- **Missing formatting**: Verify that inline code, bold, italic, and links render as intended
+- **Image/badge rendering**: Confirm diagrams and images load correctly
 
 ---
 
