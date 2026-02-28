@@ -1,4 +1,4 @@
-"""Support functions for the Evaluate Evidence notebook."""
+"""Support functions for the Automated Evidence Review notebook."""
 
 import json
 import tempfile
@@ -69,16 +69,15 @@ def create_mock_job_directory(
         },
     }
 
+    # Flat structure matching what load_scorer_event reads
     impact_results = {
         "model_type": model_type,
         "sample_size": sample_size,
         "cost_to_scale": cost_to_scale,
-        "impact_estimates": {
-            "treatment_effect": effect_estimate,
-            "ci_lower": ci_lower,
-            "ci_upper": ci_upper,
-            "p_value": 0.003,
-        },
+        "effect_estimate": effect_estimate,
+        "ci_lower": ci_lower,
+        "ci_upper": ci_upper,
+        "p_value": 0.003,
         "diagnostics": {
             "covariate_balance": {"max_smd": 0.04, "mean_smd": 0.02},
             "attrition_rate": 0.05,
@@ -104,7 +103,7 @@ def print_evaluate_result(result):
     Parameters
     ----------
     result : dict
-        Output dictionary from ``Evaluate.execute()`` or ``score_initiative()``.
+        Output dictionary from ``Evaluate.execute()``.
     """
     print("EVALUATE Output")
     print("=" * 50)
