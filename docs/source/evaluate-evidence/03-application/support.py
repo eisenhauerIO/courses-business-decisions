@@ -1,12 +1,18 @@
 """Support functions for the Automated Evidence Review notebook."""
 
+# Standard Library
 import json
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
+# Third-party
 import matplotlib.pyplot as plt
 import numpy as np
+
+# Default p-value used in mock impact results; represents a well-powered experiment
+# that clears the conventional 0.05 threshold with room to spare.
+DEFAULT_P_VALUE = 0.003
 
 # =============================================================================
 # Mock Data Functions
@@ -16,12 +22,13 @@ import numpy as np
 def create_mock_job_directory(
     initiative_id="initiative_product_content_experiment",
     model_type="experiment",
-    evaluate_strategy="score",
+    evaluate_strategy="deterministic",
     effect_estimate=150.0,
     ci_lower=80.0,
     ci_upper=220.0,
     sample_size=500,
     cost_to_scale=50000.0,
+    diagnostics=None,
 ):
     """
     Create a temporary job directory with manifest and impact results.
@@ -47,12 +54,22 @@ def create_mock_job_directory(
         Number of observations in the study.
     cost_to_scale : float
         Cost to scale the initiative.
+    diagnostics : dict or None
+        Diagnostic statistics to embed in the artifact. If ``None``, uses
+        defaults representing a clean, well-powered experiment.
 
     Returns
     -------
     pathlib.Path
         Path to the temporary job directory.
     """
+    if diagnostics is None:
+        diagnostics = {
+            "covariate_balance": {"max_smd": 0.04, "mean_smd": 0.02},
+            "attrition_rate": 0.05,
+            "compliance_rate": 0.92,
+        }
+
     job_dir = Path(tempfile.mkdtemp(prefix="evaluate_demo_"))
 
     manifest = {
@@ -77,12 +94,8 @@ def create_mock_job_directory(
         "effect_estimate": effect_estimate,
         "ci_lower": ci_lower,
         "ci_upper": ci_upper,
-        "p_value": 0.003,
-        "diagnostics": {
-            "covariate_balance": {"max_smd": 0.04, "mean_smd": 0.02},
-            "attrition_rate": 0.05,
-            "compliance_rate": 0.92,
-        },
+        "p_value": DEFAULT_P_VALUE,
+        "diagnostics": diagnostics,
     }
 
     (job_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
@@ -207,5 +220,71 @@ def plot_review_dimensions(review_result):
     overall_label = f"Overall: {review_result.overall_score:.2f}"
     ax.axvline(review_result.overall_score, color="black", linestyle="--", linewidth=1.5, label=overall_label)
     ax.legend(loc="lower right")
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_score_comparison(result_a, result_b, labels=("A", "B")):
+    """
+    Compare per-dimension scores from two agentic reviews side by side.
+
+    Useful for validating that the reviewer discriminates between clean and
+    flawed measurement artifacts (the Assess mode of the Correctness pillar).
+
+    Parameters
+    ----------
+    result_a : ReviewResult
+        First review result (e.g., a known-clean artifact).
+    result_b : ReviewResult
+        Second review result (e.g., a known-flaw artifact).
+    labels : tuple[str, str]
+        Display labels for result_a and result_b respectively.
+    """
+    dims_a = {d.name: d.score for d in result_a.dimensions}
+    dims_b = {d.name: d.score for d in result_b.dimensions}
+    dim_names = list(dims_a.keys())
+
+    scores_a = [dims_a[n] for n in dim_names]
+    scores_b = [dims_b.get(n, 0.0) for n in dim_names]
+    display_names = [n.replace("_", " ").title() for n in dim_names]
+
+    y_pos = np.arange(len(dim_names))
+    height = 0.35
+
+    _, ax = plt.subplots(figsize=(9, max(3, len(dim_names) * 1.0)))
+
+    bars_a = ax.barh(
+        y_pos + height / 2, scores_a, height, color="#2ecc71", edgecolor="black", alpha=0.85, label=labels[0]
+    )
+    bars_b = ax.barh(
+        y_pos - height / 2, scores_b, height, color="#e74c3c", edgecolor="black", alpha=0.85, label=labels[1]
+    )
+
+    for bar, score in zip(bars_a, scores_a):
+        ax.text(score + 0.02, bar.get_y() + bar.get_height() / 2, f"{score:.2f}", va="center", fontsize=9)
+    for bar, score in zip(bars_b, scores_b):
+        ax.text(score + 0.02, bar.get_y() + bar.get_height() / 2, f"{score:.2f}", va="center", fontsize=9)
+
+    ax.axvline(
+        result_a.overall_score,
+        color="#27ae60",
+        linestyle="--",
+        linewidth=1.5,
+        label=f"{labels[0]} overall: {result_a.overall_score:.2f}",
+    )
+    ax.axvline(
+        result_b.overall_score,
+        color="#c0392b",
+        linestyle="--",
+        linewidth=1.5,
+        label=f"{labels[1]} overall: {result_b.overall_score:.2f}",
+    )
+
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(display_names)
+    ax.set_xlim(0, 1.2)
+    ax.set_xlabel("Score")
+    ax.set_title("Reviewer Discrimination: Known-Clean vs. Known-Flaw")
+    ax.legend(loc="lower right", fontsize=9)
     plt.tight_layout()
     plt.show()
