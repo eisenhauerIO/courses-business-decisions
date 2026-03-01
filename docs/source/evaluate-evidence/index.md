@@ -2,9 +2,11 @@
 
 Every causal estimate carries implicit uncertainty, but most measurement pipelines treat all estimates as equally trustworthy — passing point estimates downstream without any structured assessment of how much faith to place in them. The consequences compound: when an allocator receives ten initiative-level return estimates, it has no principled way to distinguish a well-powered randomized experiment from a time-series model fit on sparse, noisy data. Capital flows indiscriminately — over-invested in poorly measured initiatives, under-invested in well-measured ones.
 
-This section closes that gap. The first lecture builds the conceptual toolkit for judging evidence quality: validity, diagnostic checks, and the hierarchy of designs. The second unpacks how to encode that judgment in a well-engineered agentic system. The third runs the full pipeline end-to-end, producing the confidence scores the ALLOCATE stage needs to weight returns by evidence quality.
+The material is organized in three parts. We begin with the conceptual toolkit for judging evidence quality — validity, diagnostic checks, and the hierarchy of designs. A dedicated section examines the design patterns behind agentic evaluation systems. We then run the full pipeline end-to-end, producing the confidence scores the ALLOCATE stage needs to weight returns by evidence quality.
 
 ## Causal Evidence
+
+This section addresses the gap between producing a causal estimate and knowing how much to trust it. It establishes the vocabulary and diagnostic criteria needed to judge evidence quality — the foundation for any credible evaluation, whether manual or automated.
 
 ### Evaluating Causal Evidence
 
@@ -18,6 +20,8 @@ We introduce the conceptual tools for assessing whether a causal estimate is tru
 
 ## Agentic Systems
 
+This section shifts from what to evaluate to how to build evaluation systems. It examines the architectural decisions — from registry dispatch to evaluation escalation — that make agentic assessment reliable, auditable, and extensible.
+
 ### Building an Agentic Evaluation System
 
 We examine how the `impact-engine-evaluate` package is built — not how to use it, but what design patterns make it work. The lecture explores six patterns spanning construction (registry dispatch, prompt engineering as software, layered specialization, structured output parsing), evaluation escalation (Judge, Jury, Reviewer, Debate), and the discipline of separating measurement from improvement. Understanding these patterns prepares you to design and extend agentic evaluation systems beyond this specific tool.
@@ -29,6 +33,8 @@ We examine how the `impact-engine-evaluate` package is built — not how to use 
 ```
 
 ## Application
+
+This section applies the conceptual and engineering foundations from the preceding parts. We run the full evaluation pipeline on mock measurement output and validate the system's ability to discriminate between strong and weak evidence.
 
 ### Automated Evidence Review
 

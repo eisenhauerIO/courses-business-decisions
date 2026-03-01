@@ -1,5 +1,18 @@
-```{include} ../../README.md
+# Impact-Driven Business Decisions
+
+*Developing causal thinking and building tools to improve decisions at scale*
+
+Most organizations generate data and produce insights, but struggle to connect those insights to decisions. And when decisions are made, they rarely generate learning at scale. This course addresses that gap by focusing on a single organizing principle: ***Learn · Decide · Repeat***.
+
+```{figure} _static/learn-decide-repeat.png
+:alt: Learn · Decide · Repeat
+:align: center
+:width: 50%
+
+***The Learn · Decide · Repeat Decision Loop***
 ```
+
+Rather than treating analytics, AI, or decision-making in isolation, the course shows how to connect insights to action in a way that compounds over time. You will learn how to design systems that measure impact, inform decisions under uncertainty, and turn every decision into a source of new insight. The goal is not better analysis in isolation, but better decisions over time and at scale.
 
 ```{toctree}
 :maxdepth: 1
