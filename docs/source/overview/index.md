@@ -6,7 +6,7 @@ Economic thinking provides rigor for decision-making. First, measure impact—us
 
 Software engineering enables implementation. You need tools to measure impact reliably and to allocate resources systematically. These tools turn economic thinking into scalable processes rather than one-off analyses.
 
-```{figure} improve-decisions-framework.svg
+```{figure} ../_static/improve-decisions-framework.svg
 :alt: Improve Decisions Framework
 :align: center
 
