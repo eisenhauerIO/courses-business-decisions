@@ -22,7 +22,7 @@ DEFAULT_P_VALUE = 0.003
 def create_mock_job_directory(
     initiative_id="initiative_product_content_experiment",
     model_type="experiment",
-    evaluate_strategy="deterministic",
+    evaluate_strategy="score",
     effect_estimate=150.0,
     ci_lower=80.0,
     ci_upper=220.0,
@@ -111,23 +111,20 @@ def create_mock_job_directory(
 
 def print_evaluate_result(result):
     """
-    Print the 8-key output of the EVALUATE stage.
+    Print the output of ``evaluate_confidence``.
 
     Parameters
     ----------
-    result : dict
-        Output dictionary from ``Evaluate.execute()``.
+    result : EvaluateResult
+        Output from ``evaluate_confidence()``.
     """
+    lo, hi = result.confidence_range
     print("EVALUATE Output")
     print("=" * 50)
-    print(f"  Initiative:    {result['initiative_id']}")
-    print(f"  Model type:    {result['model_type']}")
-    print(f"  Confidence:    {result['confidence']:.3f}")
-    print(f"  Sample size:   {result['sample_size']:,}")
-    print(f"  Cost:          ${result['cost']:,.0f}")
-    print(f"  Return (best): ${result['return_best']:,.0f}")
-    print(f"  Return (med):  ${result['return_median']:,.0f}")
-    print(f"  Return (worst):${result['return_worst']:,.0f}")
+    print(f"  Initiative:    {result.initiative_id}")
+    print(f"  Strategy:      {result.strategy}")
+    print(f"  Confidence:    {result.confidence:.3f}")
+    print(f"  Range:         ({lo:.2f}, {hi:.2f})")
 
 
 def print_review_result(review_result):
