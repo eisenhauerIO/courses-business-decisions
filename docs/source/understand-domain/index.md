@@ -10,7 +10,7 @@ The course is grounded in challenges observed in large-scale generative AI syste
 
 A concrete way to grasp this domain is to look at a real product page, such as [*Keurig K-Express Single Serve Coffee Maker*](https://www.amazon.com/Keurig-K-Express-Coffee-Single-Brewer/dp/B09715G57M?th=1) on Amazon. What shoppers see as a simple product listing belies a rich set of underlying data decisions—the title, structured attributes, images, pricing context, badges, and descriptive text that shape whether shoppers can find, understand, and trust what they're buying. When an AI system modifies any of these elements at scale, each change is motivated by a hypothesis about what will resonate with shoppers—hypotheses that must be tested and measured to determine what actually drives business outcomes.
 
-```{figure} product-data.png
+```{figure} ../_static/product-data.png
 :alt: Product Data Example
 :align: center
 
