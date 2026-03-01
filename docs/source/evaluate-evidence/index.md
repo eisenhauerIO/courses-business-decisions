@@ -5,19 +5,20 @@ With causal estimates produced in the [Measure Impact](../measure-impact/index) 
 ```{figure} ../_static/improve-decisions-framework-evaluate.svg
 :figclass: figure-float-right
 :width: 400px
+:alt: The Evaluate Evidence stage in the Learn, Decide, Repeat framework
 ```
 
 Every causal estimate carries two kinds of uncertainty. **Statistical uncertainty** — captured in confidence intervals and standard errors — reflects sampling variability and is already part of the measurement output. **Epistemic uncertainty** — design quality, assumption violations, diagnostic failures — is not. Most decision pipelines treat all estimates as equally trustworthy, passing point estimates downstream without any structured assessment of epistemic quality. The consequences compound: when we receive ten initiative-level return estimates, we have no principled way to distinguish a well-powered randomized experiment from a time-series model fit on sparse, noisy data. Resources flow indiscriminately — too much allocated to poorly measured initiatives, too little to well-measured ones.
 
-The material is organized in three parts. We begin with the conceptual toolkit for judging evidence quality — validity, diagnostic checks, and the hierarchy of designs. Because manual review of every estimate does not scale across a portfolio, a dedicated section develops the principles and design patterns for building agentic evaluation systems that produce defensible confidence scores automatically. We then run the full pipeline end-to-end, demonstrating how automated assessment translates measurement output into the confidence-weighted returns that drive resource allocation.
+The material is organized in three sections. **Evidence Quality** develops the conceptual toolkit for judging causal evidence — validity, diagnostic checks, and the hierarchy of designs. **Automated Assessment** develops the principles and design patterns for building agentic evaluation systems that produce defensible confidence scores automatically. **Evaluation Pipeline** runs the full pipeline end-to-end, demonstrating how automated assessment translates measurement output into the confidence-weighted returns that drive resource allocation.
 
 ## Evidence Quality
 
-This section develops the diagnostic framework for judging causal evidence. It establishes the vocabulary — internal and external validity, statistical versus practical significance, the hierarchy of designs — and the diagnostic checks that distinguish trustworthy estimates from unreliable ones, whether applied manually or by an automated system.
+This section develops the diagnostic framework for judging causal evidence — the vocabulary and checks that distinguish trustworthy estimates from unreliable ones, whether applied manually or by an automated system.
 
 ### Causal Diagnostics
 
-We introduce the conceptual tools for assessing whether a causal estimate is trustworthy enough to act on: validity, significance, and the hierarchy of evidence. We then examine the diagnostic checks that apply across all causal methods and the method-specific tests for experiments, matching, and synthetic control.
+We introduce internal and external validity, statistical versus practical significance, and the hierarchy of evidence designs. We then examine the diagnostic checks shared across all causal methods and the method-specific tests for experiments, matching, and synthetic control.
 
 ```{toctree}
 :titlesonly:
@@ -27,11 +28,11 @@ We introduce the conceptual tools for assessing whether a causal estimate is tru
 
 ## Automated Assessment
 
-This section shifts from what to evaluate to how to build systems that evaluate at scale. It develops the principles that make automated confidence scoring defensible — the failure modes of LLM-based assessment, the pillars that address them, the escalation ladder — and then examines the software patterns that instantiate those principles in the `impact-engine-evaluate` package.
+This section shifts from what to evaluate to how to build systems that evaluate at scale. It develops the principles that make automated confidence scoring defensible — the failure modes of LLM-based assessment, the pillars that address them, the escalation ladder — and then examines the software patterns that instantiate those principles in the [**impact-engine-evaluate**](https://eisenhauerio.github.io/tools-impact-engine-evaluate/) package.
 
 ### Agentic Evaluation
 
-We develop the principles for trustworthy automated assessment: the four failure modes of LLM-based scoring, the four pillars of defensible confidence, evaluation escalation from Judge through Debate, and the discipline of separating measurement from improvement. We then examine how the `impact-engine-evaluate` package implements these principles through registry dispatch, prompt engineering as software, layered specialization, and structured output parsing.
+We develop the four failure modes of LLM-based scoring, the four pillars of defensible confidence, evaluation escalation from Judge through Debate, and the discipline of separating measurement from improvement. We then read the `impact-engine-evaluate` source code to see how registry dispatch, prompt engineering as software, layered specialization, and structured output parsing instantiate these principles.
 
 ```{toctree}
 :titlesonly:
