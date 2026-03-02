@@ -1,6 +1,6 @@
-# Implementation Plan: Impact-Driven Business Decisions
+# Backlog: Impact-Driven Business Decisions
 
-Phased roadmap for course development and refinement. See DESIGN.md for
+Prioritized work queue for course development and refinement. See DESIGN.md for
 architectural context. Granular tasks live in `.claude/docs/backlog.md`
 (proposals and actionable items) and `.claude/docs/upgrades.md` (full review
 findings).
@@ -18,19 +18,6 @@ is in place across five lecture sections:
 
 CI (ruff linting) and documentation build (Sphinx + GitHub Pages) are
 operational. All notebooks execute successfully during build.
-
-## Phase 0 — Root documentation
-
-**Status**: in-progress
-
-Bring repository root documents into ecosystem schema conformance.
-
-- [x] `README.md` — restructure to schema (h1 before badges, add docs link)
-- [x] `CLAUDE.md` — rewrite with all 7 required sections
-- [x] `DESIGN.md` — create course design document
-- [x] `PLAN.md` — create this implementation roadmap
-- [x] `docs/source/index.md` — decouple from README.md, write standalone landing page
-- [ ] Verify Sphinx build passes
 
 ## Phase 1 — Review feedback (high priority)
 

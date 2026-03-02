@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 430" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="116%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="820" height="430" rx="12" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="410" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="#1e293b">Hierarchy of Evidence</text>
+
+  <!--
+    True pyramid — all edges on one straight line, no gaps.
+    Apex: (280, 55)   Base: (100, 405)–(460, 405)
+    Left edge:  x = 280 - (y-55) * 180/350
+    Right edge: x = 280 + (y-55) * 180/350
+
+    Tier boundaries:
+      True Effect:  y 55–110   (left 252–right 308)
+      Tier 1:       y 110–195  (left 252/208–right 308/352)
+      Tier 2:       y 195–300  (left 208/154–right 352/406)
+      Tier 3:       y 300–405  (left 154/100–right 406/460)
+  -->
+
+  <!-- True Effect — apex -->
+  <path d="M 280,55 L 308,110 L 252,110 Z" fill="#1e293b"/>
+  <text x="280" y="48" text-anchor="middle" font-size="12" font-weight="600" fill="#1e293b" font-style="italic">True Effect</text>
+
+  <!-- Tier 1: Experiments -->
+  <path d="M 252,110 L 308,110 L 352,195 L 208,195 Z" fill="#2563eb"/>
+  <text x="280" y="160" text-anchor="middle" font-size="14" font-weight="600" fill="#f8fafc">Experiments</text>
+
+  <!-- Tier 2: Observational Causal Studies -->
+  <path d="M 208,195 L 352,195 L 406,300 L 154,300 Z" fill="#7c3aed"/>
+  <text x="280" y="242" text-anchor="middle" font-size="14" font-weight="600" fill="#f8fafc">Observational</text>
+  <text x="280" y="260" text-anchor="middle" font-size="14" font-weight="600" fill="#f8fafc">Causal Studies</text>
+
+  <!-- Tier 3: Time Series Analysis -->
+  <path d="M 154,300 L 406,300 L 460,405 L 100,405 Z" fill="#64748b"/>
+  <text x="280" y="348" text-anchor="middle" font-size="14" font-weight="600" fill="#f8fafc">Time Series</text>
+  <text x="280" y="366" text-anchor="middle" font-size="14" font-weight="600" fill="#f8fafc">Analysis</text>
+
+  <!-- Connector lines — right edge of tier to description -->
+  <line x1="352" y1="155" x2="500" y2="155" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="385" y1="248" x2="500" y2="248" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="435" y1="353" x2="500" y2="353" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Side descriptions — parallel comparison strategy -->
+  <text x="510" y="158" font-size="11" fill="#64748b">Treatment and control units assigned at random</text>
+
+  <text x="510" y="251" font-size="11" fill="#64748b">Treatment units compared to similar control units</text>
+
+  <text x="510" y="356" font-size="11" fill="#64748b">Treatment units compared before and after</text>
+
+  <!-- Tier labels — left column -->
+  <text x="68" y="160" text-anchor="end" font-size="11" font-weight="600" fill="#2563eb">Tier 1</text>
+  <text x="68" y="252" text-anchor="end" font-size="11" font-weight="600" fill="#7c3aed">Tier 2</text>
+  <text x="68" y="358" text-anchor="end" font-size="11" font-weight="600" fill="#64748b">Tier 3</text>
+</svg>

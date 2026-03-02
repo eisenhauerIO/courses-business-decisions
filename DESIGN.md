@@ -62,7 +62,6 @@ that links tool configuration parameters back to the formal concepts from Part I
 | `measure-impact/02-directed-acyclic-graphs/support.py` | DAG lecture support functions |
 | `measure-impact/03-matching-subclassification/support.py` | Matching and subclassification helpers |
 | `measure-impact/08-synthetic-control/support.py` | Synthetic control method helpers |
-| `measure-impact/shared.py` | Cross-lecture utilities (e.g., `plot_method_comparison`) |
 | `evaluate-evidence/03-application/support.py` | Application lecture helpers |
 | `understand-domain/02-catalog-ai/support.py` | Catalog AI lecture support |
 

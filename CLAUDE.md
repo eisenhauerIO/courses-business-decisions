@@ -24,8 +24,8 @@ hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace pat
 - `hatch run notebook {path}` — execute a single notebook in place
 - `hatch run notebooks` — find and execute all notebooks
 - `hatch run slides` — convert lecture notebooks to reveal.js slides
-- `hatch run ruff check .` — lint all Python files
-- `hatch run ruff format --check .` — check formatting
+- `ruff check .` — lint all Python files
+- `ruff format --check .` — check formatting
 
 ## Architecture
 
@@ -37,7 +37,13 @@ hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace pat
   - `understand-domain/` — domain context lectures (catalog AI)
   - `overview/`, `build-systems/`, `guest-lecturers/`, `course-projects/`, `software/`, `iterations/`, `allocate-resources/` — supporting sections
   - `references.bib` — bibliography
+- `docs/source/_static/` — images and SVGs referenced by lectures and index pages
 - `_external/` — local clones of dependency repos (read-only, do not modify)
+  - `tools-online-retail-simulator/` — simulator source
+  - `tools-impact-engine-measure/` — causal estimation source
+  - `tools-impact-engine-evaluate/` — evidence review source
+  - `utils-agentic-support/` — shared Claude Code skills and subagents
+  - `books-mixtape/` — Causal Inference: The Mixtape reference
 - `.github/workflows/ci.yml` — ruff linting on push/PR
 - `.github/workflows/docs.yml` — Sphinx build + GitHub Pages deploy on push to main
 - `.claude/skills/` — Claude Code skill definitions
@@ -45,7 +51,7 @@ hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace pat
 
 ### Lecture directory convention
 
-Each lecture is a self-contained directory:
+Each measure-impact lecture is a self-contained directory:
 
 ```
 XX-topic-name/
@@ -54,6 +60,8 @@ XX-topic-name/
 ├── config_simulation.yaml  # simulator configuration
 └── config_*.yaml           # additional tool configurations
 ```
+
+Evaluate-evidence and understand-domain lectures follow the same `lecture.ipynb` pattern but may omit `support.py` or config files when not needed.
 
 ### Dependencies
 

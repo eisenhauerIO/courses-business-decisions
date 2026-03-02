@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 400" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="116%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="700" height="400" rx="12" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="350" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="#1e293b">Stress-Testing a Single Estimate</text>
+
+  <!-- Central estimate -->
+  <g filter="url(#shadow)">
+    <circle cx="350" cy="210" r="48" fill="#1e293b"/>
+    <text x="350" y="206" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Causal</text>
+    <text x="350" y="224" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Estimate</text>
+  </g>
+
+  <!-- Robustness checks (top center) -->
+  <g filter="url(#shadow)">
+    <rect x="255" y="55" width="190" height="65" rx="10" fill="#2563eb"/>
+    <text x="350" y="83" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Robustness Checks</text>
+    <text x="350" y="101" text-anchor="middle" font-size="11" fill="#bfdbfe">Vary analytical choices</text>
+  </g>
+  <line x1="350" y1="120" x2="350" y2="160" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Sensitivity analysis (bottom left) -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="290" width="190" height="65" rx="10" fill="#7c3aed"/>
+    <text x="135" y="318" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Sensitivity Analysis</text>
+    <text x="135" y="336" text-anchor="middle" font-size="11" fill="#ddd6fe">Bound assumption violations</text>
+  </g>
+  <line x1="195" y1="290" x2="315" y2="242" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Placebo tests (bottom right) -->
+  <g filter="url(#shadow)">
+    <rect x="470" y="290" width="190" height="65" rx="10" fill="#0f766e"/>
+    <text x="565" y="318" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Placebo Tests</text>
+    <text x="565" y="336" text-anchor="middle" font-size="11" fill="#99f6e4">Check for false positives</text>
+  </g>
+  <line x1="505" y1="290" x2="385" y2="242" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Question labels — below each box -->
+  <text x="350" y="145" text-anchor="middle" font-size="10" fill="#64748b">Stable across specifications?</text>
+
+  <text x="135" y="372" text-anchor="middle" font-size="10" fill="#64748b">How far must assumptions</text>
+  <text x="135" y="384" text-anchor="middle" font-size="10" fill="#64748b">be violated to overturn it?</text>
+
+  <text x="565" y="372" text-anchor="middle" font-size="10" fill="#64748b">Does the method detect effects</text>
+  <text x="565" y="384" text-anchor="middle" font-size="10" fill="#64748b">where none should exist?</text>
+</svg>
