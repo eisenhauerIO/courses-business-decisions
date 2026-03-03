@@ -104,7 +104,8 @@ Do **not** add structured summary sections at the end of documents. Avoid "Summa
 - **Active voice**: "The simulator generates a product catalog" (not passive)
 - **Present tense**: "The function writes the DataFrames to disk" (not future)
 - **Instructional but not condescending**: "Let's start by simulating 100 products" (not too casual, not too formal)
-- **Narrative prose over definition patterns**: Avoid colon-separated definition patterns ("X is Y: explanation"). Weave explanations into flowing narrative rather than glossary-style constructions.
+- **Narrative prose over definition patterns**: Avoid colon-separated definition patterns ("X is Y: explanation"). Weave explanations into flowing narrative rather than glossary-style constructions. Possessive apostrophes are standard usage and not affected by this rule.
+- **Separate sentences over semicolons**: Prefer two sentences over a semicolon-joined clause. Semicolons make prose feel academic rather than accessible.
 
 ---
 

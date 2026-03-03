@@ -38,3 +38,22 @@
     - Show `inspect.getsource(generate_quality_score)` before first direct use in lecture 01
   - **Build warnings**
     - GUIDELINES.md and github-workflow.md not in any toctree
+
+- [ ] Evaluate Evidence lectures
+  - **Landing page (index.md)**
+    - Surface four pillar names (groundedness, correctness, traceability, reproducibility) in Automated Assessment and Agentic Evaluation summaries
+    - Add caveat about out-of-distribution flaw patterns in Correctness validation framing
+    - Preview how confidence scores bridge to resource allocation (one-sentence preview of the functional form)
+  - **Lecture 01 (Evaluating Causal Evidence)**
+    - Soften "hierarchy of evidence designs" — add sentence that execution quality can invert the hierarchy
+    - Add external validity diagnostic subsection (transportability, covariate comparison, heterogeneity analysis)
+    - Develop "From Estimate to Evidence" subsection — practical significance example (incremental revenue vs. measurement cost)
+    - Add DiD diagnostic table to match the method-specific sections for experiments, matching, and synthetic control
+    - Add at least one worked code example (Love plot, placebo distribution, or RMSPE)
+  - **Lecture 02 (Agentic Evaluation System)**
+    - Map evaluation architectures to pillars (Jury → Reproducibility, Reviewer → Correctness, Debate → Groundedness) in Section 3
+    - Add Assess/Improve anti-pattern example ("overfitting the prompt to a specific test case")
+    - Add evaluation harness limitation paragraph (cannot test for unconceived failure modes — shared with software testing broadly)
+    - Add transition bridge sentence at top of Section 1 connecting from Lecture 01's diagnostic toolkit
+  - **Cross-notebook**
+    - External validity gap: Lecture 01 defines it but doesn't develop diagnostics; Lecture 02 harness focuses on internal validity of the evaluator — need coherent treatment across both

@@ -91,10 +91,9 @@ git checkout main && git merge feature/description && git push
 
 ## Key conventions
 
+- Follow writing conventions in `docs/source/GUIDELINES.md` when editing lecture content
 - Notebooks execute during Sphinx build (`nbsphinx_execute = "always"`) — all cells must run cleanly
-- Lectures follow Theory (Part I) then Application (Part II) structure
 - Part II imports: `from online_retail_simulator import simulate, load_job_results`
-- Show source code with `inspect.getsource()` + `Code()` from IPython.display
 - `_external/` contains reference repos — do not modify
 - Ruff enforces D (docstrings), E, F (pyflakes), I (isort) rules; line length 120
 - NumPy-style docstrings for all Python functions
