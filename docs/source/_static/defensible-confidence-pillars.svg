@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 430">
+  <defs>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
+    </style>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="108%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+    </filter>
+    <clipPath id="col1"><rect x="30" y="78" width="172" height="275" rx="8"/></clipPath>
+    <clipPath id="col2"><rect x="226" y="78" width="172" height="275" rx="8"/></clipPath>
+    <clipPath id="col3"><rect x="422" y="78" width="172" height="275" rx="8"/></clipPath>
+    <clipPath id="col4"><rect x="618" y="78" width="172" height="275" rx="8"/></clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="820" height="430" rx="12" fill="#f8fafc"/>
+
+  <!-- Entablature -->
+  <rect x="30" y="20" width="760" height="48" rx="8" fill="#1e293b" filter="url(#shadow)"/>
+  <text x="410" y="50" text-anchor="middle" fill="white" font-size="15" font-weight="600">Defensible Confidence at Scale</text>
+
+  <!-- Column 1: Groundedness -->
+  <g clip-path="url(#col1)">
+    <rect x="30" y="78" width="172" height="275" fill="#eff6ff"/>
+    <rect x="30" y="78" width="172" height="50" fill="#2563eb"/>
+  </g>
+  <rect x="30" y="78" width="172" height="275" rx="8" fill="none" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="116" y="101" text-anchor="middle" fill="white" font-size="13" font-weight="600">Groundedness</text>
+  <text x="116" y="117" text-anchor="middle" fill="white" font-size="9.5" opacity="0.7">Prevents Ungroundedness</text>
+  <text x="44" y="148" fill="#9ca3af" font-size="9" font-weight="600" letter-spacing="0.05em">PRINCIPLE</text>
+  <text x="44" fill="#374151" font-size="11">
+    <tspan x="44" y="166">Every confidence claim</tspan>
+    <tspan x="44" dy="15">traces to an observable</tspan>
+    <tspan x="44" dy="15">statistical artifact</tspan>
+  </text>
+  <line x1="44" y1="218" x2="188" y2="218" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="44" y="236" fill="#9ca3af" font-size="9" font-weight="600" letter-spacing="0.05em">MECHANISM</text>
+  <text x="44" fill="#6b7280" font-size="11">
+    <tspan x="44" y="254">Common support checks,</tspan>
+    <tspan x="44" dy="15">assumption tests,</tspan>
+    <tspan x="44" dy="15">robustness diagnostics</tspan>
+  </text>
+
+  <!-- Column 2: Correctness -->
+  <g clip-path="url(#col2)">
+    <rect x="226" y="78" width="172" height="275" fill="#f0fdfa"/>
+    <rect x="226" y="78" width="172" height="50" fill="#0d9488"/>
+  </g>
+  <rect x="226" y="78" width="172" height="275" rx="8" fill="none" stroke="#0d9488" stroke-width="1.5"/>
+  <text x="312" y="101" text-anchor="middle" fill="white" font-size="13" font-weight="600">Correctness</text>
+  <text x="312" y="117" text-anchor="middle" fill="white" font-size="9.5" opacity="0.7">Prevents Incorrectness</text>
+  <text x="240" y="148" fill="#9ca3af" font-size="9" font-weight="600" letter-spacing="0.05em">PRINCIPLE</text>
+  <text x="240" fill="#374151" font-size="11">
+    <tspan x="240" y="166">The system interprets</tspan>
+    <tspan x="240" dy="15">those artifacts</tspan>
+    <tspan x="240" dy="15">accurately</tspan>
+  </text>
+  <line x1="240" y1="218" x2="384" y2="218" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="240" y="236" fill="#9ca3af" font-size="9" font-weight="600" letter-spacing="0.05em">MECHANISM</text>
+  <text x="240" fill="#6b7280" font-size="11">
+    <tspan x="240" y="254">Evals on synthetic</tspan>
+    <tspan x="240" dy="15">artifacts with known</tspan>
+    <tspan x="240" dy="15">ground truth</tspan>
+  </text>
+
+  <!-- Column 3: Traceability -->
+  <g clip-path="url(#col3)">
+    <rect x="422" y="78" width="172" height="275" fill="#f5f3ff"/>
+    <rect x="422" y="78" width="172" height="50" fill="#7c3aed"/>
+  </g>
+  <rect x="422" y="78" width="172" height="275" rx="8" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="508" y="101" text-anchor="middle" fill="white" font-size="13" font-weight="600">Traceability</text>
+  <text x="508" y="117" text-anchor="middle" fill="white" font-size="9.5" opacity="0.7">Prevents Opacity</text>
+  <text x="436" y="148" fill="#9ca3af" font-size="9" font-weight="600" letter-spacing="0.05em">PRINCIPLE</text>
+  <text x="436" fill="#374151" font-size="11">
+    <tspan x="436" y="166">Full audit trail from</tspan>
+    <tspan x="436" dy="15">score to source data</tspan>
+  </text>
+  <line x1="436" y1="218" x2="580" y2="218" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="436" y="236" fill="#9ca3af" font-size="9" font-weight="600" letter-spacing="0.05em">MECHANISM</text>
+  <text x="436" fill="#6b7280" font-size="11">
+    <tspan x="436" y="254">Per-dimension scores</tspan>
+    <tspan x="436" dy="15">linked to specific</tspan>
+    <tspan x="436" dy="15">diagnostics</tspan>
+  </text>
+
+  <!-- Column 4: Reproducibility -->
+  <g clip-path="url(#col4)">
+    <rect x="618" y="78" width="172" height="275" fill="#fffbeb"/>
+    <rect x="618" y="78" width="172" height="50" fill="#d97706"/>
+  </g>
+  <rect x="618" y="78" width="172" height="275" rx="8" fill="none" stroke="#d97706" stroke-width="1.5"/>
+  <text x="704" y="101" text-anchor="middle" fill="white" font-size="13" font-weight="600">Reproducibility</text>
+  <text x="704" y="117" text-anchor="middle" fill="white" font-size="9.5" opacity="0.7">Prevents Instability</text>
+  <text x="632" y="148" fill="#9ca3af" font-size="9" font-weight="600" letter-spacing="0.05em">PRINCIPLE</text>
+  <text x="632" fill="#374151" font-size="11">
+    <tspan x="632" y="166">Same pipeline + same</tspan>
+    <tspan x="632" dy="15">data = same</tspan>
+    <tspan x="632" dy="15">assessment</tspan>
+  </text>
+  <line x1="632" y1="218" x2="776" y2="218" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="632" y="236" fill="#9ca3af" font-size="9" font-weight="600" letter-spacing="0.05em">MECHANISM</text>
+  <text x="632" fill="#6b7280" font-size="11">
+    <tspan x="632" y="254">Fixed prompts, structured</tspan>
+    <tspan x="632" dy="15">schemas, version-pinned</tspan>
+    <tspan x="632" dy="15">backends</tspan>
+  </text>
+
+  <!-- Dependency arrows between columns -->
+  <polygon points="208,211 222,216 208,221" fill="#94a3b8"/>
+  <polygon points="404,211 418,216 404,221" fill="#94a3b8"/>
+  <polygon points="600,211 614,216 600,221" fill="#94a3b8"/>
+
+  <!-- Foundation bar -->
+  <rect x="30" y="363" width="760" height="44" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="410" y="390" text-anchor="middle" fill="#64748b" font-size="12" font-weight="600">Foundation: Observable Measurement Artifacts</text>
+</svg>

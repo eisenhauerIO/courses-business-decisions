@@ -28,11 +28,11 @@ We introduce internal and external validity, statistical versus practical signif
 
 ## Automated Assessment
 
-This section shifts from what to evaluate to how to build systems that evaluate quality at scale. It develops the principles that make automated confidence scoring defensible — the failure modes of LLM-based assessment, the pillars that address them, the escalation ladder — and then examines the software patterns that instantiate those principles in the [**Impact Engine**](https://eisenhauerio.github.io/tools-impact-engine-evaluate/).
+This section shifts from what to evaluate to how to build systems that evaluate quality at scale. It develops the principles that make automated confidence scoring defensible — the evaluation task, the pillars that guarantee defensible confidence, evaluation architectures, and the evaluation harness — and then examines the software patterns that enforce those principles in the [**Impact Engine**](https://eisenhauerio.github.io/tools-impact-engine-evaluate/).
 
 ### Agentic Evaluation
 
-We develop the four failure modes of LLM-based scoring, the four pillars of defensible confidence, evaluation escalation from Judge through Debate, and the discipline of separating measurement from improvement. We then read the **Impact Engine** source code to see how registry dispatch, prompt engineering as software, layered specialization, and structured output parsing instantiate these principles.
+We develop the four pillars of defensible confidence, evaluation architectures as compositional building blocks (Judge, Jury, Reviewer, Debate), and the evaluation harness that validates the system through internal and external validity tests. We then examine how the **Impact Engine** enforces these principles through registry dispatch, prompt engineering as software, layered specialization, and structured output.
 
 ```{toctree}
 :titlesonly:
