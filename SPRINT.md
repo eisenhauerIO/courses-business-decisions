@@ -1,108 +1,161 @@
-# Evaluate Evidence Lectures — Observation Collection
+# Evaluate Evidence Lecture 03 — Writing & Code Review
 
 **Status**: executing
 
 ## Goal
 
-Collect fresh observations on Evaluate Evidence lectures 01 (Evaluating Causal
-Evidence) and 02 (Agentic Evaluation System) to identify improvements in content,
-structure, and writing quality.
+Fix writing guideline violations and code issues in Lecture 03 (Automated Evidence
+Review) identified through a systematic review against `docs/source/GUIDELINES.md`.
+Contributes to BACKLOG.md Phase 0 (Review feedback — high priority).
 
 ## Scope
 
 **In scope**:
-- Content, structure, and writing of lectures 01 and 02
-- Landing page (evaluate-evidence/index.md) as it relates to these lectures
+- Writing and formatting fixes in `docs/source/evaluate-evidence/03-application/lecture.ipynb`
+- Code cell cleanup in the same notebook
 
 **Out of scope**:
-- Code changes to Impact Engine repositories (_external/)
+- Content or structural changes to the lecture
+- Changes to `support.py` (no issues found)
+- Changes to Impact Engine repositories (`_external/`)
 
 ## Observations
 
-### 1. "From Estimate to Evidence" needs a two-stage arc (lecture 01)
+### 1. Semicolons — 3 violations (GUIDELINES: Tone and Voice → separate sentences)
 
-The current structure treats stress-testing (robustness, sensitivity, placebo) and
-practical significance as separate subsections without an explicit narrative link.
-Reframe as two stages: (1) **Is this number reliable?** — stress-test the single
-estimate to build confidence that the effect is real; (2) **Does it actually matter?**
-— practical significance, cost-benefit analysis, whether the effect is large enough
-to justify action. The first stage earns trust in the number; the second stage asks
-whether a trusted number warrants a decision. This gives "From Estimate to Evidence"
-a clear progression rather than a flat list of checks.
+| Cell | Current text |
+|------|-------------|
+| 0 | "evaluating causal evidence**;** in Lecture 2 we examined" |
+| 19 | "A 5% attrition rate is acceptable**;** differential attrition" |
+| 24 | "produces a confidence score**;** the MEASURE stage produces" |
 
-### 2. Hierarchy of evidence: expand with two missing dimensions (lecture 01)
+### 2. Colons — 11 violations (GUIDELINES: Tone and Voice → narrative prose over definition patterns)
 
-The hierarchy currently uses three tiers (experiments, observational causal studies,
-time series) defined by how well each rules out alternative explanations. Two
-dimensions are missing:
+| Cell | Current text |
+|------|-------------|
+| 0 | "puts both together**:** we use" |
+| 1 | "causal estimates**:** effect sizes, confidence intervals" |
+| 4 | "manifest.json**:** describes the initiative" |
+| 4 | "impact_results.json**:** the measurement output" |
+| 9 | "from Lecture 1**:** an experiment, by design" |
+| 19 | "The deductions are real**:** the wide CI" |
+| 24 | "from Lecture 1**:** the quality of evidence" |
+| 26 | "from the others**:** you cannot guarantee" |
+| 31 | "external validity**:** the reviewer discriminates" |
+| 31 | "artifact value**:** max SMD = 0.35" |
+| 31 | "explicit thresholds**:** "An attrition rate" |
 
-**(a) Model-based vs. design-based.** Methods that rely on functional form assumptions
-(e.g., regression) versus methods that derive credibility from features of the research
-design itself (randomization, natural experiments, discontinuities). Design-based
-methods are more robust because their validity does not depend on getting the functional
-form right. The hierarchy should surface this distinction explicitly.
+### 3. Passive voice — 3 violations (GUIDELINES: Tone and Voice → active voice)
 
-**(b) Execution quality can invert the hierarchy.** The current framing implies that
-higher-tier designs always produce better evidence. That is wrong. A badly executed
-experiment — broken randomization, high attrition, non-compliance — can produce worse
-evidence than a well-executed time-series analysis with strong pre/post diagnostics.
-The hierarchy is a useful prior about *design potential*, not a guarantee. The lecture
-should make this explicit: the tier tells you the ceiling, but implementation
-determines where you actually land.
+| Cell | Current text | Suggested rewrite |
+|------|-------------|-------------------|
+| 26 | "Groundedness is enforced architecturally" | "The architecture enforces groundedness" |
+| 26 | "Traceability is enforced by the per-dimension output schema" | "The per-dimension output schema enforces traceability" |
+| 26 | "Reproducibility is enforced by fixed prompts, zero temperature, and version-pinned backends" | "Fixed prompts, zero temperature, and version-pinned backends enforce reproducibility" |
 
-### 3. Inconsistent depth in method-specific diagnostics (lecture 01)
+### 4. Missing link on first mention (GUIDELINES: Links → link on first mention)
 
-Section 2 treats the three methods unevenly. Matching gets two prose paragraphs
-(covariate balance, common support) plus a summary table. Experiments and synthetic
-control get only a table with one-line descriptions per row — no explanatory prose.
-Adopt a hybrid format for all three methods: give the major diagnostics their own
-paragraph of explanation, then reference the summary table for the remaining checks.
-This provides depth where it matters without expanding every row into a paragraph.
+Cell 0 mentions `impact-engine-evaluate` without linking. The URL appears later in cell
+32 (`https://eisenhauerio.github.io/tools-impact-engine-evaluate/`). The first mention
+should be linked per the guideline: "Link package/tool names on first mention."
+
+### 5. Bold consistency for pipeline stages (GUIDELINES: Emphasis → bold on first introduction)
+
+**MEASURE**, **EVALUATE**, and **ALLOCATE** are bold in cell 1 but appear as plain
+uppercase in cells 0, 4, 9, 13, 16, 24, and 26. Should be consistent — either always
+bold or bold only on first introduction (cell 1) and plain text thereafter, which
+matches the guideline "Bold for concepts on first introduction. Plain text on subsequent
+mentions."
+
+Current behavior (bold in cell 1, plain elsewhere) actually matches the guideline. No
+fix needed — this observation is resolved.
+
+### 6. MyST directive in notebook cell (known convention)
+
+Cell 18 uses a `` ```{note} `` `` directive. Per project convention (MEMORY.md),
+nbsphinx does not parse MyST directives in `.ipynb` markdown cells. This renders as raw
+text, not an admonition box. Replace with an HTML `<blockquote>` or bold-text callout.
+
+### 7. Additional Resources format (GUIDELINES: Additional Resources Section)
+
+Cell 32 third entry uses a bare link format:
+
+```
+- [impact-engine-evaluate documentation](url) — Usage, configuration, and system design
+```
+
+The guideline specifies: "bullet points with **Author (Year)**. `[Title](url)`.
+*Journal*, volume(issue), pages." The third entry has no author or year. Either add a
+proper citation or restructure to match the expected format.
+
+### 8. Prose printed from code cell (code review)
+
+Cell 25 ends with narrative conclusions printed via `print()`:
+
+```python
+print("The experiment's adjusted return is higher despite a lower raw estimate,")
+print("because the stronger methodology commands greater confidence.")
+```
+
+This prose belongs in a markdown cell following cell 25. Narrative conclusions should
+not be generated by code cells.
 
 ## Decisions
 
-### 1. Two-stage "From Estimate to Evidence" arc (obs #1)
+### 1. Semicolons (obs #1)
 
-Accept. Restructure the current "Stress-Testing a Single Estimate" and "From Estimate
-to Evidence" subsections into a unified two-stage framing: (1) **Is this number
-reliable?** — robustness, sensitivity, placebo; (2) **Does it actually matter?** —
-practical significance, cost-benefit. Replication stays as a coda after the two stages.
+Accept. Replace all three semicolons with periods and new sentences.
 
-### 2. Hierarchy of evidence: two new dimensions (obs #2)
+### 2. Colons (obs #2)
 
-Accept both. (a) Add model-based vs. design-based distinction to the hierarchy
-discussion. (b) Add explicit caveat that execution quality can invert the hierarchy —
-the tier is a ceiling, not a guarantee.
+Accept. Rewrite each colon-separated definition pattern into flowing narrative. Use
+bullet lists where the original text enumerates items.
 
-### 3. Hybrid format for method-specific diagnostics (obs #3)
+### 3. Passive voice (obs #3)
 
-Accept. Extend the matching treatment (prose paragraphs for major diagnostics +
-summary table for the rest) to experiments and synthetic control. Major diagnostics
-to expand: randomization integrity and attrition for experiments; pre-treatment fit
-and placebo gaps for synthetic control.
+Accept. Apply the suggested rewrites to flip all three sentences to active voice.
+
+### 4. Missing link (obs #4)
+
+Accept. Link `impact-engine-evaluate` on first mention in cell 0.
+
+### 5. Bold consistency (obs #5)
+
+No fix needed — current behavior matches the guideline.
+
+### 6. MyST directive (obs #6)
+
+Accept. Replace the `{note}` directive with a bold-text callout paragraph.
+
+### 7. Additional Resources format (obs #7)
+
+Accept. Restructure the third entry to match the **Author (Year)** citation format used
+by the other entries. Use **eisenhauer.io (2026)** as the author/year.
+
+### 8. Prose in code cell (obs #8)
+
+Accept. Remove the two `print()` lines from cell 25 and add a new markdown cell after
+it with the same content as narrative prose.
 
 ## Plan
 
-1. Strip notebook outputs for lecture 01
-2. Rewrite Section 1 "From Estimate to Evidence" with two-stage arc (obs #1)
-3. Expand hierarchy of evidence with model-based vs. design-based and execution
-   quality caveat (obs #2)
-4. Add prose paragraphs for major experiment diagnostics (randomization integrity,
-   attrition) in Section 2 (obs #3)
-5. Add prose paragraphs for major synthetic control diagnostics (pre-treatment fit,
-   placebo gaps) in Section 2 (obs #3)
-6. Run `ruff check .` and fix any issues
-7. Run `hatch run build` to verify notebook executes cleanly
+1. Create feature branch `feature/evaluate-evidence-03-review`
+2. Strip notebook outputs for lecture 03
+3. Fix semicolons in cells 0, 19, 24 (obs #1)
+4. Fix colons in cells 0, 1, 4, 9, 19, 24, 26, 31 (obs #2)
+5. Fix passive voice in cell 26 (obs #3)
+6. Add link on first mention in cell 0 (obs #4)
+7. Replace MyST directive in cell 18 (obs #6)
+8. Fix Additional Resources format in cell 32 (obs #7)
+9. Move prose from code cell 25 to new markdown cell (obs #8)
+10. Run `ruff check .` and fix any issues
+11. Run `hatch run build` to verify notebook executes cleanly
 
 ## Files modified
 
-- `docs/source/evaluate-evidence/01-evaluating-evidence/lecture.ipynb` — restructured
-  Section 1 and expanded Section 2 diagnostics
-- `docs/source/GUIDELINES.md` — added semicolon rule and possessive apostrophe clarification
-- `docs/source/evaluate-evidence/02-agentic-evaluation-system/lecture.ipynb` — fixed colon
-  and passive voice violations, removed implementation-specific references from Design
-  Patterns subsections (deferred to lecture 03)
-- `CLAUDE.md` — added GUIDELINES.md reference, removed duplicated conventions
+- `docs/source/evaluate-evidence/03-application/lecture.ipynb` — fixed semicolons,
+  colons, passive voice, missing link, MyST directive, Additional Resources format,
+  and moved prose from code cell to markdown cell
 
 ## Verification
 

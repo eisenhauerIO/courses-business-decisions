@@ -19,9 +19,9 @@ is in place across five lecture sections:
 CI (ruff linting) and documentation build (Sphinx + GitHub Pages) are
 operational. All notebooks execute successfully during build.
 
-## Phase 1 — Review feedback (high priority)
+## Phase 0 — Review feedback (high priority)
 
-**Status**: planned
+**Status**: in-progress
 
 Address the high-priority systematic patterns identified in `.claude/docs/upgrades.md`.
 
@@ -30,7 +30,7 @@ Address the high-priority systematic patterns identified in `.claude/docs/upgrad
 - Add notation tables to Business Context sections (lectures 02, 03, 08)
 - Fix import alphabetization in 5 notebook import cells
 
-## Phase 2 — Review feedback (medium priority)
+## Phase 1 — Review feedback (medium priority)
 
 **Status**: planned
 
@@ -43,7 +43,7 @@ Address medium-priority one-off fixes from `.claude/docs/upgrades.md` and
 - Fix `environment.yml` formatting in `github-workflow.md`
 - Standardize catalog-ai code patterns
 
-## Phase 3 — Content proposals
+## Phase 2 — Content proposals
 
 **Status**: planned
 
@@ -53,7 +53,7 @@ or narrative decisions.
 - Synthetic control lecture: evaluate presentation order (weights vs. unobservables)
 - Lecture 08: resolve assignment mechanism narrative vs. simulator behavior mismatch
 
-## Phase 4 — Review feedback (low priority)
+## Phase 3 — Review feedback (low priority)
 
 **Status**: planned
 
@@ -65,14 +65,14 @@ Polish items from `.claude/docs/upgrades.md` and `.claude/docs/backlog.md`.
 - Add backticks, concept references, and business questions in various cells
 - Run a link checker across all documentation
 
-## Phase 5 — Allocate Resources lectures
+## Phase 4 — Allocate Resources lectures
 
 **Status**: planned
 
 Create the decision theory lecture series for the Allocate Resources section.
 This is the largest remaining content gap in the course.
 
-## Phase 6 — Additional causal methods
+## Phase 5 — Additional causal methods
 
 **Status**: planned
 

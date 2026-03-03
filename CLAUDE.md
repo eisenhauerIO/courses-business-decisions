@@ -75,19 +75,10 @@ All installed via pip from GitHub (see pyproject.toml). Never use `sys.path.inse
 
 All work happens on a feature branch. Push, wait for CI to pass, then merge to main.
 
-```bash
-# 1. Create a feature branch and do all work there
-git checkout -b feature/description
-
-# 2. Commit and push
-git push -u origin feature/description
-
-# 3. Wait for CI to pass (ci.yml: linting, docs.yml: Sphinx build)
-gh run watch
-
-# 4. Merge to main only after CI passes
-git checkout main && git merge feature/description && git push
-```
+1. Create a feature branch and do all work there: `git checkout -b feature/description`
+2. Commit and push: `git push -u origin feature/description`
+3. Wait for CI to pass (ci.yml: linting, docs.yml: Sphinx build): `gh run watch`
+4. Merge to main only after CI passes: `git checkout main && git merge feature/description && git push`
 
 ## Key conventions
 
