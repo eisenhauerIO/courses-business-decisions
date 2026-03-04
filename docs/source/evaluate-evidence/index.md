@@ -4,7 +4,6 @@ With causal estimates produced in the [Measure Impact](../measure-impact/index) 
 
 ```{figure} ../_static/improve-decisions-framework-evaluate.svg
 :align: center
-:width: 400px
 :alt: The Evaluate Evidence stage in the Learn, Decide, Repeat framework
 ```
 

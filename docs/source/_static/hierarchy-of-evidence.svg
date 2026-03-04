@@ -26,7 +26,7 @@
 
   <!-- True Effect — apex -->
   <path d="M 280,55 L 308,110 L 252,110 Z" fill="#1e293b"/>
-  <text x="280" y="48" text-anchor="middle" font-size="12" font-weight="600" fill="#1e293b" font-style="italic">True Effect</text>
+  <text x="280" y="48" text-anchor="middle" font-size="14" font-weight="600" fill="#1e293b" font-style="italic">True Effect</text>
 
   <!-- Tier 1: Experiments -->
   <path d="M 252,110 L 308,110 L 352,195 L 208,195 Z" fill="#2563eb"/>
@@ -48,14 +48,19 @@
   <line x1="435" y1="353" x2="500" y2="353" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,3"/>
 
   <!-- Side descriptions — parallel comparison strategy -->
-  <text x="510" y="158" font-size="11" fill="#64748b">Treatment and control units assigned at random</text>
+  <text x="510" y="150" font-size="13" fill="#64748b">Treatment and control units</text>
+  <text x="510" y="166" font-size="13" fill="#64748b">assigned at random</text>
 
-  <text x="510" y="251" font-size="11" fill="#64748b">Treatment units compared to similar control units</text>
+  <text x="510" y="244" font-size="13" fill="#64748b">Treatment units compared</text>
+  <text x="510" y="260" font-size="13" fill="#64748b">to similar control units</text>
 
-  <text x="510" y="356" font-size="11" fill="#64748b">Treatment units compared before and after</text>
+  <text x="510" y="348" font-size="13" fill="#64748b">Treatment units compared</text>
+  <text x="510" y="364" font-size="13" fill="#64748b">before and after</text>
 
-  <!-- Tier labels — left column -->
-  <text x="68" y="160" text-anchor="end" font-size="11" font-weight="600" fill="#2563eb">Tier 1</text>
-  <text x="68" y="252" text-anchor="end" font-size="11" font-weight="600" fill="#7c3aed">Tier 2</text>
-  <text x="68" y="358" text-anchor="end" font-size="11" font-weight="600" fill="#64748b">Tier 3</text>
+  <!-- Left-column vertical boxes — Approach (replacing Tier labels) -->
+  <rect x="42" y="110" width="26" height="83" rx="4" fill="#0d9488"/>
+  <text x="55" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#f8fafc" transform="rotate(-90, 55, 152)">Design-based</text>
+
+  <rect x="42" y="197" width="26" height="208" rx="4" fill="#d97706"/>
+  <text x="55" y="301" text-anchor="middle" font-size="11" font-weight="600" fill="#f8fafc" transform="rotate(-90, 55, 301)">Model-based</text>
 </svg>

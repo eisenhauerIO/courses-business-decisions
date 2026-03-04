@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1140 820" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f0f0f0" stroke-width="0.5"/>
+    </pattern>
+    <filter id="shadow-sm" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+    <filter id="shadow-md" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.10"/>
+    </filter>
+    <filter id="shadow-lg" x="-4%" y="-4%" width="108%" height="116%">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arr-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arr-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <rect width="1140" height="820" fill="#fafbfc"/>
+  <rect width="1140" height="820" fill="url(#grid)"/>
+
+  <!-- ==================== TITLE ==================== -->
+  <text x="560" y="44" text-anchor="middle" font-size="22" font-weight="700" fill="#1e293b" letter-spacing="0.5">The Evaluation Harness</text>
+
+  <!-- ==================== COLUMN HEADERS ==================== -->
+  <text x="370" y="80" text-anchor="middle" font-size="13" font-weight="600" fill="#3b82f6" letter-spacing="1.5">ASSESS MODE</text>
+  <line x1="270" y1="88" x2="470" y2="88" stroke="#3b82f6" stroke-width="1.5" stroke-opacity="0.3"/>
+
+  <text x="880" y="80" text-anchor="middle" font-size="13" font-weight="600" fill="#d97706" letter-spacing="1.5">IMPROVE MODE</text>
+  <line x1="775" y1="88" x2="985" y2="88" stroke="#d97706" stroke-width="1.5" stroke-opacity="0.3"/>
+
+
+  <!-- ==================== INTERNAL VALIDITY ==================== -->
+  <rect x="80" y="108" width="580" height="195" rx="12" fill="white" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow-md)"/>
+  <rect x="80" y="108" width="580" height="5" rx="2.5" fill="#3b82f6"/>
+
+  <text x="116" y="144" font-size="16" font-weight="700" fill="#2563eb">Internal Validity</text>
+  <text x="440" y="144" font-size="11.5" fill="#94a3b8" font-style="italic">Coherence without ground truth</text>
+
+  <!-- Card 1 -->
+  <rect x="116" y="164" width="164" height="115" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="198" y="194" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">Run-to-Run</text>
+  <text x="198" y="211" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">Stability</text>
+  <text x="198" y="240" text-anchor="middle" font-size="10.5" fill="#64748b">Same artifact, same config</text>
+  <text x="198" y="256" text-anchor="middle" font-size="10.5" fill="#64748b">→ same score</text>
+
+  <!-- Card 2 -->
+  <rect x="298" y="164" width="164" height="115" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="380" y="194" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">Prompt &amp; Backend</text>
+  <text x="380" y="211" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">Sensitivity</text>
+  <text x="380" y="240" text-anchor="middle" font-size="10.5" fill="#64748b">Equivalent prompts,</text>
+  <text x="380" y="256" text-anchor="middle" font-size="10.5" fill="#64748b">different LLMs → consistent</text>
+
+  <!-- Card 3 -->
+  <rect x="480" y="164" width="164" height="115" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+  <text x="562" y="194" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">Score</text>
+  <text x="562" y="211" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">Distribution</text>
+  <text x="562" y="240" text-anchor="middle" font-size="10.5" fill="#64748b">Full range used,</text>
+  <text x="562" y="256" text-anchor="middle" font-size="10.5" fill="#64748b">not clustered</text>
+
+
+  <!-- ==================== GATE ==================== -->
+  <line x1="370" y1="303" x2="370" y2="332" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <polygon points="370,338 400,362 370,386 340,362" fill="white" stroke="#94a3b8" stroke-width="1.5" filter="url(#shadow-sm)"/>
+  <text x="370" y="366" text-anchor="middle" font-size="10" fill="#64748b" font-weight="500">stable?</text>
+
+  <line x1="370" y1="386" x2="370" y2="414" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+
+  <!-- ==================== EXTERNAL VALIDITY ==================== -->
+  <rect x="80" y="418" width="580" height="195" rx="12" fill="white" stroke="#7c3aed" stroke-width="1.5" filter="url(#shadow-md)"/>
+  <rect x="80" y="418" width="580" height="5" rx="2.5" fill="#7c3aed"/>
+
+  <text x="116" y="454" font-size="16" font-weight="700" fill="#6d28d9">External Validity</text>
+  <text x="440" y="454" font-size="11.5" fill="#94a3b8" font-style="italic">Correctness against known artifacts</text>
+
+  <!-- Card 1 -->
+  <rect x="116" y="474" width="164" height="115" rx="8" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1"/>
+  <text x="198" y="504" text-anchor="middle" font-size="13" font-weight="600" fill="#5b21b6">Known-Flaw</text>
+  <text x="198" y="521" text-anchor="middle" font-size="13" font-weight="600" fill="#5b21b6">Detection</text>
+  <text x="198" y="550" text-anchor="middle" font-size="10.5" fill="#64748b">Flags defects,</text>
+  <text x="198" y="566" text-anchor="middle" font-size="10.5" fill="#64748b">lowers confidence</text>
+
+  <!-- Card 2 -->
+  <rect x="298" y="474" width="164" height="115" rx="8" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1"/>
+  <text x="380" y="504" text-anchor="middle" font-size="13" font-weight="600" fill="#5b21b6">Known-Clean</text>
+  <text x="380" y="521" text-anchor="middle" font-size="13" font-weight="600" fill="#5b21b6">Scoring</text>
+  <text x="380" y="550" text-anchor="middle" font-size="10.5" fill="#64748b">High scores, no</text>
+  <text x="380" y="566" text-anchor="middle" font-size="10.5" fill="#64748b">invented concerns</text>
+
+  <!-- Card 3 -->
+  <rect x="480" y="474" width="164" height="115" rx="8" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1"/>
+  <text x="562" y="504" text-anchor="middle" font-size="13" font-weight="600" fill="#5b21b6">Severity</text>
+  <text x="562" y="521" text-anchor="middle" font-size="13" font-weight="600" fill="#5b21b6">Calibration</text>
+  <text x="562" y="550" text-anchor="middle" font-size="10.5" fill="#64748b">Monotonic in</text>
+  <text x="562" y="566" text-anchor="middle" font-size="10.5" fill="#64748b">flaw severity</text>
+
+
+  <!-- ==================== SCORECARD ==================== -->
+  <line x1="370" y1="613" x2="370" y2="650" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <rect x="270" y="654" width="200" height="52" rx="10" fill="#1e293b" filter="url(#shadow-lg)"/>
+  <text x="370" y="685" text-anchor="middle" font-size="15" font-weight="600" fill="white">Scorecard</text>
+
+
+  <!-- ==================== IMPROVE MODE PANEL ==================== -->
+  <rect x="710" y="108" width="340" height="598" rx="12" fill="white" stroke="#d97706" stroke-width="1.5" filter="url(#shadow-md)"/>
+  <rect x="710" y="108" width="340" height="5" rx="2.5" fill="#d97706"/>
+
+  <!-- MODIFY -->
+  <text x="750" y="150" font-size="12" font-weight="700" fill="#92400e" letter-spacing="1">MODIFY</text>
+  <line x1="750" y1="158" x2="820" y2="158" stroke="#fbbf24" stroke-width="2"/>
+
+  <circle cx="765" cy="186" r="3" fill="#d97706"/>
+  <text x="782" y="191" font-size="12.5" fill="#475569">Refine prompts</text>
+  <circle cx="765" cy="218" r="3" fill="#d97706"/>
+  <text x="782" y="223" font-size="12.5" fill="#475569">Tighten rubrics</text>
+  <circle cx="765" cy="250" r="3" fill="#d97706"/>
+  <text x="782" y="255" font-size="12.5" fill="#475569">Update schemas</text>
+  <circle cx="765" cy="282" r="3" fill="#d97706"/>
+  <text x="782" y="287" font-size="12.5" fill="#475569">Switch architecture</text>
+
+  <!-- Divider -->
+  <line x1="750" y1="318" x2="1010" y2="318" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- VALIDATE -->
+  <text x="750" y="354" font-size="12" font-weight="700" fill="#92400e" letter-spacing="1">VALIDATE</text>
+  <line x1="750" y1="362" x2="832" y2="362" stroke="#fbbf24" stroke-width="2"/>
+
+  <text x="750" y="394" font-size="12.5" fill="#475569">Test on <tspan font-weight="600">held-out</tspan></text>
+  <text x="750" y="414" font-size="12.5" fill="#475569">artifacts only</text>
+
+  <!-- Warning box -->
+  <rect x="734" y="442" width="300" height="56" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.2"/>
+  <text x="884" y="465" text-anchor="middle" font-size="11.5" font-weight="600" fill="#dc2626">Never validate against</text>
+  <text x="884" y="483" text-anchor="middle" font-size="11.5" font-weight="600" fill="#dc2626">diagnostic artifacts</text>
+
+  <!-- Anti-pattern -->
+  <text x="750" y="530" font-size="10" fill="#94a3b8" font-style="italic">Anti-pattern: fix prompt to catch flaw #7,</text>
+  <text x="750" y="548" font-size="10" fill="#94a3b8" font-style="italic">re-test on flaw #7, declare it fixed.</text>
+
+  <!-- Divider -->
+  <line x1="750" y1="578" x2="1010" y2="578" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- RE-ASSESS -->
+  <text x="750" y="614" font-size="12" font-weight="700" fill="#92400e" letter-spacing="1">RE-ASSESS</text>
+  <line x1="750" y1="622" x2="840" y2="622" stroke="#fbbf24" stroke-width="2"/>
+
+  <text x="750" y="654" font-size="12.5" fill="#475569">Return to Assess Mode</text>
+  <text x="750" y="674" font-size="12.5" fill="#475569">with modified system</text>
+
+
+  <!-- ==================== CONNECTING ARROWS ==================== -->
+
+  <!-- A. Gate "unstable" → Improve Mode: horizontal right at y=362 -->
+  <line x1="400" y1="362" x2="708" y2="362" stroke="#d97706" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arr-amber)"/>
+  <text x="554" y="354" text-anchor="middle" font-size="10" fill="#d97706" font-weight="500">unstable → improve</text>
+
+  <!-- B. Scorecard → Improve Mode: horizontal right at y=680 -->
+  <line x1="470" y1="680" x2="708" y2="680" stroke="#d97706" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arr-amber)"/>
+  <text x="589" y="672" text-anchor="middle" font-size="10" fill="#d97706" font-weight="500">issues found → improve</text>
+
+  <!-- C. Re-assess loop: top of Improve → across → down into Assess -->
+  <path d="M 880 108 L 880 94 L 370 94 L 370 106" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arr-blue)"/>
+  <text x="625" y="88" text-anchor="middle" font-size="10" fill="#3b82f6" font-weight="500">Re-assess after changes</text>
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <text x="370" y="746" text-anchor="middle" font-size="11" fill="#94a3b8" font-style="italic">Internal validity is a precondition for external validity</text>
+
+</svg>

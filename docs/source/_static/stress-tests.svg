@@ -46,7 +46,7 @@
   <line x1="505" y1="290" x2="385" y2="242" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
 
   <!-- Question labels — below each box -->
-  <text x="350" y="145" text-anchor="middle" font-size="10" fill="#64748b">Stable across specifications?</text>
+  <text x="460" y="145" text-anchor="start" font-size="10" fill="#64748b">Stable across specifications?</text>
 
   <text x="135" y="372" text-anchor="middle" font-size="10" fill="#64748b">How far must assumptions</text>
   <text x="135" y="384" text-anchor="middle" font-size="10" fill="#64748b">be violated to overturn it?</text>

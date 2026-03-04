@@ -1,3 +1,13 @@
+/* Equal vertical spacing for centered figures.
+   Theme sets p { margin: 0 0 24px }, so paragraphs have 24px bottom but
+   0px top. To get symmetric gaps around a figure between two paragraphs,
+   set figure top to 0 (collapses with preceding p's 24px bottom) and
+   figure bottom to 24px (provides spacing before the next p's 0 top). */
+figure.align-center {
+    margin-top: 0 !important;
+    margin-bottom: 24px !important;
+}
+
 /* Float figures to the right so text wraps around them */
 .figure-float-right {
     float: right;

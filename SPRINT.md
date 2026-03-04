@@ -1,164 +1,102 @@
-# Evaluate Evidence Lecture 03 — Writing & Code Review
+# Evaluate Evidence Lecture 02 — Agentic Evaluation Review
 
 **Status**: executing
 
 ## Goal
 
-Fix writing guideline violations and code issues in Lecture 03 (Automated Evidence
-Review) identified through a systematic review against `docs/source/GUIDELINES.md`.
-Contributes to BACKLOG.md Phase 0 (Review feedback — high priority).
+Review and refine Lecture 02 (Agentic Evaluation System) content. Contributes to
+BACKLOG.md Phase 0 (Review feedback — high priority).
 
 ## Scope
 
 **In scope**:
-- Writing and formatting fixes in `docs/source/evaluate-evidence/03-application/lecture.ipynb`
-- Code cell cleanup in the same notebook
+- Content and structural review of `docs/source/evaluate-evidence/02-agentic-evaluation-system/lecture.ipynb`
 
 **Out of scope**:
-- Content or structural changes to the lecture
-- Changes to `support.py` (no issues found)
+- Changes to other lectures
 - Changes to Impact Engine repositories (`_external/`)
 
 ## Observations
 
-### 1. Semicolons — 3 violations (GUIDELINES: Tone and Voice → separate sentences)
+### 1. Pillar-to-design-pattern mapping table may be forced
 
-| Cell | Current text |
-|------|-------------|
-| 0 | "evaluating causal evidence**;** in Lecture 2 we examined" |
-| 19 | "A 5% attrition rate is acceptable**;** differential attrition" |
-| 24 | "produces a confidence score**;** the MEASURE stage produces" |
+The table mapping pipeline stages to design patterns and pillars enforced stretches the
+one-to-one correspondence. Layered Specialization → Traceability is the weakest link —
+the uniform interface enables audit trails, but the primary value of layered
+specialization is correctness through method-specific expertise. Traceability is a side
+effect, not the main point.
 
-### 2. Colons — 11 violations (GUIDELINES: Tone and Voice → narrative prose over definition patterns)
+A tighter mapping would let Correctness appear twice (once for Registry + Dispatch, once
+for Layered Specialization) rather than forcing a distinct pillar for each row. The
+alternative is to reframe the Layered Specialization description to emphasize the uniform
+interface angle more explicitly, but this requires more of a leap for the reader.
 
-| Cell | Current text |
-|------|-------------|
-| 0 | "puts both together**:** we use" |
-| 1 | "causal estimates**:** effect sizes, confidence intervals" |
-| 4 | "manifest.json**:** describes the initiative" |
-| 4 | "impact_results.json**:** the measurement output" |
-| 9 | "from Lecture 1**:** an experiment, by design" |
-| 19 | "The deductions are real**:** the wide CI" |
-| 24 | "from Lecture 1**:** the quality of evidence" |
-| 26 | "from the others**:** you cannot guarantee" |
-| 31 | "external validity**:** the reviewer discriminates" |
-| 31 | "artifact value**:** max SMD = 0.35" |
-| 31 | "explicit thresholds**:** "An attrition rate" |
+### 2. Formulaic "enforces the X pillar" closing sentences
 
-### 3. Passive voice — 3 violations (GUIDELINES: Tone and Voice → active voice)
+Each design pattern subsection (cells 7–10) ends with a formulaic sentence linking the
+pattern to a pillar: "This pattern enforces the Correctness pillar," "This enforces the
+Reproducibility pillar," "This enforces the Traceability pillar uniformly," "This cycle
+enforces Groundedness at the output level." The table in cell 6 already maps patterns to
+pillars explicitly — these closing sentences restate what the table says.
 
-| Cell | Current text | Suggested rewrite |
-|------|-------------|-------------------|
-| 26 | "Groundedness is enforced architecturally" | "The architecture enforces groundedness" |
-| 26 | "Traceability is enforced by the per-dimension output schema" | "The per-dimension output schema enforces traceability" |
-| 26 | "Reproducibility is enforced by fixed prompts, zero temperature, and version-pinned backends" | "Fixed prompts, zero temperature, and version-pinned backends enforce reproducibility" |
+### 3. Remove SUTVA from evaluate-evidence lectures
 
-### 4. Missing link on first mention (GUIDELINES: Links → link on first mention)
+Lectures 01 and 03 use "Spillover / SUTVA." Remove the "/ SUTVA" abbreviation and keep
+just "Spillover." Affects lecture 01 (diagnostic table) and lecture 03 (three mentions in
+walkthrough text).
 
-Cell 0 mentions `impact-engine-evaluate` without linking. The URL appears later in cell
-32 (`https://eisenhauerio.github.io/tools-impact-engine-evaluate/`). The first mention
-should be linked per the guideline: "Link package/tool names on first mention."
+### 4. Hierarchy-of-evidence SVG font sizes too small
 
-### 5. Bold consistency for pipeline stages (GUIDELINES: Emphasis → bold on first introduction)
+In `_static/hierarchy-of-evidence.svg`, the "Tier N" labels (font-size 11), "True Effect"
+label (font-size 12), and the side descriptions ("Treatment and control units assigned at
+random," etc.) are too small. Increase font sizes so they are readable at the same scale
+as the tier names inside the pyramid (currently font-size 14). The side descriptions can
+wrap to two lines if needed.
 
-**MEASURE**, **EVALUATE**, and **ALLOCATE** are bold in cell 1 but appear as plain
-uppercase in cells 0, 4, 9, 13, 16, 24, and 26. Should be consistent — either always
-bold or bold only on first introduction (cell 1) and plain text thereafter, which
-matches the guideline "Bold for concepts on first introduction. Plain text on subsequent
-mentions."
+### 5. Stress-tests SVG: "Stable across specifications?" label position
 
-Current behavior (bold in cell 1, plain elsewhere) actually matches the guideline. No
-fix needed — this observation is resolved.
+Moved from between the Robustness Checks box and the arrow to the right side. Already
+fixed — observation recorded for tracking.
 
-### 6. MyST directive in notebook cell (known convention)
+### 6. Evaluate-evidence SVGs need a visual review pass
 
-Cell 18 uses a `` ```{note} `` `` directive. Per project convention (MEMORY.md),
-nbsphinx does not parse MyST directives in `.ipynb` markdown cells. This renders as raw
-text, not an admonition box. Replace with an HTML `<blockquote>` or bold-text callout.
-
-### 7. Additional Resources format (GUIDELINES: Additional Resources Section)
-
-Cell 32 third entry uses a bare link format:
-
-```
-- [impact-engine-evaluate documentation](url) — Usage, configuration, and system design
-```
-
-The guideline specifies: "bullet points with **Author (Year)**. `[Title](url)`.
-*Journal*, volume(issue), pages." The third entry has no author or year. Either add a
-proper citation or restructure to match the expected format.
-
-### 8. Prose printed from code cell (code review)
-
-Cell 25 ends with narrative conclusions printed via `print()`:
-
-```python
-print("The experiment's adjusted return is higher despite a lower raw estimate,")
-print("because the stronger methodology commands greater confidence.")
-```
-
-This prose belongs in a markdown cell following cell 25. Narrative conclusions should
-not be generated by code cells.
+All SVGs used in the evaluate-evidence lectures need a review for readability, font
+sizing, label placement, and overall visual quality. Options A/B/C for a new evaluation
+harness diagram will be evaluated during this pass. Candidates:
+- `_static/hierarchy-of-evidence.svg` (obs #4)
+- `_static/stress-tests.svg` (obs #5)
+- `_static/defensible-confidence-pillars.svg`
+- `_static/review-engine.svg`
+- Any new diagram for Section 4 (The Evaluation Harness)
 
 ## Decisions
 
-### 1. Semicolons (obs #1)
-
-Accept. Replace all three semicolons with periods and new sentences.
-
-### 2. Colons (obs #2)
-
-Accept. Rewrite each colon-separated definition pattern into flowing narrative. Use
-bullet lists where the original text enumerates items.
-
-### 3. Passive voice (obs #3)
-
-Accept. Apply the suggested rewrites to flip all three sentences to active voice.
-
-### 4. Missing link (obs #4)
-
-Accept. Link `impact-engine-evaluate` on first mention in cell 0.
-
-### 5. Bold consistency (obs #5)
-
-No fix needed — current behavior matches the guideline.
-
-### 6. MyST directive (obs #6)
-
-Accept. Replace the `{note}` directive with a bold-text callout paragraph.
-
-### 7. Additional Resources format (obs #7)
-
-Accept. Restructure the third entry to match the **Author (Year)** citation format used
-by the other entries. Use **eisenhauer.io (2026)** as the author/year.
-
-### 8. Prose in code cell (obs #8)
-
-Accept. Remove the two `print()` lines from cell 25 and add a new markdown cell after
-it with the same content as narrative prose.
+1. **Table mapping**: Drop forced one-to-one. Let Correctness appear twice (Registry +
+   Dispatch, Layered Specialization). Remove Traceability as standalone pillar for Layered
+   Specialization.
+2. **Formulaic closers**: Remove all four "enforces the X pillar" closing sentences.
+3. **SUTVA**: Replace "Spillover / SUTVA" with "Spillover" in lectures 01 and 03.
+4. **Hierarchy SVG fonts**: Tier labels 11→14, True Effect 12→14, side descriptions 11→13
+   (wrap to two lines as needed).
+5. **Stress-tests label**: Already fixed.
+6. **SVG review pass**: Separate task after content edits.
 
 ## Plan
 
-1. Create feature branch `feature/evaluate-evidence-03-review`
-2. Strip notebook outputs for lecture 03
-3. Fix semicolons in cells 0, 19, 24 (obs #1)
-4. Fix colons in cells 0, 1, 4, 9, 19, 24, 26, 31 (obs #2)
-5. Fix passive voice in cell 26 (obs #3)
-6. Add link on first mention in cell 0 (obs #4)
-7. Replace MyST directive in cell 18 (obs #6)
-8. Fix Additional Resources format in cell 32 (obs #7)
-9. Move prose from code cell 25 to new markdown cell (obs #8)
-10. Run `ruff check .` and fix any issues
-11. Run `hatch run build` to verify notebook executes cleanly
+1. Edit lecture 02 notebook: fix table + remove formulaic closers (obs #1, #2)
+2. Edit lectures 01 and 03: remove SUTVA (obs #3)
+3. Edit hierarchy-of-evidence SVG: increase font sizes (obs #4)
+4. SVG visual review pass (obs #6) — next task
 
 ## Files modified
 
-- `docs/source/evaluate-evidence/03-application/lecture.ipynb` — fixed semicolons,
-  colons, passive voice, missing link, MyST directive, Additional Resources format,
-  and moved prose from code cell to markdown cell
+- `docs/source/evaluate-evidence/02-agentic-evaluation-system/lecture.ipynb` — table mapping
+  (obs #1), formulaic closers removed (obs #2)
+- `docs/source/evaluate-evidence/01-evaluating-evidence/lecture.ipynb` — SUTVA removed (obs #3)
+- `docs/source/evaluate-evidence/03-application/lecture.ipynb` — SUTVA removed (obs #3)
+- `docs/source/_static/hierarchy-of-evidence.svg` — font sizes increased (obs #4)
+- `docs/source/_static/stress-tests.svg` — label repositioned (obs #5, prior session)
 
 ## Verification
 
-1. `ruff check .` passes
-2. `hatch run build` succeeds (all notebooks execute cleanly)
-3. CI passes on feature branch before merge
+TBD
