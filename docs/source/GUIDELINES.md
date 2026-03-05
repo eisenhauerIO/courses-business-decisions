@@ -84,6 +84,20 @@ Bad:  The effect_size parameter controls...
 #### Rare: only for deeply nested content
 ```
 
+### Capitalization
+
+Use **sentence case** for all headers — capitalize the first word and proper nouns only:
+
+```markdown
+Good: ## Deterministic scoring
+Good: ### How is revenue distributed across categories?
+Good: ## The evaluation harness
+Bad:  ## Deterministic Scoring (title case)
+Bad:  ## The Evaluation Harness (title case)
+```
+
+Exception: acronyms and proper nouns retain their standard capitalization (e.g., "YAML", "Ollama", "Part I").
+
 ### Headers as Questions
 
 Use question-form headers when exploring data or posing analytical questions:

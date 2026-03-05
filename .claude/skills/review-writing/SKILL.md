@@ -200,9 +200,23 @@ Bad:  2024-11-01 (not quoted)
 #### Rare: only for deeply nested content
 ```
 
+### Sentence Case
+
+All headers use sentence case — capitalize the first word and proper nouns only:
+
+```markdown
+Good: ## Deterministic scoring
+Good: ### How is revenue distributed across categories?
+Good: ## The evaluation harness
+Bad:  ## Deterministic Scoring (title case)
+Bad:  ## The Evaluation Harness (title case)
+```
+
+Exception: acronyms and proper nouns retain standard capitalization (e.g., "YAML", "Ollama", "Part I").
+
 ### Section Headers Should Be Questions (When Appropriate)
 ```markdown
-Good: ## Exploring the Generated Data
+Good: ## Exploring the generated data
 Good: ### How is revenue distributed across categories?
 Bad:  ### Revenue Distribution (less engaging)
 ```
@@ -395,7 +409,9 @@ Verify standard docs tooling is in place:
 - [ ] Object types use backticks (`` `DataFrame` ``, `` `JobInfo` ``)
 - [ ] First introduction of concepts uses **bold**
 - [ ] Links use meaningful text, not "click here"
+- [ ] Headers use sentence case (capitalize first word and proper nouns only)
 - [ ] Headers are questions when exploring data
+- [ ] YAML top-level sections referenced in **BOLD UPPERCASE** in prose
 - [ ] Active voice, present tense throughout
 
 ## Pedagogy Checklist

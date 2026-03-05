@@ -109,32 +109,6 @@ def create_mock_job_directory(
 # =============================================================================
 
 
-def print_rendered_prompt(messages, max_chars=2000):
-    """
-    Display rendered prompt messages with role headers and truncation.
-
-    Parameters
-    ----------
-    messages : list[dict[str, str]]
-        Chat messages with ``"role"`` and ``"content"`` keys, as returned
-        by ``render(spec, variables)``.
-    max_chars : int
-        Maximum characters to display per message before truncating.
-    """
-    for msg in messages:
-        role = msg["role"].upper()
-        content = msg["content"]
-        print("=" * 60)
-        print(f"  [{role}]")
-        print("=" * 60)
-        if len(content) > max_chars:
-            print(content[:max_chars])
-            print(f"\n... truncated ({len(content)} chars total)")
-        else:
-            print(content)
-        print()
-
-
 def print_evaluate_result(result):
     """
     Print the output of ``evaluate_confidence``.

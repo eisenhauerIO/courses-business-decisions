@@ -369,6 +369,7 @@ Before finalizing code:
 - [ ] No debug print statements left in
 - [ ] DataFrame operations are clear and explicit
 - [ ] NumPy-style docstrings on all public functions
+- [ ] Config/prompt files displayed with `! cat` not Python load/dump
 
 ---
 
