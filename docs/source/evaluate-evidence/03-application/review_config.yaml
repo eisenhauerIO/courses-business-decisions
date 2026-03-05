@@ -1,0 +1,4 @@
+backend:
+  model: "ollama_chat/llama3.2"
+  temperature: 0.0
+  max_tokens: 2048

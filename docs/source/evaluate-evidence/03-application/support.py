@@ -109,6 +109,32 @@ def create_mock_job_directory(
 # =============================================================================
 
 
+def print_rendered_prompt(messages, max_chars=2000):
+    """
+    Display rendered prompt messages with role headers and truncation.
+
+    Parameters
+    ----------
+    messages : list[dict[str, str]]
+        Chat messages with ``"role"`` and ``"content"`` keys, as returned
+        by ``render(spec, variables)``.
+    max_chars : int
+        Maximum characters to display per message before truncating.
+    """
+    for msg in messages:
+        role = msg["role"].upper()
+        content = msg["content"]
+        print("=" * 60)
+        print(f"  [{role}]")
+        print("=" * 60)
+        if len(content) > max_chars:
+            print(content[:max_chars])
+            print(f"\n... truncated ({len(content)} chars total)")
+        else:
+            print(content)
+        print()
+
+
 def print_evaluate_result(result):
     """
     Print the output of ``evaluate_confidence``.
@@ -221,67 +247,46 @@ def plot_review_dimensions(review_result):
     plt.show()
 
 
-def plot_score_comparison(result_a, result_b, labels=("A", "B")):
+def plot_severity_calibration(results, labels):
     """
-    Compare per-dimension scores from two agentic reviews side by side.
+    Plot a grouped bar chart comparing per-dimension scores across severity levels.
 
-    Useful for validating that the reviewer discriminates between clean and
-    flawed measurement artifacts (the Assess mode of the Correctness pillar).
+    Each result gets a cluster of bars (one per dimension) plus a dashed
+    horizontal line at its overall score. Useful for validating that the
+    reviewer assigns monotonically decreasing scores as artifact quality
+    degrades.
 
     Parameters
     ----------
-    result_a : ReviewResult
-        First review result (e.g., a known-clean artifact).
-    result_b : ReviewResult
-        Second review result (e.g., a known-flaw artifact).
-    labels : tuple[str, str]
-        Display labels for result_a and result_b respectively.
+    results : list[ReviewResult]
+        Review results ordered from cleanest to most flawed.
+    labels : list[str]
+        Display labels corresponding to each result.
     """
-    dims_a = {d.name: d.score for d in result_a.dimensions}
-    dims_b = {d.name: d.score for d in result_b.dimensions}
-    dim_names = list(dims_a.keys())
-
-    scores_a = [dims_a[n] for n in dim_names]
-    scores_b = [dims_b.get(n, 0.0) for n in dim_names]
+    n_results = len(results)
+    dim_names = [d.name for d in results[0].dimensions]
     display_names = [n.replace("_", " ").title() for n in dim_names]
+    n_dims = len(dim_names)
 
-    y_pos = np.arange(len(dim_names))
-    height = 0.35
+    x = np.arange(n_dims)
+    width = 0.8 / n_results
+    colors = ["#2ecc71", "#f39c12", "#e74c3c"]
 
-    _, ax = plt.subplots(figsize=(9, max(3, len(dim_names) * 1.0)))
+    _, ax = plt.subplots(figsize=(10, 5))
 
-    bars_a = ax.barh(
-        y_pos + height / 2, scores_a, height, color="#2ecc71", edgecolor="black", alpha=0.85, label=labels[0]
-    )
-    bars_b = ax.barh(
-        y_pos - height / 2, scores_b, height, color="#e74c3c", edgecolor="black", alpha=0.85, label=labels[1]
-    )
+    for i, (result, label) in enumerate(zip(results, labels)):
+        scores = {d.name: d.score for d in result.dimensions}
+        vals = [scores.get(n, 0.0) for n in dim_names]
+        offset = (i - n_results / 2 + 0.5) * width
+        color = colors[i % len(colors)]
+        ax.bar(x + offset, vals, width, label=label, color=color, edgecolor="black", alpha=0.85)
+        ax.axhline(result.overall_score, color=color, linestyle="--", linewidth=1.2, alpha=0.7)
 
-    for bar, score in zip(bars_a, scores_a):
-        ax.text(score + 0.02, bar.get_y() + bar.get_height() / 2, f"{score:.2f}", va="center", fontsize=9)
-    for bar, score in zip(bars_b, scores_b):
-        ax.text(score + 0.02, bar.get_y() + bar.get_height() / 2, f"{score:.2f}", va="center", fontsize=9)
-
-    ax.axvline(
-        result_a.overall_score,
-        color="#27ae60",
-        linestyle="--",
-        linewidth=1.5,
-        label=f"{labels[0]} overall: {result_a.overall_score:.2f}",
-    )
-    ax.axvline(
-        result_b.overall_score,
-        color="#c0392b",
-        linestyle="--",
-        linewidth=1.5,
-        label=f"{labels[1]} overall: {result_b.overall_score:.2f}",
-    )
-
-    ax.set_yticks(y_pos)
-    ax.set_yticklabels(display_names)
-    ax.set_xlim(0, 1.2)
-    ax.set_xlabel("Score")
-    ax.set_title("Reviewer Discrimination: Known-Clean vs. Known-Flaw")
-    ax.legend(loc="lower right", fontsize=9)
+    ax.set_xticks(x)
+    ax.set_xticklabels(display_names, rotation=30, ha="right")
+    ax.set_ylim(0, 1.1)
+    ax.set_ylabel("Score")
+    ax.set_title("Severity Calibration: Known-Clean → Known-Flaw")
+    ax.legend(loc="upper right", fontsize=9)
     plt.tight_layout()
     plt.show()
