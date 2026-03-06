@@ -1,0 +1,13 @@
+label: "Known-flaw"
+initiative_id: "eval_test_flawed_rct"
+evaluate_strategy: "review"
+effect_estimate: 300.0
+ci_lower: -5.0
+ci_upper: 605.0
+sample_size: 80
+diagnostics:
+  covariate_balance:
+    max_smd: 0.35
+    mean_smd: 0.20
+  attrition_rate: 0.25
+  compliance_rate: 0.68

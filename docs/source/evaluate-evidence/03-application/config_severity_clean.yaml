@@ -1,0 +1,13 @@
+label: "Known-clean"
+initiative_id: "eval_test_clean_rct"
+evaluate_strategy: "review"
+effect_estimate: 50.0
+ci_lower: 30.0
+ci_upper: 70.0
+sample_size: 10000
+diagnostics:
+  covariate_balance:
+    max_smd: 0.02
+    mean_smd: 0.01
+  attrition_rate: 0.02
+  compliance_rate: 0.97

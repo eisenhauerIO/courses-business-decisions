@@ -29,6 +29,8 @@ def create_mock_job_directory(
     sample_size=500,
     cost_to_scale=50000.0,
     diagnostics=None,
+    *,
+    config=None,
 ):
     """
     Create a temporary job directory with manifest and impact results.
@@ -38,31 +40,46 @@ def create_mock_job_directory(
 
     Parameters
     ----------
-    initiative_id : str
+    initiative_id : str, optional
         Identifier for the initiative.
-    model_type : str
+    model_type : str, optional
         Causal method label (must match a registered reviewer).
-    evaluate_strategy : str
+    evaluate_strategy : str, optional
         Strategy for evaluation: ``"score"`` or ``"review"``.
-    effect_estimate : float
+    effect_estimate : float, optional
         Point estimate of the treatment effect.
-    ci_lower : float
+    ci_lower : float, optional
         Lower bound of the confidence interval.
-    ci_upper : float
+    ci_upper : float, optional
         Upper bound of the confidence interval.
-    sample_size : int
+    sample_size : int, optional
         Number of observations in the study.
-    cost_to_scale : float
+    cost_to_scale : float, optional
         Cost to scale the initiative.
-    diagnostics : dict or None
+    diagnostics : dict or None, optional
         Diagnostic statistics to embed in the artifact. If ``None``, uses
         defaults representing a clean, well-powered experiment.
+    config : dict or None, optional
+        Configuration dict that can supply any of the above keys. When
+        provided, its values override the corresponding positional defaults.
+        Useful for loading artifact specs from YAML files.
 
     Returns
     -------
     pathlib.Path
         Path to the temporary job directory.
     """
+    if config is not None:
+        initiative_id = config.get("initiative_id", initiative_id)
+        model_type = config.get("model_type", model_type)
+        evaluate_strategy = config.get("evaluate_strategy", evaluate_strategy)
+        effect_estimate = config.get("effect_estimate", effect_estimate)
+        ci_lower = config.get("ci_lower", ci_lower)
+        ci_upper = config.get("ci_upper", ci_upper)
+        sample_size = config.get("sample_size", sample_size)
+        cost_to_scale = config.get("cost_to_scale", cost_to_scale)
+        diagnostics = config.get("diagnostics", diagnostics)
+
     if diagnostics is None:
         diagnostics = {
             "covariate_balance": {"max_smd": 0.04, "mean_smd": 0.02},

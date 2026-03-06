@@ -1,0 +1,13 @@
+label: "Known-medium"
+initiative_id: "eval_test_medium_rct"
+evaluate_strategy: "review"
+effect_estimate: 180.0
+ci_lower: 40.0
+ci_upper: 320.0
+sample_size: 200
+diagnostics:
+  covariate_balance:
+    max_smd: 0.12
+    mean_smd: 0.08
+  attrition_rate: 0.12
+  compliance_rate: 0.82
