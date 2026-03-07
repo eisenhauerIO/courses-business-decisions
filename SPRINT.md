@@ -1,6 +1,6 @@
 # Index file formatting consistency
 
-**Status**: discussing
+**Status**: complete
 
 ## Goal
 
@@ -104,3 +104,8 @@ No change. Varied verbs read naturally.
 2. `hatch run build` — pass
 
 ## Files modified
+
+- `docs/source/measure-impact/index.md` — sentence case headers, "parts" → "sections"
+- `docs/source/evaluate-evidence/index.md` — sentence case headers, "Impact Engine" → "Impact Engine — Evaluate" (3×), body text bold references
+- `docs/source/allocate-resources/index.md` — sentence case header, body text bold reference
+- `docs/source/GUIDELINES.md` — added proper noun examples to exception list

@@ -21,13 +21,13 @@ Each application lecture uses one tool. The [**Impact Engine — Evaluate**](htt
   - Confidence scoring for causal estimates
 ```
 
-The material is organized in three sections. **Evidence Quality** develops the conceptual toolkit for judging causal evidence — validity, diagnostic checks, and the hierarchy of designs. **Automated Assessment** develops the principles and design patterns for building agentic evaluation systems that produce defensible confidence scores automatically. **Evaluation Pipeline** runs the full pipeline end-to-end, demonstrating how automated assessment translates measurement output into the confidence-weighted returns that drive resource allocation.
+The material is organized in three sections. **Evidence quality** develops the conceptual toolkit for judging causal evidence — validity, diagnostic checks, and the hierarchy of designs. **Automated assessment** develops the principles and design patterns for building agentic evaluation systems that produce defensible confidence scores automatically. **Evaluation pipeline** runs the full pipeline end-to-end, demonstrating how automated assessment translates measurement output into the confidence-weighted returns that drive resource allocation.
 
-## Evidence Quality
+## Evidence quality
 
 This section develops the diagnostic framework for judging causal evidence — the vocabulary and checks that distinguish trustworthy estimates from unreliable ones, whether applied manually or by an automated system.
 
-### Causal Diagnostics
+### Causal diagnostics
 
 We introduce internal and external validity, statistical versus practical significance, and the hierarchy of evidence designs. We then examine the diagnostic checks shared across all causal methods and the method-specific tests for experiments, matching, and synthetic control.
 
@@ -37,13 +37,13 @@ We introduce internal and external validity, statistical versus practical signif
 01-evaluating-evidence/lecture
 ```
 
-## Automated Assessment
+## Automated assessment
 
-This section shifts from what to evaluate to how to build systems that evaluate quality at scale. It develops the principles that make automated confidence scoring defensible — the evaluation task, the pillars that guarantee defensible confidence, evaluation architectures, and the evaluation harness — and then examines the software patterns that enforce those principles in the [**Impact Engine**](https://eisenhauerio.github.io/tools-impact-engine-evaluate/).
+This section shifts from what to evaluate to how to build systems that evaluate quality at scale. It develops the principles that make automated confidence scoring defensible — the evaluation task, the pillars that guarantee defensible confidence, evaluation architectures, and the evaluation harness — and then examines the software patterns that enforce those principles in the [**Impact Engine — Evaluate**](https://eisenhauerio.github.io/tools-impact-engine-evaluate/).
 
-### Agentic Evaluation
+### Agentic evaluation
 
-We develop the four pillars of defensible confidence, evaluation architectures as compositional building blocks (Judge, Jury, Reviewer, Debate), and the evaluation harness that validates the system through internal and external validity tests. We then examine how the **Impact Engine** enforces these principles through registry dispatch, prompt engineering as software, layered specialization, and structured output.
+We develop the four pillars of defensible confidence, evaluation architectures as compositional building blocks (Judge, Jury, Reviewer, Debate), and the evaluation harness that validates the system through internal and external validity tests. We then examine how the **Impact Engine — Evaluate** enforces these principles through registry dispatch, prompt engineering as software, layered specialization, and structured output.
 
 ```{toctree}
 :titlesonly:
@@ -51,13 +51,13 @@ We develop the four pillars of defensible confidence, evaluation architectures a
 02-agentic-evaluation-system/lecture
 ```
 
-## Evaluation Pipeline
+## Evaluation pipeline
 
 This section applies the conceptual and engineering foundations from the preceding parts. It runs the full evaluation pipeline on mock measurement output and validates the system's ability to discriminate between strong and weak evidence.
 
-### Automated Review
+### Automated review
 
-We run the **Impact Engine** end-to-end, applying both evaluation strategies — deterministic scoring and agentic review — to mock measurement output. The lecture then examines the Correctness pillar directly: by running known-clean and known-flaw artifacts through the reviewer, we demonstrate how an automated assessment system can be validated in practice.
+We run the **Impact Engine — Evaluate** end-to-end, applying both evaluation strategies — deterministic scoring and agentic review — to mock measurement output. The lecture then examines the Correctness pillar directly: by running known-clean and known-flaw artifacts through the reviewer, we demonstrate how an automated assessment system can be validated in practice.
 
 ```{toctree}
 :titlesonly:

@@ -14,7 +14,7 @@ We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scot
 :width: 150px
 ```
 
-Each application lecture uses two tools. The [**Online Retail Simulator**](https://eisenhauerio.github.io/tools-online-retail-simulator/) generates fully synthetic retail data where both potential outcomes are observed — a "god's eye view" that lets us verify whether an estimator recovers the true treatment effect. The [**Impact Engine — Measure**](https://eisenhauerio.github.io/tools-impact-engine-measure/) wraps causal estimation methods behind a single YAML configuration: one call in, one standardized result bundle out.
+Each application lecture uses two tools. The [**Online Retail Simulator**](https://eisenhauerio.github.io/tools-online-retail-simulator/) generates fully synthetic retail data where both potential outcomes are observed — an omniscient view that lets us verify whether an estimator recovers the true treatment effect. The [**Impact Engine — Measure**](https://eisenhauerio.github.io/tools-impact-engine-measure/) wraps causal estimation methods behind a single YAML configuration: one call in, one standardized result bundle out.
 
 ```{list-table}
 :align: center
@@ -37,7 +37,7 @@ Together, they enable a repeatable five-step workflow that structures every appl
 ***Lecture Structure***
 ```
 
-The material is organized in three parts. We begin with foundational causal models that clarify what causal effects mean and under which assumptions they are identified. We then study methods that rely on selection on observables, followed by methods designed to address selection on unobservables.
+The material is organized in three sections. We begin with foundational causal models that clarify what causal effects mean and under which assumptions they are identified. We then study methods that rely on selection on observables, followed by methods designed to address selection on unobservables.
 
 ## Foundations
 
@@ -63,7 +63,7 @@ We introduce directed acyclic graphs (DAGs) as a complementary representation of
 02-directed-acyclic-graphs/lecture
 ```
 
-## Selection on Observables
+## Selection on observables
 
 ```{figure} ../_static/dag-selection-observables.svg
 :figclass: figure-float-right
@@ -72,7 +72,7 @@ We introduce directed acyclic graphs (DAGs) as a complementary representation of
 
 This section covers methods that assume all confounders are observed and measured. As the DAG illustrates, the confounding variables X that jointly influence treatment D and outcome Y are available in the data, so conditioning on X under the conditional independence assumption is sufficient to identify causal effects. The challenge is how to condition effectively — through stratification, matching, or flexible modeling.
 
-### Matching & Subclassification
+### Matching & subclassification
 
 We introduce methods for causal inference under selection on observables. We cover the conditional independence assumption, subclassification, and matching estimators. The focus is on achieving covariate balance to satisfy the backdoor criterion.
 
@@ -82,7 +82,7 @@ We introduce methods for causal inference under selection on observables. We cov
 03-matching-subclassification/lecture
 ```
 
-## Selection on Unobservables
+## Selection on unobservables
 
 ```{figure} ../_static/dag-selection-unobservables.svg
 :figclass: figure-float-right

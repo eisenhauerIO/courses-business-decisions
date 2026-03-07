@@ -21,9 +21,9 @@ Each application lecture uses one tool. The [**Impact Engine — Allocate**](htt
   - Portfolio optimization under uncertainty
 ```
 
-The material is organized in one section. **Portfolio Optimization** develops the mathematical framework for selecting initiatives under uncertainty and applies it end-to-end.
+The material is organized in one section. **Portfolio optimization** develops the mathematical framework for selecting initiatives under uncertainty and applies it end-to-end.
 
-## Portfolio Optimization
+## Portfolio optimization
 
 This section develops the decision-theoretic framework for portfolio selection — confidence penalties, minimax regret, and Bayesian decision rules — and applies it to a mock portfolio using production-grade solvers.
 

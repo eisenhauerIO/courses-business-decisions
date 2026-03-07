@@ -177,10 +177,10 @@ A dedicated section (or clearly labeled subsection) explains:
 
 This section bridges the business context and the methodology.
 
-## "God's Eye View" Language
+## Omniscient view language
 
 - The simulator provides both potential outcomes for every unit
-- Use language like "the simulator gives us a god's eye view" or "we observe both potential outcomes"
+- Use language like "the simulator gives us an omniscient view" or "we observe both potential outcomes"
 - Frame this as a pedagogical advantage: "In real data, we would not have this luxury"
 
 ## Theory-to-Application Bridge
