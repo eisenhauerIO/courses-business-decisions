@@ -7,9 +7,21 @@ With causal estimates from the [Measure Impact](../measure-impact/index) stage a
 :alt: The Allocate Resources stage in the Learn, Decide, Repeat framework
 ```
 
-Every initiative arrives at the allocation stage with two numbers: a causal effect estimate from **MEASURE** and a confidence score from **EVALUATE**. The confidence score translates directly into a penalty on projected returns — low-confidence estimates are pulled toward worst-case outcomes, creating a built-in incentive for better measurement. The allocation framework then selects which initiatives to fund subject to budget constraints, using decision rules that handle the remaining uncertainty across plausible scenarios.
+Every initiative arrives at the allocation stage with two numbers: a causal effect estimate from the measurement stage and a confidence score from the evaluation stage. The confidence score translates directly into a penalty on projected returns — low-confidence estimates are pulled toward worst-case outcomes, creating a built-in incentive for better measurement. The allocation framework then selects which initiatives to fund subject to budget constraints, using decision rules that handle the remaining uncertainty across plausible scenarios.
 
-The material is organized in one section. **Portfolio Optimization** develops the mathematical framework for selecting initiatives under uncertainty and applies it end-to-end using the [**Impact Engine**](https://eisenhauerio.github.io/tools-impact-engine-allocate/).
+Each application lecture uses one tool. The [**Impact Engine — Allocate**](https://eisenhauerio.github.io/tools-impact-engine-allocate/) implements portfolio optimization under uncertainty with two pluggable decision rules: minimax regret and Bayesian weighted-scenario. It consumes confidence-penalized returns from the evaluation stage, so evidence quality flows directly into allocation decisions.
+
+```{list-table}
+:align: center
+:header-rows: 1
+
+* - Tool
+  - Role
+* - [**Impact Engine — Allocate**](https://eisenhauerio.github.io/tools-impact-engine-allocate/)
+  - Portfolio optimization under uncertainty
+```
+
+The material is organized in one section. **Portfolio Optimization** develops the mathematical framework for selecting initiatives under uncertainty and applies it end-to-end.
 
 ## Portfolio Optimization
 

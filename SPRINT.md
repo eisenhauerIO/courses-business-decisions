@@ -1,106 +1,106 @@
-# Review Feedback — Phases 0 & 1
+# Index file formatting consistency
 
-**Status**: complete
+**Status**: discussing
 
 ## Goal
 
-Close the remaining review feedback items from BACKLOG Phases 0 (high priority)
-and 1 (medium priority). These are systematic patterns and one-off fixes
-identified during the full course review.
+Fix formatting inconsistencies across the three section index files (measure-impact,
+evaluate-evidence, allocate-resources) identified during the tool introduction work.
+Related to BACKLOG Phase 0 — Polish.
 
 ## Scope
 
 **In scope**:
-- Add `optional` markers to docstring params with defaults (support.py: 01, 02, 03, catalog-ai)
-- Add notation tables to Business Context sections (lectures 02, 03)
-- Fix import alphabetization in notebook import cells (lectures 01, 03, 08)
-- Verify `github-workflow` toctree entry resolves Sphinx warning
-- Move misplaced `import pandas as pd` in lecture 02
-- Add "god's eye view" framing in lecture 02
+- Convert all headers to sentence case per GUIDELINES.md
+- Standardize "Impact Engine — Evaluate" naming in evaluate-evidence body text
+- Change "parts" to "sections" in measure-impact
 
 **Out of scope**:
-- Phase 2 content proposals (presentation order, narrative changes)
-- Phase 3 low-priority polish
-- New lecture content
+- Content changes to lecture notebooks
+- Other index files (overview, build-systems, etc.)
+- New content or structural changes
 - Changes to `_external/` packages
 
 ## Observations
 
-### 1. Docstring `optional` markers
+### 1. Title case headers
 
-Support modules (01, 02, 03, catalog-ai) have parameters with defaults but no
-`, optional` annotation in NumPy-style docstrings.
+All `##` and `###` headers across all three index files use title case (e.g.,
+"Selection on Observables", "Evidence Quality", "Portfolio Optimization") instead
+of the sentence case required by GUIDELINES.md (e.g., "Selection on observables").
 
-### 2. Notation tables
+Affected headers:
+- measure-impact: Foundations, Potential Outcomes Model, Causal Graphical Models,
+  Selection on Observables, Matching & Subclassification, Selection on Unobservables,
+  Synthetic Control
+- evaluate-evidence: Evidence Quality, Causal Diagnostics, Automated Assessment,
+  Agentic Evaluation, Evaluation Pipeline, Automated Review
+- allocate-resources: Portfolio Optimization
 
-Lectures 02 and 03 lack Variable | Notation | Description tables in Business
-Context sections, unlike lecture 08 which has one.
+### 2. Inconsistent tool name qualifier
 
-### 3. Import alphabetization
+evaluate-evidence uses "Impact Engine" without the "— Evaluate" qualifier in three
+places (lines 42, 46, 60), while the tool intro paragraph correctly uses
+"Impact Engine — Evaluate".
 
-Lectures 01, 03, and 08 flagged for potentially unalphabetized imports.
+### 3. "Parts" vs "sections"
 
-### 4. `github-workflow` toctree
+measure-impact line 40 says "three parts" while evaluate-evidence and
+allocate-resources say "sections". The `##` headings are sections, so "sections"
+is more accurate and consistent.
 
-Sphinx warning about orphaned `github-workflow` page in course-projects.
+### 4. Section intro verbs
 
-### 5. Misplaced import in lecture 02
-
-`import pandas as pd` appears in cell 40 instead of the main Part II import cell.
-
-### 6. Missing framing in lecture 02
-
-Lecture 02 Part II introduction lacks "god's eye view" language connecting
-simulation to potential outcomes framework.
+measure-impact uses "establishes" for Foundations but "covers" for both Selection
+sections. Varied verbs read naturally — forcing uniformity would feel mechanical.
 
 ## Decisions
 
-### 1. Docstring `optional` markers
+### 1. Title case headers
 
-Add `, optional` to all parameters with default values across four support modules.
+Convert to sentence case, but treat established causal inference framework names
+as proper nouns: Potential Outcomes Model, Causal Graphical Models, Synthetic Control.
+Updated GUIDELINES.md exception list to codify this.
 
-### 2. Notation tables
+Concrete changes:
+- measure-impact: "Selection on Observables" → "Selection on observables",
+  "Selection on Unobservables" → "Selection on unobservables",
+  "Matching & Subclassification" → "Matching & subclassification"
+- evaluate-evidence: "Evidence Quality" → "Evidence quality",
+  "Causal Diagnostics" → "Causal diagnostics",
+  "Automated Assessment" → "Automated assessment",
+  "Agentic Evaluation" → "Agentic evaluation",
+  "Evaluation Pipeline" → "Evaluation pipeline",
+  "Automated Review" → "Automated review"
+- allocate-resources: "Portfolio Optimization" → "Portfolio optimization"
 
-Add tables to lectures 02 and 03, using lecture 08 as the reference template.
+Headers that stay capitalized (proper nouns): Foundations, Potential Outcomes Model,
+Causal Graphical Models, Synthetic Control.
 
-### 3. Import alphabetization
+### 2. Inconsistent tool name qualifier
 
-Verify with `ruff check`; fix only if isort rules are violated.
+Add "— Evaluate" to all three body-text references in evaluate-evidence (lines 42, 46, 60).
 
-### 4. `github-workflow` toctree
+### 3. "Parts" → "sections"
 
-Add hidden toctree directive to `docs/source/course-projects/index.md`.
+Change "three parts" to "three sections" in measure-impact.
 
-### 5. Misplaced import in lecture 02
+### 4. Section intro verbs
 
-Move `import pandas as pd` from cell 40 to the main Part II import cell (21).
-
-### 6. Missing framing in lecture 02
-
-Add "god's eye view" language to Part II introduction.
+No change. Varied verbs read naturally.
 
 ## Plan
 
-1. Add `, optional` to docstring params with defaults in support.py files (01, 02, 03, catalog-ai)
-2. Add notation tables to Business Context cells in lectures 02 and 03
-3. Verify import order with `ruff check` in lectures 01, 03, 08
-4. Add hidden toctree directive for `github-workflow` in course-projects/index.md
-5. Move `import pandas as pd` to Part II import cell in lecture 02
-6. Add "god's eye view" framing to lecture 02 Part II introduction
+1. Fix headers to sentence case in measure-impact/index.md
+2. Fix headers to sentence case in evaluate-evidence/index.md
+3. Fix header to sentence case in allocate-resources/index.md
+4. Fix "Impact Engine" → "Impact Engine — Evaluate" in evaluate-evidence/index.md (3 occurrences)
+5. Fix "parts" → "sections" in measure-impact/index.md
+6. Run `hatch run build` to verify
 
 ## Verification
 
-1. `ruff check .` — pass ✓
-2. `ruff format --check .` — pass ✓
-3. `hatch run build` — pass ✓
+1. `ruff check .` — pass
+2. `hatch run build` — pass
 
 ## Files modified
-
-- `docs/source/measure-impact/01-potential-outcomes-model/support.py`
-- `docs/source/measure-impact/02-directed-acyclic-graphs/support.py`
-- `docs/source/measure-impact/02-directed-acyclic-graphs/lecture.ipynb`
-- `docs/source/measure-impact/03-matching-subclassification/support.py`
-- `docs/source/measure-impact/03-matching-subclassification/lecture.ipynb`
-- `docs/source/measure-impact/08-synthetic-control/lecture.ipynb`
-- `docs/source/understand-domain/02-catalog-ai/support.py`
-- `docs/source/course-projects/index.md`

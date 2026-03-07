@@ -9,6 +9,18 @@ With causal estimates produced in the [Measure Impact](../measure-impact/index) 
 
 Every causal estimate carries two kinds of uncertainty. Statistical uncertainty — captured in confidence intervals and standard errors — reflects sampling variability and is already part of the measurement output. Epistemic uncertainty — whether the design is credible, whether its assumptions hold, whether its diagnostics pass — is not. Structured evaluation of this second kind of uncertainty is a much younger discipline than causal inference itself, with few textbook treatments and many open questions. These lectures develop the concepts, systems, and workflows for closing that gap.
 
+Each application lecture uses one tool. The [**Impact Engine — Evaluate**](https://eisenhauerio.github.io/tools-impact-engine-evaluate/) provides two evaluation strategies: a deterministic scorer based on the hierarchy of evidence designs, and an LLM-powered reviewer that reads the actual measurement artifacts. Both produce a confidence score that penalizes projected returns downstream, so better evidence enables better allocation decisions.
+
+```{list-table}
+:align: center
+:header-rows: 1
+
+* - Tool
+  - Role
+* - [**Impact Engine — Evaluate**](https://eisenhauerio.github.io/tools-impact-engine-evaluate/)
+  - Confidence scoring for causal estimates
+```
+
 The material is organized in three sections. **Evidence Quality** develops the conceptual toolkit for judging causal evidence — validity, diagnostic checks, and the hierarchy of designs. **Automated Assessment** develops the principles and design patterns for building agentic evaluation systems that produce defensible confidence scores automatically. **Evaluation Pipeline** runs the full pipeline end-to-end, demonstrating how automated assessment translates measurement output into the confidence-weighted returns that drive resource allocation.
 
 ## Evidence Quality

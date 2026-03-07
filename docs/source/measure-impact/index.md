@@ -7,9 +7,28 @@ The course framework begins with measurement — before the [Evaluate Evidence](
 :alt: The Measure Impact stage in the Learn, Decide, Repeat framework
 ```
 
-We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scott Cunningham as our foundational reference. All lectures consist of two parts. First, we cover the theory from the book. Second, we apply these concepts to product data and business decision-making contexts using the [**Online Retail Simulator**](https://github.com/eisenhauerIO/tools-catalog-generator) and the [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine).
+We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scott Cunningham as our foundational reference. All lectures consist of two parts. First, we cover the theory from the book. Second, we apply these concepts to product data and business decision-making contexts.
 
-Each application lecture follows the same five-step workflow. We frame a causal question in a business context, simulate data with known ground truth using the Online Retail Simulator, measure the treatment effect — first with a naive approach, then with a causal method — using the Impact Engine, evaluate how well each method recovers the truth, and tune the method's parameters to understand how configuration choices affect the reliability of causal estimates.
+```{figure} ../_static/mixtape-book.png
+:align: center
+:width: 150px
+```
+
+Each application lecture uses two tools. The [**Online Retail Simulator**](https://eisenhauerio.github.io/tools-online-retail-simulator/) generates fully synthetic retail data where both potential outcomes are observed — a "god's eye view" that lets us verify whether an estimator recovers the true treatment effect. The [**Impact Engine — Measure**](https://eisenhauerio.github.io/tools-impact-engine-measure/) wraps causal estimation methods behind a single YAML configuration: one call in, one standardized result bundle out.
+
+```{list-table}
+:align: center
+:header-rows: 1
+
+* - Tool
+  - Role
+* - [**Online Retail Simulator**](https://eisenhauerio.github.io/tools-online-retail-simulator/)
+  - Synthetic data with known ground truth
+* - [**Impact Engine — Measure**](https://eisenhauerio.github.io/tools-impact-engine-measure/)
+  - Causal effect estimation via YAML config
+```
+
+Together, they enable a repeatable five-step workflow that structures every application lecture: frame a business question, simulate data, measure the effect, evaluate performance, and tune parameters.
 
 ```{figure} ../_static/lecture-structure.svg
 :align: center
@@ -18,7 +37,7 @@ Each application lecture follows the same five-step workflow. We frame a causal 
 ***Lecture Structure***
 ```
 
-The material is organized in four parts. We begin with foundational causal models that clarify what causal effects mean and under which assumptions they are identified. A dedicated tooling section introduces the software infrastructure that supports the applied work throughout the course. We then study methods that rely on selection on observables, followed by methods designed to address selection on unobservables.
+The material is organized in three parts. We begin with foundational causal models that clarify what causal effects mean and under which assumptions they are identified. We then study methods that rely on selection on observables, followed by methods designed to address selection on unobservables.
 
 ## Foundations
 
@@ -43,14 +62,6 @@ We introduce directed acyclic graphs (DAGs) as a complementary representation of
 
 02-directed-acyclic-graphs/lecture
 ```
-
-## Tooling
-
-This section covers the software tools that support applying causal methods in practice. While the lectures develop theory and walk through worked examples, the tools introduced here provide the infrastructure for moving from method to measurement — configuring estimation strategies, producing standardized results, and simulating data with known ground truth.
-
-### Impact Engine
-
-We introduce the Impact Engine, which puts the causal inference methods from this course into practice. It provides a unified interface for estimating causal effects — each measurement method is configured through a single YAML file and produces standardized results, so that switching between estimation strategies requires changing one configuration line. Its [documentation](https://eisenhauerio.github.io/tools-impact-engine-measure/) covers usage, configuration, and system design.
 
 ## Selection on Observables
 

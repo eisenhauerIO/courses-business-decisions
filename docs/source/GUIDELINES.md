@@ -96,7 +96,7 @@ Bad:  ## Deterministic Scoring (title case)
 Bad:  ## The Evaluation Harness (title case)
 ```
 
-Exception: acronyms and proper nouns retain their standard capitalization (e.g., "YAML", "Ollama", "Part I").
+Exception: acronyms and proper nouns retain their standard capitalization (e.g., "YAML", "Part I", "Potential Outcomes Model", "Directed Acyclic Graph", "Synthetic Control", "Bayesian").
 
 ### Headers as Questions
 
