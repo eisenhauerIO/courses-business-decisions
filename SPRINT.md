@@ -1,98 +1,126 @@
-# Lecture 03 Application — Refinements (Round 2)
+# Allocate Resources — Portfolio Optimization Lecture
 
-**Status**: executing
+**Status**: collecting
 
 ## Goal
 
-Continue refining Lecture 03 (Automated Evidence Review): move severity specs to YAML configs, simplify `create_mock_job_directory()`, make the litellm cell executable, and fix remaining GUIDELINES compliance issues (YAML section refs in prose).
+Author the first lecture in the `allocate-resources/` section: a two-part notebook covering decision theory for portfolio selection (Part I) and an end-to-end application using `impact-engine-allocate` (Part II). This addresses the BACKLOG gap of the empty allocate-resources section.
 
 ## Scope
 
 **In scope**:
-- Move severity calibration specs from Python dicts to YAML config files
-- Simplify `create_mock_job_directory()` to accept a config dict
-- Make the litellm teaching cell executable (not just a markdown code block)
-- Fix YAML section references in prose to use **BOLD UPPERCASE**
-- Move `import yaml` to the imports cell
-- Add Path-support upstream item to backlog
+- Create `01-portfolio-optimization/lecture.ipynb` with Part I (theory) and Part II (application)
+- Create `01-portfolio-optimization/support.py` with mock data and visualization helpers
+- Create `01-portfolio-optimization/config_allocation.yaml` with budget/constraint parameters
+- Update `allocate-resources/index.md` to match measure-impact/evaluate-evidence structure
+- Add `impact-engine-allocate` dependency to `pyproject.toml`
 
 **Out of scope**:
-- Part I theory content
 - Changes to `_external/` packages
-- Lecture 02 changes
-- Sphinx build config
+- Additional allocate-resources lectures beyond 01
+- Modifications to evaluate-evidence or measure-impact content
+- Feature branch / CI workflow
 
 ## Observations
 
-### 1. Severity specs are hardcoded Python dicts
-The `SEVERITY_SPECS` list in cell 45 defines three artifact configurations as Python dicts. These should live in YAML config files alongside `review_config.yaml`, consistent with how the course handles other configurations.
+### 1. Primary source is Eisenhauer (2025) paper
+Part I theory follows the paper's notation (Appendix A1), mathematical formulations (equations 1-6), and simulation example (Tables 1-2). This parallels how measure-impact lectures follow the Mixtape.
 
-### 2. Path support needed upstream
-`evaluate_confidence()` requires `str(job_dir)` — it should accept `Path` objects natively. This belongs in the `tools-impact-engine-evaluate` backlog, not this sprint.
+### 2. Lecture follows evaluate-evidence 03-application pattern
+The closest structural template is `evaluate-evidence/03-application/lecture.ipynb`: Part I develops theory, Part II applies the tool end-to-end on mock data (not the Online Retail Simulator).
 
-### 3. Config loading is ad-hoc
-Cell 24 has `import yaml` buried mid-notebook. The yaml import should be with the other imports at the top of Part II.
+### 3. index.md needs full rewrite to match sibling sections
+Current `index.md` has only a title, figure, one paragraph, and a warning block. Measure-impact and evaluate-evidence both follow a 7-part structure: title → figure → framing → organizational overview → section header → lecture summary → toctree.
 
-### 4. YAML section refs not capitalized
-Prose in cell 21 says "configured backend" — per GUIDELINES, top-level YAML section keys should be referenced as **BACKEND** in prose.
+### 4. impact-engine-allocate not yet in pyproject.toml
+The package exists in `_external/tools-impact-engine-allocate/` but is not listed as a dependency.
 
-### 5. litellm cell is markdown-only
-Cell 21 shows a litellm code example as a markdown code block. Making it executable would let students see the actual output and link to the engine source.
+### 5. Mock data should match paper's simulation example
+Paper Table 1 defines 5 initiatives (A-E) with exact costs, returns, and confidence values. Using these values enables students to verify Part II results against the paper.
 
-### 6. create_mock_job_directory has too many parameters
-The function takes 9 individual parameters. The severity loop has to unpack each spec dict into kwargs. A config-dict interface would simplify both the function and its callers.
+### 6. Paper uses specific notation system
+Appendix A1 defines: $I$, $S$, $x_i$, $\mathbf{x}$, $\theta$, $B$, $b_i$, $c_i$, $c_\min$, $\gamma_i$, $R_{ij}$, $R_i^\min$, $\hat{R}_{ij}$, $P_j(\mathbf{x})$, $\hat{V}_j^*$, $\text{Regret}_j(\mathbf{x})$, $R_\min^\text{portfolio}$.
 
 ## Decisions
 
-### 1. Severity specs → YAML configs
-Create `config_severity_clean.yaml`, `config_severity_medium.yaml`, `config_severity_flaw.yaml`. Load them in the severity loop with `yaml.safe_load()`.
+### 1. Use paper as primary theory source
+Part I notation, formulations, and worked examples follow Eisenhauer (2025) exactly, just as measure-impact follows the Mixtape.
 
-### 2. Path support → upstream backlog
-Add to `.claude/docs/backlog.md` as an evaluate-evidence item. No code changes in this sprint.
+### 2. Follow evaluate-evidence 03-application structure
+Part I: theory sections. Part II: imports → mock data → confidence penalty → preprocessing → theory-to-code mapping → minimax regret → Bayesian → comparison → sensitivity analysis → additional resources.
 
-### 3. Move import yaml to imports cell
-Add `import yaml` to cell 3 (Part II imports). Remove it from cell 24. Keep cell 24 for config loading and job dir creation.
+### 3. Rewrite index.md to match sibling pattern
+Full 7-part structure with organizational overview paragraph, section header, lecture summary, and toctree. Remove warning block.
 
-### 4. YAML section refs → BOLD UPPERCASE
-Audit all prose cells. Fix "configured backend" → "configured **BACKEND**" in cell 21 and any other occurrences.
+### 4. Add dependency to pyproject.toml
+`"impact-engine-allocate @ git+https://github.com/eisenhauerIO/tools-impact-engine-allocate.git"`
 
-### 5. Make litellm cell executable
-Convert the markdown code block in cell 21 to a real code cell with `litellm.completion()`. Add a markdown cell linking to [engine.py L300](https://github.com/eisenhauerIO/tools-impact-engine-evaluate/blob/f108a4289ca1a388e95cd3157eef36445351e67a/impact_engine_evaluate/review/engine.py#L300).
+### 5. Use paper Table 1 data in mock portfolio
+5 initiatives (A-E) with paper's exact values. Budget=10, min_confidence=0.50, min_worst_return=3.
 
-### 6. Simplify create_mock_job_directory()
-Add a `config` dict parameter that bundles effect_estimate, ci_lower, ci_upper, sample_size, diagnostics. Individual params remain for backward compatibility but the severity loop can pass YAML-loaded dicts directly.
+### 6. Use paper notation throughout
+All LaTeX in Part I follows Appendix A1 notation.
 
 ## Plan
 
-### Phase 1: support.py refactor
-1. Refactor `create_mock_job_directory()` — add config dict support
+### Phase 1: Infrastructure
+1. Add `impact-engine-allocate` to `pyproject.toml`
+2. Verify import works: `hatch run python -c "from impact_engine_allocate import solve_minimax_regret"`
+3. Create `docs/source/allocate-resources/01-portfolio-optimization/` directory
 
-### Phase 2: Notebook changes
-2. Create 3 severity YAML config files
-3. Move `import yaml` to imports cell
-4. Make litellm cell executable + add engine.py link + fix BACKEND ref
-5. Update severity loop to load from YAML configs
-6. Audit all prose for YAML section ref compliance
+### Phase 2: Support code
+4. Write `support.py` with 6 functions:
+   - `create_mock_portfolio()` — 5 initiatives matching paper Table 1
+   - `display_solver_result(result, rule_name)` — formatted SolverResult output
+   - `plot_confidence_penalty(initiatives)` — base vs effective returns grouped bars
+   - `plot_effective_returns_heatmap(processed)` — initiatives × scenarios heatmap
+   - `plot_scenario_returns(result, title)` — portfolio scenario returns with V_j* overlay
+   - `plot_portfolio_comparison(all_results)` — decision rules side-by-side comparison
+5. Write `config_allocation.yaml` (budget=10, min_confidence=0.50, min_worst_return=3)
 
-### Phase 3: Backlog
-7. Add Path-support item to `.claude/docs/backlog.md`
+### Phase 3: Notebook
+6. Write `lecture.ipynb` Part I — 5 theory sections using paper notation:
+   - §1 The decision problem
+   - §2 Scenario-dependent returns
+   - §3 The confidence penalty
+   - §4 Minimax regret optimization
+   - §5 Bayesian decision rule
+7. Write `lecture.ipynb` Part II — 9 application sections + Additional resources:
+   - §1 Initiative data (mock portfolio from Table 1)
+   - §2 Configuration
+   - §3 The confidence penalty (verify against Table 2)
+   - §4 Preprocessing
+   - §5 From theory to code (interface-to-theory mapping table)
+   - §6 Minimax regret (verify: selected={A,C,E}, θ*=1.0)
+   - §7 Bayesian solver (3 weight profiles)
+   - §8 Comparing decision rules
+   - §9 How confidence shapes allocation (incentive effect)
+   - Additional resources
 
-### Phase 4: Verification
-8. `hatch run ruff check .` + `hatch run ruff format --check .`
-9. `hatch run build`
+### Phase 4: index.md
+8. Rewrite `allocate-resources/index.md` — full 7-part structure matching siblings
+
+### Phase 5: Verification
+9. `hatch run notebook docs/source/allocate-resources/01-portfolio-optimization/lecture.ipynb`
+10. `ruff check .` and `ruff format --check .`
+11. `/review-writing` on notebook markdown cells
+12. `/review-code` on notebook code cells and support.py
+13. `hatch run build`
 
 ## Files modified
 
-- `docs/source/evaluate-evidence/03-application/support.py`
-- `docs/source/evaluate-evidence/03-application/lecture.ipynb`
-- `docs/source/evaluate-evidence/03-application/config_severity_clean.yaml` (new)
-- `docs/source/evaluate-evidence/03-application/config_severity_medium.yaml` (new)
-- `docs/source/evaluate-evidence/03-application/config_severity_flaw.yaml` (new)
-- `.claude/docs/backlog.md`
+- `pyproject.toml` — add impact-engine-allocate dependency
+- `docs/source/allocate-resources/index.md` — rewrite to match sibling structure
+- `docs/source/allocate-resources/01-portfolio-optimization/lecture.ipynb` (new)
+- `docs/source/allocate-resources/01-portfolio-optimization/support.py` (new)
+- `docs/source/allocate-resources/01-portfolio-optimization/config_allocation.yaml` (new)
 
 ## Verification
 
-1. `hatch run ruff check .`
-2. `hatch run ruff format --check .`
-3. `hatch run build` — notebook skipped (execute: never), build passes
-4. Start Ollama, run notebook end-to-end: `hatch run notebook docs/source/evaluate-evidence/03-application/lecture.ipynb`
+1. `hatch run python -c "from impact_engine_allocate import solve_minimax_regret"` — dependency installed
+2. `hatch run notebook docs/source/allocate-resources/01-portfolio-optimization/lecture.ipynb` — all cells execute
+3. `ruff check .` — lint passes
+4. `ruff format --check .` — format passes
+5. `/review-writing` — prose quality, formatting, style checks on notebook markdown cells
+6. `/review-code` — Python quality checks on notebook code cells and support.py
+7. `hatch run build` — Sphinx builds cleanly

@@ -31,6 +31,7 @@ dependencies = [
     "online-retail-simulator @ git+https://github.com/eisenhauerIO/tools-online-retail-simulator.git",
     "impact-engine-measure @ git+https://github.com/eisenhauerIO/tools-impact-engine-measure.git",
     "impact-engine-evaluate @ git+https://github.com/eisenhauerIO/tools-impact-engine-evaluate.git",
+    "impact-engine-allocate @ git+https://github.com/eisenhauerIO/tools-impact-engine-allocate.git",
     "networkx",
     "statsmodels",
 ]
