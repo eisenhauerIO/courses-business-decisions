@@ -120,11 +120,11 @@ def create_confounded_treatment(metrics_df, treatment_fraction=0.3, true_effect=
     ----------
     metrics_df : pandas.DataFrame
         Metrics DataFrame with ``product_identifier`` and ``revenue`` columns.
-    treatment_fraction : float
+    treatment_fraction : float, optional
         Fraction of products to treat (selected from the bottom by quality).
-    true_effect : float
+    true_effect : float, optional
         True causal effect of treatment (proportional increase in revenue).
-    seed : int
+    seed : int, optional
         Random seed for reproducibility.
 
     Returns

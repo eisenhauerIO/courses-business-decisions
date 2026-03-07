@@ -31,17 +31,17 @@ def create_confounded_treatment_multi(
     metrics_df : pandas.DataFrame
         Metrics DataFrame with product_identifier, revenue, quality_score,
         price, and impressions columns.
-    true_effect : float
+    true_effect : float, optional
         True proportional causal effect of treatment on revenue.
-    seed : int
+    seed : int, optional
         Random seed for reproducibility.
-    coef_quality : float
+    coef_quality : float, optional
         Logistic model coefficient for quality_score. Negative values mean
         lower quality increases treatment probability.
-    coef_price : float
+    coef_price : float, optional
         Logistic model coefficient for price. Negative values mean lower
         price increases treatment probability.
-    coef_impressions : float
+    coef_impressions : float, optional
         Logistic model coefficient for impressions. Negative values mean
         fewer impressions increases treatment probability.
 
@@ -173,9 +173,9 @@ def plot_treatment_rates(df, covariates, treatment_col="D", n_bins=5):
         DataFrame with treatment indicator and covariate columns.
     covariates : list of str
         Covariate column names to plot.
-    treatment_col : str
+    treatment_col : str, optional
         Name of the binary treatment column.
-    n_bins : int
+    n_bins : int, optional
         Number of quantile bins per covariate.
     """
     _, axes = plt.subplots(1, len(covariates), figsize=(5 * len(covariates), 4))
@@ -209,7 +209,7 @@ def plot_covariate_imbalance(df, covariates, treatment_col="D"):
         DataFrame with treatment indicator and covariate columns.
     covariates : list of str
         Covariate column names to plot.
-    treatment_col : str
+    treatment_col : str, optional
         Name of the binary treatment column.
     """
     treated = df[df[treatment_col] == 1]

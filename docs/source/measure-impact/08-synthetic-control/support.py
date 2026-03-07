@@ -67,7 +67,7 @@ def write_sc_config(
             },
         },
     }
-    with open(output_path, "w") as f:
+    with open(output_path, "w", encoding="utf-8") as f:
         yaml.dump(config, f, default_flow_style=False, sort_keys=False)
 
 

@@ -25,3 +25,9 @@ This [replication project](https://ose-course-projects.readthedocs.io/en/latest/
 **Where can I find research data?** Some journals offer data supplements on their websites. Useful compilations include the [Harvard Dataverse](https://dataverse.harvard.edu/), [MDRC Public-Use Files](https://www.mdrc.org/available-public-use-files), [UC Irvine Machine Learning Repository](https://archive.ics.uci.edu/), and [Google Dataset Search](https://datasetsearch.research.google.com/).
 
 **Do we get to present our projects at the end of the course?** Yes, if you would like feedback on your project, make sure to reach out.
+
+```{toctree}
+:hidden:
+
+github-workflow
+```

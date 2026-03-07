@@ -48,7 +48,7 @@ def plot_treatment_effect(metrics, enriched, enrichment_start, figsize=(12, 6)):
     daily_enriched = enriched.groupby("date")["revenue"].sum().reset_index()
     daily_enriched["date"] = pd.to_datetime(daily_enriched["date"])
 
-    fig, ax = plt.subplots(figsize=figsize)
+    _, ax = plt.subplots(figsize=figsize)
     ax.plot(
         daily_original["date"],
         daily_original["revenue"],
@@ -118,7 +118,7 @@ def plot_positioning_comparison(baseline_metrics, budget_enriched, luxury_enrich
     luxury_daily["date"] = pd.to_datetime(luxury_daily["date"])
 
     # Create comparison plot
-    fig, ax = plt.subplots(figsize=figsize)
+    _, ax = plt.subplots(figsize=figsize)
     ax.plot(
         baseline_daily["date"],
         baseline_daily["revenue"],
@@ -196,7 +196,7 @@ def _print_scenario_stats(name, before, after, lift=None, is_baseline=False):
         Revenue after treatment period.
     lift : float, optional
         Lift percentage (for treatment scenarios).
-    is_baseline : bool
+    is_baseline : bool, optional
         If True, show as baseline with change calculation.
     """
     print(f"\n{name}:")

@@ -50,7 +50,7 @@ This section covers the software tools that support applying causal methods in p
 
 ### Impact Engine
 
-We introduce the [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine), which puts the causal inference methods from this course into practice. It provides a unified interface for estimating causal effects — each measurement method is configured through a single YAML file and produces standardized results, so that switching between estimation strategies requires changing one configuration line. Its [documentation](https://eisenhauerio.github.io/tools-impact-engine-measure/) covers usage, configuration, and system design.
+We introduce the Impact Engine, which puts the causal inference methods from this course into practice. It provides a unified interface for estimating causal effects — each measurement method is configured through a single YAML file and produces standardized results, so that switching between estimation strategies requires changing one configuration line. Its [documentation](https://eisenhauerio.github.io/tools-impact-engine-measure/) covers usage, configuration, and system design.
 
 ## Selection on Observables
 

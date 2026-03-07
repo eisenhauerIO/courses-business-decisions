@@ -19,11 +19,11 @@ def simulate_police_force_data(n_population=5000, discrimination_effect=0.3, see
 
     Parameters
     ----------
-    n_population : int
+    n_population : int, optional
         Size of the simulated population.
-    discrimination_effect : float
+    discrimination_effect : float, optional
         True causal effect of minority status on force (0 = no discrimination).
-    seed : int
+    seed : int, optional
         Random seed for reproducibility.
 
     Returns
@@ -79,7 +79,7 @@ def draw_police_force_example(df, figsize=(12, 5)):
     ----------
     df : pandas.DataFrame
         Output from simulate_police_force_data().
-    figsize : tuple
+    figsize : tuple, optional
         Figure size for the plots.
     """
     minority = df["minority"].values
@@ -169,13 +169,13 @@ def create_confounded_treatment(metrics_df, prob_treat_low=0.6, prob_treat_high=
     ----------
     metrics_df : pandas.DataFrame
         Metrics DataFrame with ``product_identifier`` and ``revenue`` columns.
-    prob_treat_low : float
+    prob_treat_low : float, optional
         Probability of treatment for low quality products.
-    prob_treat_high : float
+    prob_treat_high : float, optional
         Probability of treatment for high quality products.
-    true_effect : float
+    true_effect : float, optional
         True causal effect of treatment (proportional increase in revenue).
-    seed : int
+    seed : int, optional
         Random seed for reproducibility.
 
     Returns
@@ -236,13 +236,13 @@ def _apply_confounded_treatment(quality_df, prob_treat_low=0.6, prob_treat_high=
     ----------
     quality_df : pandas.DataFrame
         DataFrame with `product_identifier`, `quality`, and `baseline_revenue`.
-    prob_treat_low : float
+    prob_treat_low : float, optional
         Probability of treatment for low quality products.
-    prob_treat_high : float
+    prob_treat_high : float, optional
         Probability of treatment for high quality products.
-    true_effect : float
+    true_effect : float, optional
         True causal effect of treatment (proportional increase in revenue).
-    seed : int
+    seed : int, optional
         Random seed.
 
     Returns
@@ -270,13 +270,10 @@ def _apply_confounded_treatment(quality_df, prob_treat_low=0.6, prob_treat_high=
     # Observed outcome follows switching equation
     df["Y_observed"] = np.where(df["D"] == 1, df["Y1"], df["Y0"])
 
-    # Store true effect for validation
-    df["true_effect"] = true_effect
-
     return df
 
 
-def plot_confounding_bar(df, title=None):
+def plot_confounding_bar(df, true_effect, title=None):
     """
     Plot bar chart showing confounding with binary quality.
 
@@ -284,6 +281,8 @@ def plot_confounding_bar(df, title=None):
     ----------
     df : pandas.DataFrame
         DataFrame with quality, D, and Y_observed columns.
+    true_effect : float
+        True causal effect of treatment (proportional increase in revenue).
     title : str, optional
         Plot title.
     """
@@ -312,7 +311,6 @@ def plot_confounding_bar(df, title=None):
     axes[1].set_title("Naive Comparison\n(Suggests optimization hurts sales!)")
 
     naive_diff = means[1] - means[0]
-    true_effect = df["true_effect"].iloc[0]
     axes[1].text(
         0.5,
         0.02,
@@ -366,7 +364,7 @@ def compute_effects(df):
     }
 
 
-def plot_conditional_comparison(df):
+def plot_conditional_comparison(df, true_effect):
     """
     Create visualization comparing naive vs conditional estimates with binary quality.
 
@@ -374,9 +372,11 @@ def plot_conditional_comparison(df):
     ----------
     df : pandas.DataFrame
         Data with quality, D, Y_observed columns.
+    true_effect : float
+        True causal effect of treatment (proportional increase in revenue).
     """
     effects = compute_effects(df)
-    true_effect_pct = df["true_effect"].iloc[0]
+    true_effect_pct = true_effect
 
     _, axes = plt.subplots(1, 3, figsize=(16, 5))
 
