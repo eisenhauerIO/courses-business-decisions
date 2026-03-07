@@ -46,3 +46,10 @@ Philipp Eisenhauer built the causal measurement framework behind Amazon Catalog 
 Interested in how this material could work for your team or program?
 
 Philipp Eisenhauer — [eisenhauer.io](https://eisenhauer.io)
+
+<div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid #e1e4e5; text-align: center;">
+<p style="color: #6c757d; font-size: 14px; margin-bottom: 10px;">Powered by</p>
+<a href="https://peisenha.github.io/" style="text-decoration: none; color: #6c757d; font-size: 13px; font-weight: 500;">
+Impact Engine
+</a>
+</div>

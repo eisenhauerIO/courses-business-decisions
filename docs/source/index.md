@@ -18,6 +18,7 @@ Rather than treating analytics, AI, or decision-making in isolation, the course 
 :maxdepth: 1
 :caption: Contents
 
+about
 overview/index
 understand-domain/index
 measure-impact/index
