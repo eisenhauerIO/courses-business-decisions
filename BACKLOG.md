@@ -13,7 +13,7 @@ is in place across five lecture sections:
 - Understand Domain: 1 lecture (Catalog AI)
 - Measure Impact: 4 lectures (Potential Outcomes, DAGs, Matching, Synthetic Control)
 - Evaluate Evidence: 3 lectures (Evaluating Evidence, Agentic Evaluation, Application)
-- Allocate Resources: placeholder (no lectures yet)
+- Allocate Resources: 1 lecture (Portfolio Optimization)
 - Build Systems, Software, Course Projects: supporting reference sections
 
 CI (ruff linting) and documentation build (Sphinx + GitHub Pages) are
@@ -25,23 +25,23 @@ operational. All notebooks execute successfully during build.
 
 Address the high-priority systematic patterns identified in `.claude/docs/upgrades.md`.
 
-- Add `optional` markers to all docstring parameters with defaults (15 functions, 5 files)
-- Link Online Retail Simulator on first mention in all measure-impact notebooks
-- Add notation tables to Business Context sections (lectures 02, 03, 08)
-- Fix import alphabetization in 5 notebook import cells
+- Add `optional` markers to all docstring parameters with defaults (done: 08; remaining: 01, 02, 03, catalog-ai)
+- ~~Link Online Retail Simulator on first mention in all measure-impact notebooks~~ ✓
+- Add notation tables to Business Context sections (done: 08; remaining: 02, 03)
+- Fix import alphabetization (done: 02, catalog-ai; remaining: 01, 03, 08)
 
 ## Phase 1 — Review feedback (medium priority)
 
-**Status**: planned
+**Status**: in-progress
 
 Address medium-priority one-off fixes from `.claude/docs/upgrades.md` and
 `.claude/docs/backlog.md`.
 
-- Add `github-workflow` to toctree (fix Sphinx warning)
+- Verify `github-workflow` toctree entry resolves Sphinx warning (linked but may not be in toctree)
 - Move misplaced `import pandas as pd` in lecture 02
-- Add "god's eye view" framing in lectures 02 and 08
-- Fix `environment.yml` formatting in `github-workflow.md`
-- Standardize catalog-ai code patterns
+- Add "god's eye view" framing in lecture 02 (done: 08)
+- ~~Fix `environment.yml` formatting in `github-workflow.md`~~ ✓
+- ~~Standardize catalog-ai code patterns~~ ✓
 
 ## Phase 2 — Content proposals
 
@@ -67,10 +67,10 @@ Polish items from `.claude/docs/upgrades.md` and `.claude/docs/backlog.md`.
 
 ## Phase 4 — Allocate Resources lectures
 
-**Status**: planned
+**Status**: in-progress
 
-Create the decision theory lecture series for the Allocate Resources section.
-This is the largest remaining content gap in the course.
+Expand the Allocate Resources section. Portfolio Optimization (lecture 01)
+is complete. Remaining content TBD.
 
 ## Phase 5 — Additional causal methods
 

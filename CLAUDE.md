@@ -88,4 +88,4 @@ All work happens on a feature branch. Push, wait for CI to pass, then merge to m
 - `_external/` contains reference repos — do not modify
 - Ruff enforces D (docstrings), E, F (pyflakes), I (isort) rules; line length 120
 - NumPy-style docstrings for all Python functions
-- No `print()` statements — use logging or IPython display utilities
+- `print()` is allowed in `support.py` display functions and notebook cells for lecture output; avoid `print()` in library/utility code outside lecture directories
