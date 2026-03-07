@@ -1,6 +1,6 @@
 # Review Feedback — Phases 0 & 1
 
-**Status**: done
+**Status**: complete
 
 ## Goal
 
@@ -24,53 +24,75 @@ identified during the full course review.
 - New lecture content
 - Changes to `_external/` packages
 
-## Tasks
+## Observations
 
-### 1. Docstring `optional` markers ✓
+### 1. Docstring `optional` markers
 
-Added `, optional` to all parameters with default values in NumPy-style docstrings.
+Support modules (01, 02, 03, catalog-ai) have parameters with defaults but no
+`, optional` annotation in NumPy-style docstrings.
 
-Files:
-- `docs/source/measure-impact/01-potential-outcomes-model/support.py`
-- `docs/source/measure-impact/02-directed-acyclic-graphs/support.py`
-- `docs/source/measure-impact/03-matching-subclassification/support.py`
-- `docs/source/understand-domain/02-catalog-ai/support.py`
+### 2. Notation tables
 
-### 2. Notation tables ✓
+Lectures 02 and 03 lack Variable | Notation | Description tables in Business
+Context sections, unlike lecture 08 which has one.
 
-Added Variable | Notation | Description tables to the Business Context markdown
-cells in:
-- `docs/source/measure-impact/02-directed-acyclic-graphs/lecture.ipynb`
-- `docs/source/measure-impact/03-matching-subclassification/lecture.ipynb`
+### 3. Import alphabetization
 
-Used `08-synthetic-control/lecture.ipynb` as the reference template.
+Lectures 01, 03, and 08 flagged for potentially unalphabetized imports.
 
-### 3. Import alphabetization ✓
+### 4. `github-workflow` toctree
 
-Verified imports pass `ruff check` in all three notebooks. No changes needed —
-existing order follows isort conventions (bare `import` before `from` imports,
-each group alphabetized).
+Sphinx warning about orphaned `github-workflow` page in course-projects.
 
-### 4. `github-workflow` toctree ✓
+### 5. Misplaced import in lecture 02
 
-Added hidden toctree directive to `docs/source/course-projects/index.md`
-including `github-workflow`.
+`import pandas as pd` appears in cell 40 instead of the main Part II import cell.
 
-### 5. Misplaced `import pandas as pd` in lecture 02 ✓
+### 6. Missing framing in lecture 02
 
-Moved `import pandas as pd` from cell 40 to the main Part II import cell (21)
-in `docs/source/measure-impact/02-directed-acyclic-graphs/lecture.ipynb`.
+Lecture 02 Part II introduction lacks "god's eye view" language connecting
+simulation to potential outcomes framework.
 
-### 6. "God's eye view" framing in lecture 02 ✓
+## Decisions
 
-Added "god's eye view" language to the Part II introduction in
-`docs/source/measure-impact/02-directed-acyclic-graphs/lecture.ipynb`.
+### 1. Docstring `optional` markers
+
+Add `, optional` to all parameters with default values across four support modules.
+
+### 2. Notation tables
+
+Add tables to lectures 02 and 03, using lecture 08 as the reference template.
+
+### 3. Import alphabetization
+
+Verify with `ruff check`; fix only if isort rules are violated.
+
+### 4. `github-workflow` toctree
+
+Add hidden toctree directive to `docs/source/course-projects/index.md`.
+
+### 5. Misplaced import in lecture 02
+
+Move `import pandas as pd` from cell 40 to the main Part II import cell (21).
+
+### 6. Missing framing in lecture 02
+
+Add "god's eye view" language to Part II introduction.
+
+## Plan
+
+1. Add `, optional` to docstring params with defaults in support.py files (01, 02, 03, catalog-ai)
+2. Add notation tables to Business Context cells in lectures 02 and 03
+3. Verify import order with `ruff check` in lectures 01, 03, 08
+4. Add hidden toctree directive for `github-workflow` in course-projects/index.md
+5. Move `import pandas as pd` to Part II import cell in lecture 02
+6. Add "god's eye view" framing to lecture 02 Part II introduction
 
 ## Verification
 
 1. `ruff check .` — pass ✓
 2. `ruff format --check .` — pass ✓
-3. `hatch run build` — pending
+3. `hatch run build` — pass ✓
 
 ## Files modified
 

@@ -42,6 +42,7 @@ hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace pat
   - `tools-online-retail-simulator/` — simulator source
   - `tools-impact-engine-measure/` — causal estimation source
   - `tools-impact-engine-evaluate/` — evidence review source
+  - `tools-impact-engine-allocate/` — resource allocation source
   - `utils-agentic-support/` — shared Claude Code skills and subagents
   - `books-mixtape/` — Causal Inference: The Mixtape reference
 - `.github/workflows/ci.yml` — ruff linting on push/PR

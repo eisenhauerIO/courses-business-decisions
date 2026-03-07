@@ -17,6 +17,6 @@ is in place across five lecture sections:
 CI (ruff linting) and documentation build (Sphinx + GitHub Pages) are
 operational. All notebooks execute successfully during build.
 
-## Polish
+## Phase 0 — Polish
 
 **Status**: planned

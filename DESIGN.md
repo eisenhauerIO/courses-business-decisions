@@ -64,6 +64,7 @@ that links tool configuration parameters back to the formal concepts from Part I
 | `measure-impact/08-synthetic-control/support.py` | Synthetic control method helpers |
 | `evaluate-evidence/03-application/support.py` | Application lecture helpers |
 | `understand-domain/02-catalog-ai/support.py` | Catalog AI lecture support |
+| `allocate-resources/01-portfolio-optimization/support.py` | Portfolio optimization helpers |
 
 ### Configuration files
 
@@ -77,6 +78,8 @@ YAML files configure the external tools for each lecture's application section:
 | `config_subclassification.yaml` | Impact Engine Measure | Subclassification estimator settings |
 | `config_synthetic_control.yaml` | Impact Engine Measure | Synthetic control estimator settings |
 | `config_experiment.yaml` | Impact Engine Measure | Experimental estimator settings |
+| `config_allocation.yaml` | Impact Engine Allocate | Portfolio allocation settings |
+| `config_severity_*.yaml` | Impact Engine Evaluate | Evidence severity scenarios |
 
 ### CI/CD pipelines
 
@@ -148,7 +151,7 @@ including the three GitHub-hosted packages.
 
 ## Future directions
 
-- **Allocate Resources lectures**: Decision theory content (currently a placeholder section)
+- **Allocate Resources expansion**: Additional decision theory lectures beyond portfolio optimization
 - **Additional causal methods**: Difference-in-differences, instrumental variables, regression discontinuity
 - **Interactive elements**: Widgets or Voila dashboards for parameter exploration within notebooks
 - **Assessment integration**: Auto-graded assignments using nbgrader or similar
