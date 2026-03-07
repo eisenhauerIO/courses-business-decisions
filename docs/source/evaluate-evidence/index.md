@@ -5,6 +5,8 @@ With causal estimates produced in the [Measure Impact](../measure-impact/index) 
 ```{figure} ../_static/improve-decisions-framework-evaluate.svg
 :align: center
 :alt: The Evaluate Evidence stage in the Learn, Decide, Repeat framework
+
+***Course Framework — Evaluate Evidence***
 ```
 
 Every causal estimate carries two kinds of uncertainty. Statistical uncertainty — captured in confidence intervals and standard errors — reflects sampling variability and is already part of the measurement output. Epistemic uncertainty — whether the design is credible, whether its assumptions hold, whether its diagnostics pass — is not. Structured evaluation of this second kind of uncertainty is a much younger discipline than causal inference itself, with few textbook treatments and many open questions. These lectures develop the concepts, systems, and workflows for closing that gap.

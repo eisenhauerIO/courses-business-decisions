@@ -5,6 +5,8 @@ The course framework begins with measurement — before the [Evaluate Evidence](
 ```{figure} ../_static/improve-decisions-framework-measure.svg
 :align: center
 :alt: The Measure Impact stage in the Learn, Decide, Repeat framework
+
+***Course Framework — Measure Impact***
 ```
 
 We follow [Causal Inference: The Mixtape](https://mixtape.scunning.com/) by Scott Cunningham as our foundational reference. All lectures consist of two parts. First, we cover the theory from the book. Second, we apply these concepts to product data and business decision-making contexts.

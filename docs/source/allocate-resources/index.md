@@ -5,6 +5,8 @@ With causal estimates from the [Measure Impact](../measure-impact/index) stage a
 ```{figure} ../_static/improve-decisions-framework-allocate.svg
 :align: center
 :alt: The Allocate Resources stage in the Learn, Decide, Repeat framework
+
+***Course Framework — Allocate Resources***
 ```
 
 Every initiative arrives at the allocation stage with two numbers: a causal effect estimate from the measurement stage and a confidence score from the evaluation stage. The confidence score translates directly into a penalty on projected returns — low-confidence estimates are pulled toward worst-case outcomes, creating a built-in incentive for better measurement. The allocation framework then selects which initiatives to fund subject to budget constraints, using decision rules that handle the remaining uncertainty across plausible scenarios.
