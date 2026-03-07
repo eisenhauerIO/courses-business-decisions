@@ -2,19 +2,19 @@
 
 Course projects provide hands-on experience applying the methods and tools covered in this course to real-world problems. Students work on either replication projects or [Kaggle](https://www.kaggle.com/) competitions, developing practical skills in causal inference, data analysis, and reproducible research. All projects use the [repository template](https://github.com/eisenhauerIO/projects-student-template) which provides the standard project structure, GitHub Actions configuration, and setup instructions.
 
-## Project Types
+## Project types
 
 ***Replication Projects:*** Students reproduce key results from published research articles, critically assess the quality of the original analysis, and contribute independent extensions such as robustness checks or alternative specifications.
 
 ***Kaggle Projects:*** Students participate in data science competitions on Kaggle, document the competition context and evaluation metrics, and develop solution strategies through iterative experimentation and parameter tuning.
 
-## Example Project
+## Example project
 
 ### Lindo et al. (2010): Academic Probation and Student Outcomes
 
 This [replication project](https://ose-course-projects.readthedocs.io/en/latest/projects/index.html) by Annica Gehlen replicates {cite:t}`Lindo_2010`, examining the effects of academic probation on student outcomes using a regression discontinuity design. The analysis demonstrates how negative incentives influence performance and dropout decisions at a large Canadian university.
 
-## Frequently Asked Questions
+## Frequently asked questions
 
 **Why are the projects public?** Transparency and reproducibility are core values in research and we want to learn from each other.
 

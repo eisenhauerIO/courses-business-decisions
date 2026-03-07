@@ -308,8 +308,8 @@ def plot_strata_convergence(results_df, true_att):
 
     # Annotate total strata on bars
     for idx, row in results_df.iterrows():
-        pct = frac_dropped.iloc[idx] * 100
-        total_k = total.iloc[idx]
+        pct = frac_dropped.loc[idx] * 100
+        total_k = total.loc[idx]
         if pct > 0:
             ax2.text(
                 row["n_strata"],
@@ -325,6 +325,8 @@ def plot_strata_convergence(results_df, true_att):
 
 def plot_method_comparison(estimates_dict, true_effect):
     """Compare treatment effect estimates across methods in a bar chart.
+
+    NOTE: Duplicated in 08-synthetic-control/support.py.
 
     Parameters
     ----------

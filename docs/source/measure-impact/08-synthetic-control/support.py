@@ -556,6 +556,8 @@ def plot_rmspe_ratios(placebo_results):
 def plot_method_comparison(estimates_dict, true_effect):
     """Compare treatment effect estimates across methods in a bar chart.
 
+    NOTE: Duplicated in 03-matching-subclassification/support.py.
+
     Parameters
     ----------
     estimates_dict : dict

@@ -2,7 +2,7 @@
 
 This guide covers the standard GitHub workflow for course projects, from initial setup through submission.
 
-## Quick Reference
+## Quick reference
 
 | Action | Command |
 |--------|---------|
@@ -15,7 +15,7 @@ This guide covers the standard GitHub workflow for course projects, from initial
 
 ---
 
-## Initial Setup
+## Initial setup
 
 **1. Fork the repository** (if working on a shared project)
 
@@ -30,7 +30,7 @@ cd repo-name
 
 ---
 
-## The Branch Workflow
+## The branch workflow
 
 Never work directly on `main`. Always create a branch for your work.
 
@@ -76,7 +76,7 @@ git push origin your-branch-name
 
 ---
 
-## Creating a Pull Request
+## Creating a pull request
 
 1. Go to your repository on GitHub
 2. Click "Compare & pull request" (appears after pushing)
@@ -89,7 +89,7 @@ Your teammates or instructor can now review your work.
 
 ---
 
-## Keeping Your Branch Updated
+## Keeping your branch updated
 
 Before submitting, sync with the latest changes from main:
 
@@ -111,7 +111,7 @@ Resolve any conflicts, then push again.
 
 ---
 
-## Common Scenarios
+## Common scenarios
 
 ### "I made changes on main by accident"
 
@@ -148,7 +148,7 @@ git reset --hard HEAD~1
 
 All course projects must achieve full reproducibility through [GitHub Actions](https://github.com/features/actions) continuous integration. The [repository template](https://github.com/eisenhauerIO/projects-student-template) provides a reference implementation with the standard project structure and CI configuration.
 
-### What Happens When You Push
+### What happens when you push
 
 When you push to GitHub or create a pull request, GitHub Actions automatically runs:
 
@@ -160,7 +160,7 @@ When you push to GitHub or create a pull request, GitHub Actions automatically r
 
 Check the "Actions" tab in your repository to see run details and debug failures.
 
-### The environment.yml File
+### The environment.yml file
 
 This file defines all software dependencies for the project. GitHub Actions uses it to create a consistent environment that ensures your analysis runs identically on any machine.
 
@@ -181,7 +181,7 @@ dependencies:
     - some-pip-package
 ```
 
-### Setting Up Your Local Environment
+### Setting up your local environment
 
 To match the GitHub Actions environment locally:
 
@@ -196,7 +196,7 @@ conda activate course-project
 conda env update -f environment.yml --prune
 ```
 
-### Adding New Dependencies
+### Adding new dependencies
 
 If your code needs a new package:
 
@@ -207,13 +207,13 @@ If your code needs a new package:
 
 **Never install packages manually without updating environment.yml** — your code will fail in GitHub Actions if dependencies aren't declared.
 
-### Long-Running Computations
+### Long-running computations
 
 When code execution spans multiple hours, you can pre-compute results and load them during CI runs. If you take this approach, include notebook explanations detailing why pre-computation is necessary and how the results were generated.
 
 ---
 
-## Project Submission Checklist
+## Project submission checklist
 
 Before creating your pull request:
 
@@ -227,7 +227,7 @@ Before creating your pull request:
 
 ---
 
-## Useful Commands
+## Useful commands
 
 ```bash
 # Check status
@@ -251,7 +251,7 @@ git branch -d branch-name
 
 ---
 
-## Getting Help
+## Getting help
 
 - `git help <command>` — Built-in documentation
 - [GitHub Docs](https://docs.github.com) — Official guides

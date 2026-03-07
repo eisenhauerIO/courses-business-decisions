@@ -55,7 +55,7 @@ We introduce the potential outcomes framework as the foundational model for caus
 01-potential-outcomes-model/lecture
 ```
 
-### Causal Graphical Models
+### Causal graphical models
 
 We introduce directed acyclic graphs (DAGs) as a complementary representation of causal assumptions. DAGs provide a visual and formal tool for reasoning about identification, making explicit the roles of confounders, mediators, and colliders. We emphasize how graphical structure encodes assumptions rather than estimates.
 

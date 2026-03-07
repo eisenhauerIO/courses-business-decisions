@@ -2,7 +2,7 @@
 
 Decisions are not made in a vacuum. Causal inference, decision theory, and software systems only create value when tailored to the domain in which real decisions are made. Domain knowledge shapes which questions are meaningful, which signals are trustworthy, which constraints are binding, and which mistakes are costly. Without it, even technically correct analyses can lead to irrelevant conclusions or harmful decisions.
 
-## Product Data Improvements
+## Product data improvements
 
 We study the problem of improving product data quality at scale. Rather than treating causal inference, decision theory, or software systems in the abstract, the course anchors these ideas in a real operational setting.
 
@@ -21,7 +21,7 @@ To explore these challenges in a controlled setting, we first introduce a simula
 
 ## Online Retail Simulator
 
-We introduce the <img src="../_static/online-retail-simulator.svg" alt="ORS" style="height: 1em; vertical-align: middle;"> **[Online Retail Simulator](https://github.com/eisenhauerIO/tools-catalog-generator)** as a simulation tool that generates realistic product catalogs, shopper behavior, and sales transactions with known ground truth. This section explores how treatment effects can be injected and measured within this controlled environment, enabling validation of causal inference methods before applying them to real-world data. The goal is to establish a realistic testing ground where hypotheses about product data quality can be measured against observable outcomes across the conversion funnel.
+We introduce the <img src="../_static/online-retail-simulator.svg" alt="ORS" style="height: 1em; vertical-align: middle;"> **[Online Retail Simulator](https://github.com/eisenhauerIO/tools-online-retail-simulator)** as a simulation tool that generates realistic product catalogs, shopper behavior, and sales transactions with known ground truth. This section explores how treatment effects can be injected and measured within this controlled environment, enabling validation of causal inference methods before applying them to real-world data. The goal is to establish a realistic testing ground where hypotheses about product data quality can be measured against observable outcomes across the conversion funnel.
 
 
 - [Online Retail Simulator Tutorial](https://eisenhauerio.github.io/tools-online-retail-simulator/notebooks/tutorial.html)

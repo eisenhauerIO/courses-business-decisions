@@ -31,7 +31,7 @@ Python is the primary programming language for this course. We use it for data a
 - [VS Code Docs](https://code.visualstudio.com/docs) — Official documentation and tutorials
 - [Python in VS Code](https://code.visualstudio.com/docs/languages/python) — Guide for Python development
 
-## Software Engineering
+## Software engineering
 
 ### Git & GitHub
 
@@ -42,7 +42,7 @@ Python is the primary programming language for this course. We use it for data a
 - [GitHub Skills](https://skills.github.com/) — Interactive courses for learning GitHub
 - [GitHub Get Started](https://docs.github.com/en/get-started) — Official GitHub documentation
 
-### Code Quality
+### Code quality
 
 [Ruff](https://docs.astral.sh/ruff/) enforces consistent style and catches common errors like undefined variables through automated linting and formatting. [pytest](https://docs.pytest.org/) provides a framework for writing tests that verify code behaves as expected and serve as living documentation. Together, these tools help ensure that decision systems remain reliable as they evolve.
 
@@ -60,6 +60,6 @@ Python is the primary programming language for this course. We use it for data a
 - [Kiro Documentation](https://kiro.dev/docs/) — Official guides and tutorials
 - [Kiro Getting Started](https://kiro.dev/docs/getting-started/installation/) — Installation and setup
 
-## Agentic Systems
+## Agentic systems
 
 The design patterns behind agentic systems — registry dispatch, versioned prompt templates, layered specialization, and structured output parsing — are covered as a dedicated lecture in the [Evaluate Evidence](../evaluate-evidence/index.md) section, where the `impact-engine-evaluate` package serves as the running example. See [Building an Agentic Evaluation System](../evaluate-evidence/02-agentic-evaluation-system/lecture.ipynb) for the full treatment.
