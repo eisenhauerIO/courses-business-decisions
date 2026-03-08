@@ -1,6 +1,6 @@
 # Software
 
-Throughout the course, we ground causal inference and decision-making concepts in a single, concrete decision context drawn from large-scale online retail: improving product data quality at scale. The <img src="../_static/online-retail-simulator.svg" alt="ORS" style="height: 1em; vertical-align: middle;"> **[Online Retail Simulator](https://github.com/eisenhauerIO/tools-catalog-generator)** provides the domain-specific environment in which methods and trade-offs are introduced. The **[Impact Engine](https://eisenhauerio.github.io/tools-impact-engine-website)** then generalizes these ideas into a reusable ecosystem for measuring impact, evaluating evidence quality, and allocating resources across decision contexts.
+Throughout the material, we ground causal inference and decision-making concepts in a single, concrete decision context drawn from large-scale online retail: improving product data quality at scale. The <img src="../_static/online-retail-simulator.svg" alt="ORS" style="height: 1em; vertical-align: middle;"> **[Online Retail Simulator](https://github.com/eisenhauerIO/tools-catalog-generator)** provides the domain-specific environment in which methods and trade-offs are introduced. The **[Impact Engine](https://eisenhauerio.github.io/tools-impact-engine-website)** then generalizes these ideas into a reusable ecosystem for measuring impact, evaluating evidence quality, and allocating resources across decision contexts.
 
 ## Online Retail Simulator [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue.svg?logo=github)](https://github.com/eisenhauerIO/tools-catalog-generator)
 
@@ -8,7 +8,7 @@ Generates fully synthetic retail data for end-to-end testing of causal inference
 
 ## Impact Engine
 
-The Impact Engine is an open-source Python ecosystem that operationalizes the course's *Learn, Decide, Repeat* loop as a production pipeline. Four independently tested and deployable components map directly to the course stages:
+The Impact Engine is an open-source Python ecosystem that operationalizes the *Learn, Decide, Repeat* loop as a production pipeline. Four independently tested and deployable components map directly to the framework stages:
 
 ### Measure [![GitHub](https://img.shields.io/badge/GitHub-Repository-blue.svg?logo=github)](https://github.com/eisenhauerIO/tools-impact-engine-measure)
 

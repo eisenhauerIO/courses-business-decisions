@@ -2,7 +2,7 @@
 
 import os
 
-project = "Business Decisions — Course"
+project = "Business Decisions"
 author = "eisenhauerIO"
 extensions = [
     "sphinx.ext.autodoc",

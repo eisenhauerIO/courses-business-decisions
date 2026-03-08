@@ -1,6 +1,6 @@
 # Iterations
 
-This course is taught across multiple institutions, years, and formats, with varying emphasis on different sections. The following provides context-specific instructions for each offering.
+Context-specific instructions for each delivery — grading policies, deadlines, and institution-specific details.
 
 ```{toctree}
 :maxdepth: 1

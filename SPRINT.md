@@ -1,111 +1,92 @@
-# Index file formatting consistency
+# Offerings page: audience-neutral language and polish
 
 **Status**: complete
 
 ## Goal
 
-Fix formatting inconsistencies across the three section index files (measure-impact,
-evaluate-evidence, allocate-resources) identified during the tool introduction work.
-Related to BACKLOG Phase 0 — Polish.
+The new Offerings section uses "course" and "lecture" throughout, which doesn't fit
+corporate clients. Neutralize the language so the page works for both university
+program directors and corporate technical leadership. Fix formatting and structural
+issues identified during review.
 
 ## Scope
 
 **In scope**:
-- Convert all headers to sentence case per GUIDELINES.md
-- Standardize "Impact Engine — Evaluate" naming in evaluate-evidence body text
-- Change "parts" to "sections" in measure-impact
+- Neutralize "course"/"lecture" language in `offerings/index.md`
+- Fix inline formatting (backticks, caps)
+- Clarify Iterations intro text to avoid confusion with Offerings
+- Fix minor style inconsistencies in `econ-481A-uw-2026.md`
 
 **Out of scope**:
 - Content changes to lecture notebooks
-- Other index files (overview, build-systems, etc.)
-- New content or structural changes
+- Structural changes to the toctree order
 - Changes to `_external/` packages
 
 ## Observations
 
-### 1. Title case headers
+### 1. "Course" language excludes corporate audience
 
-All `##` and `###` headers across all three index files use title case (e.g.,
-"Selection on Observables", "Evidence Quality", "Portfolio Optimization") instead
-of the sentence case required by GUIDELINES.md (e.g., "Selection on observables").
+`offerings/index.md` uses "course" 7 times and "lecture" once. For a page that also
+targets corporate clients, this reads as university-only.
 
-Affected headers:
-- measure-impact: Foundations, Potential Outcomes Model, Causal Graphical Models,
-  Selection on Observables, Matching & Subclassification, Selection on Unobservables,
-  Synthetic Control
-- evaluate-evidence: Evidence Quality, Causal Diagnostics, Automated Assessment,
-  Agentic Evaluation, Evaluation Pipeline, Automated Review
-- allocate-resources: Portfolio Optimization
+| Line | Current text | Issue |
+|------|-------------|-------|
+| 3 | "A course built on..." | Excludes corporate |
+| 11 | "This course treats them as one loop" | Same |
+| 13 | "This course teaches participants..." | Same |
+| 24 | "Every lecture is a Jupyter notebook" | University framing |
+| 28 | "Most Gen AI courses teach prompting. This course teaches..." | Two hits |
+| 30 | "The course covers four principles" | Same |
+| 46 | "The course adapts to different audiences" | Same |
 
-### 2. Inconsistent tool name qualifier
+### 2. Formatting issues (GUIDELINES compliance)
 
-evaluate-evidence uses "Impact Engine" without the "— Evaluate" qualifier in three
-places (lines 42, 46, 60), while the tool intro paragraph correctly uses
-"Impact Engine — Evaluate".
+- Line 17: `YAML` should be in backticks when referring to the format
+- Line 22: `Pydantic` should be in backticks on first mention
+- Line 48: "AND" in caps reads as emphasis-via-caps — should be lowercase "and"
 
-### 3. "Parts" vs "sections"
+### 3. "Proof" header
 
-measure-impact line 40 says "three parts" while evaluate-evidence and
-allocate-resources say "sections". The `##` headings are sections, so "sections"
-is more accurate and consistent.
+"Proof" as a section header may overstate — the section provides evidence/track record,
+not mathematical proof. Consider "Track record" or keep if boldness is intentional.
 
-### 4. Section intro verbs
+### 4. Iterations intro text ambiguity
 
-measure-impact uses "establishes" for Foundations but "covers" for both Selection
-sections. Varied verbs read naturally — forcing uniformity would feel mechanical.
+`iterations/index.md` says "current and upcoming offerings" — now that there's a page
+literally called "Offerings," this creates confusion. Reword to differentiate.
 
-## Decisions
+### 5. Minor style inconsistencies
 
-### 1. Title case headers
-
-Convert to sentence case, but treat established causal inference framework names
-as proper nouns: Potential Outcomes Model, Causal Graphical Models, Synthetic Control.
-Updated GUIDELINES.md exception list to codify this.
-
-Concrete changes:
-- measure-impact: "Selection on Observables" → "Selection on observables",
-  "Selection on Unobservables" → "Selection on unobservables",
-  "Matching & Subclassification" → "Matching & subclassification"
-- evaluate-evidence: "Evidence Quality" → "Evidence quality",
-  "Causal Diagnostics" → "Causal diagnostics",
-  "Automated Assessment" → "Automated assessment",
-  "Agentic Evaluation" → "Agentic evaluation",
-  "Evaluation Pipeline" → "Evaluation pipeline",
-  "Automated Review" → "Automated review"
-- allocate-resources: "Portfolio Optimization" → "Portfolio optimization"
-
-Headers that stay capitalized (proper nouns): Foundations, Potential Outcomes Model,
-Causal Graphical Models, Synthetic Control.
-
-### 2. Inconsistent tool name qualifier
-
-Add "— Evaluate" to all three body-text references in evaluate-evidence (lines 42, 46, 60).
-
-### 3. "Parts" → "sections"
-
-Change "three parts" to "three sections" in measure-impact.
-
-### 4. Section intro verbs
-
-No change. Varied verbs read naturally.
+- `offerings/index.md` line 5: horizontal rule `---` after subtitle — check consistency
+  with other section index pages
+- `econ-481A-uw-2026.md` line 5: uses hyphen `-` instead of em-dash `—` before
+  "there are no exams"
 
 ## Plan
 
-1. Fix headers to sentence case in measure-impact/index.md
-2. Fix headers to sentence case in evaluate-evidence/index.md
-3. Fix header to sentence case in allocate-resources/index.md
-4. Fix "Impact Engine" → "Impact Engine — Evaluate" in evaluate-evidence/index.md (3 occurrences)
-5. Fix "parts" → "sections" in measure-impact/index.md
-6. Run `hatch run build` to verify
+1. Replace "course"/"lecture" with neutral terms in `offerings/index.md`:
+   - Line 3: "Built on a production decision system — not slides about one."
+   - Line 11: "This material treats them as one loop."
+   - Line 13: "Participants learn to close the loop."
+   - Line 24: "Every session is a Jupyter notebook..."
+   - Line 28: "Most Gen AI programs teach prompting. Participants learn to build..."
+   - Line 30: "The material covers four principles..."
+   - Line 46: "The material adapts to different audiences..."
+2. Fix inline formatting: backtick `YAML`, backtick `Pydantic`, lowercase "and"
+3. Decide on "Proof" header — keep or rename to "Track record"
+4. Reword `iterations/index.md` intro to avoid "offerings" overlap
+5. Fix hyphen → em-dash in `econ-481A-uw-2026.md`
+6. Build docs: `hatch run sphinx-build -D nbsphinx_execute=never docs/source docs/build/html`
 
 ## Verification
 
-1. `ruff check .` — pass
-2. `hatch run build` — pass
+1. `hatch run sphinx-build -D nbsphinx_execute=never docs/source docs/build/html` — pass
+2. Read offerings page end-to-end for tone consistency
+3. Confirm no "course" or "lecture" remains in `offerings/index.md` (except in Formats
+   subsection where "course" is appropriate for the university paragraph)
 
-## Files modified
+## Files to modify
 
-- `docs/source/measure-impact/index.md` — sentence case headers, "parts" → "sections"
-- `docs/source/evaluate-evidence/index.md` — sentence case headers, "Impact Engine" → "Impact Engine — Evaluate" (3×), body text bold references
-- `docs/source/allocate-resources/index.md` — sentence case header, body text bold reference
-- `docs/source/GUIDELINES.md` — added proper noun examples to exception list
+- `docs/source/offerings/index.md` — audience-neutral language, formatting fixes
+- `docs/source/iterations/index.md` — reword intro
+- `docs/source/iterations/econ-481A-uw-2026.md` — hyphen → em-dash
