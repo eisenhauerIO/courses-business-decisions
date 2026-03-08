@@ -34,11 +34,11 @@ build-systems/index
 :hidden:
 :caption: Delivery
 
+offerings/index
+iterations/index
 guests/index
 projects/index
 software/index
-iterations/index
-offerings/index
 references
 ```
 
