@@ -35,7 +35,7 @@ hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace pat
   - `measure-impact/` — causal inference lectures (potential outcomes, DAGs, matching, synthetic control)
   - `evaluate-evidence/` — evidence quality lectures (evaluation framework, agentic systems, application)
   - `understand-domain/` — domain context lectures (catalog AI)
-  - `overview/`, `build-systems/`, `guest-lecturers/`, `course-projects/`, `software/`, `iterations/`, `allocate-resources/` — supporting sections
+  - `decision-loop/`, `build-systems/`, `guests/`, `projects/`, `software/`, `iterations/`, `allocate-resources/` — supporting sections
   - `references.bib` — bibliography
 - `docs/source/_static/` — images and SVGs referenced by lectures and index pages
 - `_external/` — local clones of dependency repos (read-only, do not modify)

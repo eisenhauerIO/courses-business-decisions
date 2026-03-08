@@ -14,18 +14,28 @@ Most organizations generate data and produce insights, but struggle to connect t
 
 Rather than treating analytics, AI, or decision-making in isolation, the material shows how to connect insights to action in a way that compounds over time. You will learn how to design systems that measure impact, inform decisions under uncertainty, and turn every decision into a source of new insight. The goal is not better analysis in isolation, but better decisions over time and at scale.
 
+**Ready to dive in?** Start with the [Decision Loop](decision-loop/index) to see how the pieces fit together.
+
 ```{toctree}
 :maxdepth: 1
-:caption: Contents
+:hidden:
+:caption: Content
 
-overview/index
+decision-loop/index
 understand-domain/index
 measure-impact/index
 evaluate-evidence/index
 allocate-resources/index
 build-systems/index
-guest-lecturers/index
-course-projects/index
+```
+
+```{toctree}
+:maxdepth: 1
+:hidden:
+:caption: Delivery
+
+guests/index
+projects/index
 software/index
 iterations/index
 offerings/index

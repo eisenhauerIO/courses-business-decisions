@@ -1,4 +1,4 @@
-# Guest lecturers
+# Guests
 
 Industry practitioners and academic experts contribute specialized sessions throughout the course, connecting methods to real-world applications.
 

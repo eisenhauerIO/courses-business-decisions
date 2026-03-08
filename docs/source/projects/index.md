@@ -1,4 +1,4 @@
-# Course Projects
+# Projects
 
 Course projects provide hands-on experience applying the methods and tools covered in this course to real-world problems. Students work on either replication projects or [Kaggle](https://www.kaggle.com/) competitions, developing practical skills in causal inference, data analysis, and reproducible research. All projects use the [repository template](https://github.com/eisenhauerIO/projects-student-template) which provides the standard project structure, GitHub Actions configuration, and setup instructions.
 
