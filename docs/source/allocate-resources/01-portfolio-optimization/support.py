@@ -3,7 +3,6 @@
 # Third-party
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import Patch
 
 # =============================================================================
 # Mock Data Functions
@@ -21,15 +20,15 @@ def create_mock_portfolio():
     Returns
     -------
     list[dict]
-        Five initiatives (A through E) with costs, scenario returns,
-        and confidence scores from Eisenhauer (2025), Table 1.
+        Five initiatives with costs, scenario returns, and confidence
+        scores from Eisenhauer (2025), Table 1.
     """
     return [
-        {"id": "A", "cost": 4, "R_best": 15, "R_med": 10, "R_worst": 2, "confidence": 0.90},
-        {"id": "B", "cost": 2, "R_best": 12, "R_med": 8, "R_worst": 1, "confidence": 0.60},
-        {"id": "C", "cost": 2, "R_best": 9, "R_med": 6, "R_worst": 2, "confidence": 0.80},
-        {"id": "D", "cost": 2, "R_best": 7, "R_med": 5, "R_worst": 3, "confidence": 0.40},
-        {"id": "E", "cost": 4, "R_best": 18, "R_med": 9, "R_worst": 0, "confidence": 0.50},
+        {"id": "TitlesAI", "cost": 4, "R_best": 15, "R_med": 10, "R_worst": 2, "confidence": 0.90},
+        {"id": "ImageEnhancer", "cost": 2, "R_best": 12, "R_med": 8, "R_worst": 1, "confidence": 0.60},
+        {"id": "PriceOptimizer", "cost": 2, "R_best": 9, "R_med": 6, "R_worst": 2, "confidence": 0.80},
+        {"id": "SearchRanker", "cost": 2, "R_best": 7, "R_med": 5, "R_worst": 3, "confidence": 0.40},
+        {"id": "BundleEngine", "cost": 4, "R_best": 18, "R_med": 9, "R_worst": 0, "confidence": 0.50},
     ]
 
 
@@ -69,11 +68,11 @@ def display_solver_result(result, rule_name):
 
 def plot_confidence_penalty(initiatives):
     """
-    Plot base vs effective returns as grouped bars for each initiative.
+    Plot the return reduction caused by the confidence penalty.
 
-    For each initiative and scenario, shows the baseline return next to
-    the confidence-adjusted effective return, making the penalty visible
-    as the gap between bars.
+    For each initiative and scenario, shows the drop from baseline to
+    effective return as a grouped bar chart, making the cost of weak
+    evidence immediately visible.
 
     Parameters
     ----------
@@ -87,37 +86,28 @@ def plot_confidence_penalty(initiatives):
     n_scenarios = len(scenarios)
 
     x = np.arange(n_initiatives)
-    group_width = 0.8
-    bar_width = group_width / (n_scenarios * 2)
+    bar_width = 0.8 / n_scenarios
+    colors = ["#3498db", "#2ecc71", "#e74c3c"]
 
     _, ax = plt.subplots(figsize=(10, 5))
 
-    base_colors = ["#3498db", "#2ecc71", "#e74c3c"]
-    eff_colors = ["#85c1e9", "#82e0aa", "#f1948a"]
-
     for j, scenario in enumerate(scenarios):
         base_key = f"R_{scenario}"
-        base_vals = [init[base_key] for init in initiatives]
-        eff_vals = [init["effective_returns"][scenario] for init in initiatives]
-
-        offset_base = (2 * j) * bar_width - group_width / 2 + bar_width / 2
-        offset_eff = (2 * j + 1) * bar_width - group_width / 2 + bar_width / 2
-
-        ax.bar(x + offset_base, base_vals, bar_width, color=base_colors[j], edgecolor="black", alpha=0.85)
-        ax.bar(x + offset_eff, eff_vals, bar_width, color=eff_colors[j], edgecolor="black", alpha=0.85)
+        drops = [init[base_key] - init["effective_returns"][scenario] for init in initiatives]
+        offset = (j - n_scenarios / 2 + 0.5) * bar_width
+        bars = ax.bar(x + offset, drops, bar_width, color=colors[j], edgecolor="black", alpha=0.85, label=scenario)
+        for bar, val in zip(bars, drops):
+            if val > 0.05:
+                ax.text(
+                    bar.get_x() + bar.get_width() / 2, val + 0.1, f"{val:.1f}", ha="center", va="bottom", fontsize=8
+                )
 
     ax.set_xticks(x)
     ax.set_xticklabels(ids)
     ax.set_xlabel("Initiative")
-    ax.set_ylabel("Return")
-    ax.set_title("Confidence Penalty: Base vs Effective Returns")
-
-    legend_elements = []
-    for j, scenario in enumerate(scenarios):
-        legend_elements.append(Patch(facecolor=base_colors[j], edgecolor="black", label=f"{scenario} (base)"))
-        legend_elements.append(Patch(facecolor=eff_colors[j], edgecolor="black", label=f"{scenario} (effective)"))
-    ax.legend(handles=legend_elements, loc="upper right", fontsize=8, ncol=2)
-
+    ax.set_ylabel("Return reduction")
+    ax.set_title("Confidence Penalty: Return Reduction by Initiative and Scenario")
+    ax.legend(loc="upper right")
     plt.tight_layout()
     plt.show()
 
@@ -153,43 +143,6 @@ def plot_effective_returns_heatmap(processed):
     plt.show()
 
 
-def plot_scenario_returns(result, title):
-    """
-    Plot portfolio returns by scenario with optimal benchmark overlay.
-
-    Shows a bar for each scenario's portfolio return and a marker for the
-    optimal scenario return ``V_j*`` when available in the result detail.
-
-    Parameters
-    ----------
-    result : SolverResult
-        Output from a solver call.
-    title : str
-        Plot title.
-    """
-    scenarios = list(result["total_actual_returns"].keys())
-    portfolio_returns = [result["total_actual_returns"][s] for s in scenarios]
-
-    _, ax = plt.subplots(figsize=(7, 4))
-
-    x = np.arange(len(scenarios))
-    ax.bar(x, portfolio_returns, color="#3498db", edgecolor="black", alpha=0.85, label="Portfolio return")
-
-    if "v_j_star" in result.get("detail", {}):
-        v_star = result["detail"]["v_j_star"]
-        v_star_vals = [v_star[s] for s in scenarios]
-        ax.scatter(x, v_star_vals, color="#e74c3c", zorder=5, s=100, marker="D", label="$V_j^*$ (optimal)")
-
-    for i, val in enumerate(portfolio_returns):
-        ax.text(i, val + 0.3, f"{val:.1f}", ha="center", va="bottom", fontsize=10)
-
-    ax.set_xticks(x)
-    ax.set_xticklabels([s.capitalize() for s in scenarios])
-    ax.set_ylabel("Return")
-    ax.set_title(title)
-    ax.legend()
-    plt.tight_layout()
-    plt.show()
 
 
 def plot_portfolio_comparison(all_results):
@@ -267,15 +220,17 @@ def plot_penalty_curve(initiatives):
     plt.show()
 
 
-def plot_sensitivity_analysis(sensitivity_data):
+def plot_sensitivity_analysis(sensitivity_data, initiative_label="ImageEnhancer"):
     """
-    Plot theta* and worst-case return as functions of Initiative E's confidence.
+    Plot theta* and worst-case return as functions of an initiative's confidence.
 
     Parameters
     ----------
     sensitivity_data : list[dict]
         List of dicts with keys ``c_e``, ``gamma``, ``theta``, ``worst_return``,
         and ``selected``.
+    initiative_label : str
+        Display name of the initiative being varied.
     """
     c_vals = [d["c_e"] for d in sensitivity_data]
     theta_vals = [d["theta"] for d in sensitivity_data]
@@ -287,7 +242,7 @@ def plot_sensitivity_analysis(sensitivity_data):
     color2 = "#e74c3c"
 
     ax1.plot(c_vals, theta_vals, "o-", color=color1, linewidth=2, markersize=8, label=r"$\theta^*$ (max regret)")
-    ax1.set_xlabel("Initiative E confidence ($c_E$)")
+    ax1.set_xlabel(f"{initiative_label} confidence ($c$)")
     ax1.set_ylabel(r"Maximum regret $\theta^*$", color=color1)
     ax1.tick_params(axis="y", labelcolor=color1)
 
@@ -485,74 +440,3 @@ def plot_effective_return_interpolation(initiative, scenarios=None):
     plt.show()
 
 
-def plot_decision_pipeline():
-    """
-    Plot the end-to-end decision pipeline from Eisenhauer (2025), Figure 1.
-
-    Renders a flowchart showing the two-phase mechanism: first year surfaces
-    uncertainty, second year manages it through optimization.
-    """
-    fig, ax = plt.subplots(figsize=(12, 5))
-    ax.set_xlim(0, 12)
-    ax.set_ylim(0, 5)
-    ax.axis("off")
-
-    box_style = {"boxstyle": "round,pad=0.4", "edgecolor": "#2c3e50", "linewidth": 1.5}
-
-    year1_boxes = [
-        (1.5, 3.8, "Proposal\nIntake", "#d5e8f0"),
-        (4.0, 3.8, "Standardized\nBusiness Case", "#d5e8f0"),
-        (6.5, 3.8, "Confidence\nScoring", "#d5e8f0"),
-    ]
-
-    year2_boxes = [
-        (1.5, 1.5, "Eligibility\nFiltering", "#e8f5e9"),
-        (4.0, 1.5, "Confidence\nAdjustments", "#e8f5e9"),
-        (6.5, 1.5, "Portfolio\nOptimization", "#e8f5e9"),
-        (9.5, 2.6, "Leadership\nReview", "#fff3e0"),
-    ]
-
-    def draw_box(x, y, text, color):
-        ax.text(
-            x,
-            y,
-            text,
-            ha="center",
-            va="center",
-            fontsize=9,
-            fontweight="bold",
-            bbox={**box_style, "facecolor": color},
-        )
-
-    for x, y, text, color in year1_boxes:
-        draw_box(x, y, text, color)
-    for x, y, text, color in year2_boxes:
-        draw_box(x, y, text, color)
-
-    arrow_kw = {"arrowstyle": "->", "color": "#2c3e50", "lw": 1.5}
-
-    ax.annotate("", xy=(3.1, 3.8), xytext=(2.4, 3.8), arrowprops=arrow_kw)
-    ax.annotate("", xy=(5.6, 3.8), xytext=(4.9, 3.8), arrowprops=arrow_kw)
-
-    ax.annotate("", xy=(3.1, 1.5), xytext=(2.4, 1.5), arrowprops=arrow_kw)
-    ax.annotate("", xy=(5.6, 1.5), xytext=(4.9, 1.5), arrowprops=arrow_kw)
-    ax.annotate("", xy=(8.1, 1.5), xytext=(7.4, 1.5), arrowprops=arrow_kw)
-
-    ax.annotate("", xy=(8.7, 2.6), xytext=(8.1, 1.8), arrowprops=arrow_kw)
-    ax.annotate("", xy=(8.7, 2.6), xytext=(7.4, 3.8), arrowprops=arrow_kw)
-
-    ax.annotate(
-        "",
-        xy=(9.5, 3.8),
-        xytext=(9.5, 3.3),
-        arrowprops={"arrowstyle": "->", "color": "#7f8c8d", "lw": 1.5, "linestyle": "dashed"},
-    )
-    ax.text(9.5, 4.1, "Semi-annual\nRefresh", ha="center", va="center", fontsize=8, color="#7f8c8d", fontstyle="italic")
-
-    ax.text(1.5, 4.7, "Year 1: Surface Uncertainty", fontsize=10, fontweight="bold", color="#2c3e50")
-    ax.text(1.5, 0.6, "Year 2: Manage Uncertainty", fontsize=10, fontweight="bold", color="#2c3e50")
-
-    ax.axhline(y=2.7, xmin=0.05, xmax=0.68, color="#bdc3c7", linestyle="--", linewidth=1)
-
-    fig.tight_layout()
-    plt.show()
