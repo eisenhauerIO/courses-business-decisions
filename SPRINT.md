@@ -1,92 +1,169 @@
-# Offerings page: audience-neutral language and polish
+# Portfolio optimization lecture — writing and structure
 
-**Status**: complete
+**Status**: verifying
 
 ## Goal
 
-The new Offerings section uses "course" and "lecture" throughout, which doesn't fit
-corporate clients. Neutralize the language so the page works for both university
-program directors and corporate technical leadership. Fix formatting and structural
-issues identified during review.
+Tighten prose and structure in the portfolio optimization lecture
+(`allocate-resources/01-portfolio-optimization/`) to comply with GUIDELINES.md.
+Related to BACKLOG Phase 0 — Polish.
 
 ## Scope
 
 **In scope**:
-- Neutralize "course"/"lecture" language in `offerings/index.md`
-- Fix inline formatting (backticks, caps)
-- Clarify Iterations intro text to avoid confusion with Offerings
-- Fix minor style inconsistencies in `econ-481A-uw-2026.md`
+- Prose quality: active voice, narrative flow, sentence case headers
+- GUIDELINES.md compliance: bold on first introduction only, no definition patterns
+- Additional resources formatting
+- Cell-level structure and transitions
 
 **Out of scope**:
-- Content changes to lecture notebooks
-- Structural changes to the toctree order
-- Changes to `_external/` packages
+- New theoretical content or sections
+- Opening hook or workflow diagram (deferred)
+- Changes to `impact_engine_allocate` package
+- Changes to `_external/` repos
+- Changes to support.py visualizations or code logic
+- Other lectures or index files
 
 ## Observations
 
-### 1. "Course" language excludes corporate audience
+### 1. Definition patterns in Part I
 
-`offerings/index.md` uses "course" 7 times and "lecture" once. For a page that also
-targets corporate clients, this reads as university-only.
+Cells 2–4 use glossary-style "X is Y" definitions: "The **baseline return** $R_{ij}$
+is the net return...", "The **penalty factor** $\gamma_i$ is a monotonically
+decreasing function...", "The **regret** of portfolio $\mathbf{x}$ under scenario
+$s_j$ is the gap...". GUIDELINES.md says to weave explanations into flowing narrative.
 
-| Line | Current text | Issue |
-|------|-------------|-------|
-| 3 | "A course built on..." | Excludes corporate |
-| 11 | "This course treats them as one loop" | Same |
-| 13 | "This course teaches participants..." | Same |
-| 24 | "Every lecture is a Jupyter notebook" | University framing |
-| 28 | "Most Gen AI courses teach prompting. This course teaches..." | Two hits |
-| 30 | "The course covers four principles" | Same |
-| 46 | "The course adapts to different audiences" | Same |
+### 2. Bold terms not introduced on first mention
 
-### 2. Formatting issues (GUIDELINES compliance)
+Cell 2 introduces "baseline return" and "worst-case return" as key concepts but does
+not bold them on first appearance (they appear in plain text before the math definition).
 
-- Line 17: `YAML` should be in backticks when referring to the format
-- Line 22: `Pydantic` should be in backticks on first mention
-- Line 48: "AND" in caps reads as emphasis-via-caps — should be lowercase "and"
+### 3. Additional resources format incomplete
 
-### 3. "Proof" header
+Cell 42 lists references without linked titles or publication metadata. GUIDELINES.md
+requires: **Author (Year)**. `[Title](url)`. *Journal*, volume(issue), pages.
 
-"Proof" as a section header may overstate — the section provides evidence/track record,
-not mathematical proof. Consider "Track record" or keep if boldness is intentional.
+### 4. Part II transitions could be tighter
 
-### 4. Iterations intro text ambiguity
+Some Part II markdown cells restate what the reader already knows from Part I rather
+than connecting forward. For example, cell 15 ("Before solving, we apply the confidence
+penalty from Part I, §3") could be more concise.
 
-`iterations/index.md` says "current and upcoming offerings" — now that there's a page
-literally called "Offerings," this creates confusion. Reword to differentiate.
+### 5. Prose density in intro paragraph
 
-### 5. Minor style inconsistencies
+Cell 0 packs three ideas into two sentences (confidence penalty, incentive effect,
+Part I/II structure). Could benefit from shorter, punchier sentences.
 
-- `offerings/index.md` line 5: horizontal rule `---` after subtitle — check consistency
-  with other section index pages
-- `econ-481A-uw-2026.md` line 5: uses hyphen `-` instead of em-dash `—` before
-  "there are no exams"
+### 7. Motivating question not highlighted
+
+Cell 0 poses a strong motivating question — "which ones should we fund?" — but it is
+not bolded. Other lectures follow a consistent pattern: the central question is bolded
+inline (e.g. "We apply these concepts to answer: **What would be the effect on sales
+if we improved product content quality?**"). The portfolio lecture should follow the
+same convention.
+
+### 8. Effective returns displayed as print loop
+
+Cell 16 shows effective returns with a manual print loop. Cell 10 already uses a
+`DataFrame` for the initiative data. The effective returns should also be a DataFrame
+for consistency and readability.
+
+### 9. Initiative names not bold in prose
+
+Initiative names (TitlesAI, ImageEnhancer, PriceOptimizer, SearchRanker, BundleEngine)
+are program/project names and should be **bold** when referenced in markdown cells.
+Currently they appear in plain text (e.g. cell 11: "TitlesAI has the highest
+confidence...").
+
+### 6. Config loading is verbose and redundant
+
+Cell 13 shows the raw YAML with `! cat config_allocation.yaml`. Cell 14 then loads the
+same file, unpacks three values into separate variables, and prints them — showing the
+same information twice. The YAML keys (`budget`, `min_confidence`, `min_worst_return`)
+don't match the `solve_minimax_regret()` parameter names (`total_budget`,
+`min_confidence_threshold`, `min_portfolio_worst_return`), forcing manual unpacking.
+Renaming the YAML keys to match the interface would allow
+`solve_minimax_regret(initiatives, **config)` and eliminate the redundant cell.
+
+### 10. Inconsistent solver calling pattern
+
+The notebook uses `solve_minimax_regret()` (convenience wrapper that preprocesses
+internally) for minimax, but manually calls `preprocess()` then `BayesianSolver()` for
+Bayesian. Both `MinimaxRegretSolver` and `BayesianSolver` are exported at the top level.
+The notebook should use the solver classes consistently: preprocess once, then call each
+solver with the same pattern. This also removes the need to import
+`solve_minimax_regret` and the internal `preprocess` function separately.
+
+## Decisions
+
+### 1. Definition patterns in Part I
+
+Rewrite "X is Y" definitions in cells 2–4 as flowing narrative prose.
+
+### 2. Bold terms not introduced on first mention
+
+Bold **baseline return** and **worst-case return** on first appearance in cell 2.
+
+### 3. Additional resources format incomplete
+
+Add linked titles and publication metadata per GUIDELINES.md format.
+
+### 4. Part II transitions could be tighter
+
+Cut restated Part I content from Part II markdown cells. Keep only forward-pointing
+connections.
+
+### 5. Prose density in intro paragraph
+
+Break cell 0 into shorter, punchier sentences.
+
+### 6. Config loading is verbose and redundant
+
+Rename YAML keys to match `solve_minimax_regret()` parameter names
+(`total_budget`, `min_confidence_threshold`, `min_portfolio_worst_return`).
+Remove the print cell (cell 14). Use `**config` in solver calls.
+
+### 7. Motivating question not highlighted
+
+Bold the central question inline in cell 0, matching the pattern from other lectures.
+
+### 8. Effective returns displayed as print loop
+
+Replace print loop in cell 16 with a `DataFrame` display.
+
+### 9. Initiative names not bold in prose
+
+Bold all initiative names in markdown cells throughout the notebook.
+
+### 10. Inconsistent solver calling pattern
+
+Use `MinimaxRegretSolver` and `BayesianSolver` classes consistently. Preprocess
+once with `preprocess()`, then call each solver with the same pattern. Drop
+`solve_minimax_regret` from imports.
 
 ## Plan
 
-1. Replace "course"/"lecture" with neutral terms in `offerings/index.md`:
-   - Line 3: "Built on a production decision system — not slides about one."
-   - Line 11: "This material treats them as one loop."
-   - Line 13: "Participants learn to close the loop."
-   - Line 24: "Every session is a Jupyter notebook..."
-   - Line 28: "Most Gen AI programs teach prompting. Participants learn to build..."
-   - Line 30: "The material covers four principles..."
-   - Line 46: "The material adapts to different audiences..."
-2. Fix inline formatting: backtick `YAML`, backtick `Pydantic`, lowercase "and"
-3. Decide on "Proof" header — keep or rename to "Track record"
-4. Reword `iterations/index.md` intro to avoid "offerings" overlap
-5. Fix hyphen → em-dash in `econ-481A-uw-2026.md`
-6. Build docs: `hatch run sphinx-build -D nbsphinx_execute=never docs/source docs/build/html`
+1. Rename YAML keys in `"config_allocation.yaml"` to match interface
+2. Update notebook imports: drop `solve_minimax_regret`, keep `MinimaxRegretSolver`
+3. Update notebook code cells: use `**config`, `MinimaxRegretSolver()`, remove print cell
+4. Replace effective returns print loop with DataFrame
+5. Rewrite Part I definition patterns as narrative prose (cells 2–4)
+6. Bold key terms on first introduction (cell 2)
+7. Bold motivating question in intro (cell 0)
+8. Break up dense intro paragraph (cell 0)
+9. Bold initiative names in all markdown cells
+10. Tighten Part II transitions (cells 15, 22, 27, 29, 32)
+11. Fix additional resources formatting (cell 42)
+12. Strip outputs, execute notebook, verify clean run
+13. Prose review pass against GUIDELINES.md
+
+## Files modified
+
+- `docs/source/allocate-resources/01-portfolio-optimization/lecture.ipynb`
+- `docs/source/allocate-resources/01-portfolio-optimization/config_allocation.yaml`
 
 ## Verification
 
-1. `hatch run sphinx-build -D nbsphinx_execute=never docs/source docs/build/html` — pass
-2. Read offerings page end-to-end for tone consistency
-3. Confirm no "course" or "lecture" remains in `offerings/index.md` (except in Formats
-   subsection where "course" is appropriate for the university paragraph)
-
-## Files to modify
-
-- `docs/source/offerings/index.md` — audience-neutral language, formatting fixes
-- `docs/source/iterations/index.md` — reword intro
-- `docs/source/iterations/econ-481A-uw-2026.md` — hyphen → em-dash
+1. `ruff check .` — pass
+2. `hatch run notebook docs/source/allocate-resources/01-portfolio-optimization/lecture.ipynb` — pass
+3. `hatch run build` — pass
