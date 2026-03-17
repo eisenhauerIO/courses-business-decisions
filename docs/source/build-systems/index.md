@@ -60,19 +60,13 @@ Python is the primary programming language for this course. We use it for data a
 - [Kiro Documentation](https://kiro.dev/docs/) — Official guides and tutorials
 - [Kiro Getting Started](https://kiro.dev/docs/getting-started/installation/) — Installation and setup
 
-```{rubric} Frequently Asked Questions
-```
-
-**What software do I need to install?** This page lists the tools we use throughout the course. Start with the essentials: [Python](https://www.python.org/), [VS Code](https://code.visualstudio.com/), and [Git](https://git-scm.com/). You'll also need a [GitHub](https://github.com/) account. For Python libraries, we primarily use [NumPy](https://numpy.org/), [Pandas](https://pandas.pydata.org/), [Matplotlib](https://matplotlib.org/), [Seaborn](https://seaborn.pydata.org/), [SciPy](https://scipy.org/), and [Statsmodels](https://www.statsmodels.org/). We'll introduce additional tools as they become relevant—you don't need everything on day one.
-
-**Where can I find the lecture notebooks?** All lecture notebooks are embedded directly in the [course website](https://eisenhauerio.github.io/courses-business-decisions/) under each topic section (Understand Domain, Measure Impact, etc.). Each lecture has its own self-contained directory in the [course repository](https://github.com/eisenhauerIO/courses-business-decisions)—for example, [docs/source/measure-impact/01-potential-outcomes-model/](https://github.com/eisenhauerIO/courses-business-decisions/tree/main/docs/source/measure-impact/01-potential-outcomes-model) contains the notebook, configuration files, and supporting Python scripts. Alternatively, click "Edit on GitHub" at the top of any lecture page to jump directly to its source.
-
 ## Agentic systems
 
 The design patterns behind agentic systems — registry dispatch, versioned prompt templates, layered specialization, and structured output parsing — are covered as a dedicated lecture in the [Evaluate Evidence](../evaluate-evidence/index.md) section, where the `impact-engine-evaluate` package serves as the running example. See [Building an Agentic Evaluation System](../evaluate-evidence/02-agentic-evaluation-system/lecture.ipynb) for the full treatment.
 
-## Frequently asked questions
+```{rubric} Frequently Asked Questions
+```
 
-**What software do I need to install?** The [Build Systems](https://eisenhauerio.github.io/courses-business-decisions/build-systems/index.html) page lists the tools we use throughout the course. Start with the essentials: [Python](https://www.python.org/), [VS Code](https://code.visualstudio.com/), and [Git](https://git-scm.com/). You'll also need a [GitHub](https://github.com/) account. For Python libraries, we primarily use [NumPy](https://numpy.org/), [Pandas](https://pandas.pydata.org/), [Matplotlib](https://matplotlib.org/), [Seaborn](https://seaborn.pydata.org/), [SciPy](https://scipy.org/), and [Statsmodels](https://www.statsmodels.org/). We'll introduce additional tools as they become relevant—you don't need everything on day one.
+**What software do I need to install?** This page lists the tools we use throughout the course. Start with the essentials: [Python](https://www.python.org/), [VS Code](https://code.visualstudio.com/), and [Git](https://git-scm.com/). You'll also need a [GitHub](https://github.com/) account. For Python libraries, we primarily use [NumPy](https://numpy.org/), [Pandas](https://pandas.pydata.org/), [Matplotlib](https://matplotlib.org/), [Seaborn](https://seaborn.pydata.org/), [SciPy](https://scipy.org/), and [Statsmodels](https://www.statsmodels.org/). We'll introduce additional tools as they become relevant—you don't need everything on day one.
 
 **Where can I find the lecture notebooks?** All lecture notebooks are embedded directly in the [course website](https://eisenhauerio.github.io/courses-business-decisions/) under each topic section (Understand Domain, Measure Impact, etc.). Each lecture has its own self-contained directory in the [course repository](https://github.com/eisenhauerIO/courses-business-decisions)—for example, [docs/source/measure-impact/01-potential-outcomes-model/](https://github.com/eisenhauerIO/courses-business-decisions/tree/main/docs/source/measure-impact/01-potential-outcomes-model) contains the notebook, configuration files, and supporting Python scripts. Alternatively, click "Edit on GitHub" at the top of any lecture page to jump directly to its source.
