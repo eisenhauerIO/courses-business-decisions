@@ -12,7 +12,7 @@ Course projects provide hands-on experience applying the methods and tools cover
 
 ### Lindo et al. (2010): Academic Probation and Student Outcomes
 
-This [replication project](https://ose-course-projects.readthedocs.io/en/latest/projects/index.html) by Annica Gehlen replicates {cite:t}`Lindo_2010`, examining the effects of academic probation on student outcomes using a regression discontinuity design. The analysis demonstrates how negative incentives influence performance and dropout decisions at a large Canadian university.
+This replication project by Annica Gehlen replicates {cite:t}`Lindo_2010`, examining the effects of academic probation on student outcomes using a regression discontinuity design. The analysis demonstrates how negative incentives influence performance and dropout decisions at a large Canadian university. The [project notebook](https://ose-course-projects.readthedocs.io/en/latest/projects/Lindo_et_al_2010/project.html) guides the reader through the analysis and reasoning for each step, supported by a clear README and a GitHub Actions workflow that ensures end-to-end reproducibility.
 
 ## Frequently asked questions
 
