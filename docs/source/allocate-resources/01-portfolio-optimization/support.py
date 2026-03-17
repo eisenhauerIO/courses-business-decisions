@@ -43,8 +43,8 @@ def display_solver_result(result, rule_name):
 
     Parameters
     ----------
-    result : SolverResult
-        Output from a solver call (minimax regret or Bayesian).
+    result : RuleResult
+        Output from an allocation rule call (minimax regret or Bayesian).
     rule_name : str
         Display name for the decision rule (e.g. ``"Minimax regret"``).
     """
@@ -143,15 +143,13 @@ def plot_effective_returns_heatmap(processed):
     plt.show()
 
 
-
-
 def plot_portfolio_comparison(all_results):
     """
     Plot a side-by-side comparison of portfolio returns across decision rules.
 
     Parameters
     ----------
-    all_results : list[tuple[str, SolverResult]]
+    all_results : list[tuple[str, RuleResult]]
         List of ``(rule_name, result)`` pairs to compare.
     """
     scenarios = list(all_results[0][1]["total_actual_returns"].keys())
@@ -270,8 +268,8 @@ def plot_scenario_returns_with_regret(result, title):
 
     Parameters
     ----------
-    result : SolverResult
-        Output from a solver call with ``detail.v_j_star`` available.
+    result : RuleResult
+        Output from an allocation rule call with ``detail.v_j_star`` available.
     title : str
         Plot title.
     """
@@ -341,7 +339,7 @@ def plot_selection_matrix(all_results, all_initiative_ids):
 
     Parameters
     ----------
-    all_results : list[tuple[str, SolverResult]]
+    all_results : list[tuple[str, RuleResult]]
         List of ``(rule_name, result)`` pairs.
     all_initiative_ids : list[str]
         Full list of initiative IDs (including excluded ones).
@@ -438,5 +436,3 @@ def plot_effective_return_interpolation(initiative, scenarios=None):
     ax.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.show()
-
-
