@@ -44,6 +44,6 @@ references
 <div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid #e1e4e5; text-align: center;">
 <p style="color: #6c757d; font-size: 14px; margin-bottom: 15px;">Powered by</p>
 <a href="https://eisenhauerio.github.io/tools-impact-engine-website" style="text-decoration: none;">
-<img src="https://raw.githubusercontent.com/eisenhauerIO/tools-impact-engine-website/main/img/logo-full-light.svg" alt="Impact Engine" style="max-width: 300px;">
+<img src="https://raw.githubusercontent.com/eisenhauerIO/tools-impact-engine-website/main/site/assets/logo-full-light.svg" alt="Impact Engine" style="max-width: 300px;">
 </a>
 </div>
