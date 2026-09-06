@@ -1,9 +1,11 @@
 ---
-name: review-code
+name: bdc-review-code
 description: Use when reviewing Python code in *.py files and Jupyter notebook code cells. Checks for bugs, clarity, style, performance, security, and docstrings.
 ---
 
 # Code Review
+
+This file owns mechanics and style. Severity and judgment come from `bdc-coding`'s review order (silent correctness, causal validity, dependencies, monitoring, structure) — on any conflict, that order wins.
 
 Review Python code in `*.py` files and Jupyter notebook code cells for quality and correctness.
 
@@ -393,51 +395,9 @@ This checks for untracked files, formats code, and checks for linting issues.
 
 ---
 
-# Course-Specific Code Conventions
+# Courses overlay (formerly SKILL.override.md)
 
-## Import Placement in Lecture Notebooks
 
-For lectures that follow the Theory → Application structure, imports should **not** appear at the beginning of the notebook. Instead, place all imports at the start of Part II (Application) to keep Part I (Theory) completely clean of code.
-
-**Exception:** The Directed Acyclic Graphs lecture includes simulation code in Part I (Theory) to demonstrate collider bias with the police force example. This is intentional—the simulation reinforces a key theoretical point that benefits from immediate hands-on demonstration.
-
-```python
-# Good - imports at start of Application section
-## Part II: Application
-
-# First code cell of Part II
-# Standard Library
-import inspect
-
-# Third-party packages
-import pandas as pd
-
-# Local imports
-from online_retail_simulator import simulate
-```
-
-```python
-# Bad - imports at notebook start pollute Theory section
-# Cell 1: Imports (before any theory content)
-import pandas as pd
-from online_retail_simulator import simulate
-
-# ... Theory section with no code ...
-```
-
-**Rationale:** The Theory section should be pure exposition—definitions, notation, and intuition—without any code distractions. Code only enters when we begin the hands-on Application.
-
----
-
-## Confounded Treatment Functions (`support.py`)
-
-Functions that generate confounded treatment assignment for measure-impact lectures must follow these conventions:
-
-- Accept `metrics_df: pd.DataFrame` as input and return a product-level DataFrame
-- Required output columns: `D` (treatment), `Y0`, `Y1`, `Y_observed`, plus covariates
-- Parameters (effect size, selection coefficients) should be explicit function arguments, not hardcoded
-
----
 
 ## Support Module Conventions (`support.py`)
 
