@@ -1,9 +1,11 @@
 ---
-name: review-writing
+name: bdc-review-writing
 description: Use when reviewing prose in markdown files and Jupyter notebook markdown cells. Checks formatting, style, clarity, and pedagogical effectiveness.
 ---
 
 # Writing Review
+
+This skill owns formatting, structure, and pedagogy. Voice belongs to `bdc-writing-support` — on any conflict about how a sentence should sound, that skill wins.
 
 Review prose in markdown files (`.md`) and Jupyter notebook markdown cells for formatting, style, clarity, and pedagogical effectiveness.
 
@@ -12,6 +14,8 @@ Review prose in markdown files (`.md`) and Jupyter notebook markdown cells for f
 ---
 
 # Part I: Formatting Standards
+
+Canonical statements of these conventions: `bdc-writing-support`, Mechanics section and formatting table. This part carries only their reviewable Bad/Good form; if the two ever disagree, `bdc-writing-support` wins.
 
 ## Code Elements in Markdown
 
@@ -115,14 +119,6 @@ Good: Describe *what* you want in natural language
 Good: The goal is not perfectly polished code—it's *rapid insight generation*
 ```
 
-### Questions as Headers
-Format important questions in bold:
-
-```markdown
-Good: **Does improving product content quality increase sales?**
-Good: How do customers move through the purchase journey?
-```
-
 ---
 
 ## Numbers and Values
@@ -171,7 +167,8 @@ Bad:  The [Online Retail Simulator] generates... (over-linked)
 ## Lists and Examples
 
 ### Parenthetical Examples
-Use em-dash for inline examples:
+Use parentheses for inline examples. Reserve the em-dash for a genuine aside,
+at most one per paragraph — see `billion-dollar-contributor/references/voice.md`:
 
 ```markdown
 Good: `**category**` (such as Electronics, Clothing, or Books)
@@ -206,7 +203,7 @@ All headers use sentence case — capitalize the first word and proper nouns onl
 
 ```markdown
 Good: ## Deterministic scoring
-Good: ### How is revenue distributed across categories?
+Good: ### Revenue distribution across categories
 Good: ## The evaluation harness
 Bad:  ## Deterministic Scoring (title case)
 Bad:  ## The Evaluation Harness (title case)
@@ -214,11 +211,16 @@ Bad:  ## The Evaluation Harness (title case)
 
 Exception: acronyms and proper nouns retain standard capitalization (e.g., "YAML", "Ollama", "Part I").
 
-### Section Headers Should Be Questions (When Appropriate)
+### Topic Headers Are Noun-Phrase Labels
+Headers name where the reader is; the section's opening sentence delivers the
+point. Never questions, never full-sentence assertions. Single carve-out:
+LaTeX analysis memos title sections as questions
+(`bdc-analysis-docs/references/writing-core.md`, prose rule 1).
 ```markdown
 Good: ## Exploring the generated data
-Good: ### How is revenue distributed across categories?
-Bad:  ### Revenue Distribution (less engaging)
+Good: ### Revenue distribution across categories
+Bad:  ### How is revenue distributed across categories? (question header)
+Bad:  ### The revenue is concentrated in Electronics (assertion header)
 ```
 
 ### No Formulaic Summary Sections
@@ -234,6 +236,8 @@ Let the material speak for itself.
 ---
 
 ## Tone and Voice
+
+Canonical statements of these rules: canon `billion-dollar-contributor/references/voice.md`, Sentence Style. This section carries only their reviewable Bad/Good form; if the two ever disagree, the canon wins.
 
 ### Active Voice
 ```markdown
@@ -254,19 +258,16 @@ Bad:  Now we're going to simulate some products (too casual)
 Bad:  It is necessary to simulate products (too formal)
 ```
 
----
-
-## Quick Reference
-
-| Element | Format | Example |
-|---------|--------|---------|
-| Column name | `` `name` `` | `product_identifier` |
-| Function | `` `function()` `` | `simulate()` |
-| Variable | `` `variable` `` | `job_info` |
-| Parameter | `` `parameter` `` | `effect_size` |
-| Config file | `` `"file.yaml"` `` | `"config_simulation.yaml"` |
-| Object type | `` `Type` `` | `DataFrame` |
-| Directory | `` `dir/` `` | `output/` |
+### One Beat Per Sentence
+No sentence packs a claim, its supporting number, and a qualifier into one
+chain of clauses; the point is stated before the digits.
+```markdown
+Bad:  The effective lift, averaged across every enriched product and credited
+      against the full catalog, is worth $110M/yr, of which US is $85M
+Good: The effective lift is +5.0ppt, the average across every enriched
+      product. Credited against the full catalog, it is worth $110M/yr. The
+      US share is $85M (78%)
+```
 
 ---
 
@@ -350,6 +351,8 @@ Verify standard docs tooling is in place:
 
 ### Narrative Depth
 
+The reviewable form of `bdc-writing-support`'s three voice habits.
+
 - [ ] Concepts are explained thoroughly with multiple paragraphs, not just stated
 - [ ] Mathematical derivations show intermediate steps, not just final results
 - [ ] The "why" is explained, not just the "what"
@@ -378,7 +381,6 @@ Verify standard docs tooling is in place:
 - [ ] Analogies or visual aids are used where helpful
 
 ### Active Learning
-- [ ] Headers pose questions where appropriate
 - [ ] Students can run code and see results
 - [ ] Opportunities for exploration or modification exist
 
@@ -410,9 +412,10 @@ Verify standard docs tooling is in place:
 - [ ] First introduction of concepts uses **bold**
 - [ ] Links use meaningful text, not "click here"
 - [ ] Headers use sentence case (capitalize first word and proper nouns only)
-- [ ] Headers are questions when exploring data
+- [ ] Topic headers are noun-phrase labels, not questions or assertions
 - [ ] YAML top-level sections referenced in **BOLD UPPERCASE** in prose
 - [ ] Active voice, present tense throughout
+- [ ] One beat per sentence — dense multi-clause sentences decomposed, point stated before the digits
 
 ## Pedagogy Checklist
 
@@ -426,7 +429,7 @@ Verify standard docs tooling is in place:
 
 ## Review Questions
 
-When reviewing, ask yourself:
+The same four questions `bdc-writing-support` asks of any piece:
 
 1. **Would a reader understand this?** Not just follow along, but actually grasp the concept.
 
@@ -448,37 +451,9 @@ For each issue found:
 
 ---
 
-# Course-Specific Writing Conventions
+# Courses overlay (formerly SKILL.override.md)
 
-## Terminology
 
-- Use "shoppers" (not "customers") when referring to end-users in e-commerce context
-- Verify consistency across all documentation
-
----
-
-## Configuration Sections (YAML)
-
-### Top-Level Sections
-Use **BOLD UPPERCASE** in prose:
-
-```markdown
-Good: The **PRODUCTS** section generates...
-Good: The **PARAMS** subsection controls...
-Bad:  The PRODUCTS section generates...
-Bad:  The products section generates...
-```
-
-### Specific Keys
-Use backticks in technical context:
-
-```markdown
-Good: The `effect_size` parameter controls...
-Good: Set `enrichment_fraction` to 1.0...
-Bad:  The effect_size parameter controls...
-```
-
----
 
 ## Simulation Phases vs YAML Sections
 
