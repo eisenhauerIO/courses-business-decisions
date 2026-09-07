@@ -43,7 +43,7 @@ notebooks = "find docs/source -name '*.ipynb' -not -path '*/.ipynb_checkpoints/*
 slides = "jupyter nbconvert docs/source/**/lecture.ipynb --to slides --reveal-prefix https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0 --output-dir docs/build/slides"
 
 [tool.ruff]
-extend-exclude = ["_external"]
+extend-exclude = ["_external", ".claude"]  # .claude: skill docs whose code fences hold deliberate Bad examples
 line-length = 120
 
 [tool.ruff.lint]
