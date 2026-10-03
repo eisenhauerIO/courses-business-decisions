@@ -46,8 +46,8 @@ since Winter 2026.
 
 ### 1. Iteration page still describes Winter 2026
 
-Rename to `2026-winter-uw-econ-481A.md` and add `2026-autumn-uw-econ-481A.md` with
-the same content and project due date TBD.
+Keep a single `iterations/index.md` with the current delivery's details (project due
+date TBD) and a table of past iterations. Delete the per-term pages.
 
 ### 2. Tool dependencies track `main`
 
@@ -60,26 +60,27 @@ Point CLAUDE.md at the workspace `../../tools/` clones, drop subagents, add
 
 ### 4. External links unverified since last term
 
-Run the link check from `bdc-review-course` and fix anything broken.
+Run the link check from `bdc-review-course` and fix anything broken. The paper
+link to `eisenhauer.io` (domain gone) points to the homepage publications section.
 
 ## Plan
 
-1. Rename winter iteration page, add autumn page, update toctree — done
+1. Collapse iteration pages into `iterations/index.md` with a past-iterations table — done
 2. Update CLAUDE.md and DESIGN.md — done
 3. Pin tool dependencies in `pyproject.toml` to commit SHAs
-4. Run link check and fix broken links
+4. Run link check and fix broken links — done (Slack invite still to confirm by hand)
 5. Set the project due date once known
 
 ## Files modified
 
-- `docs/source/iterations/2026-winter-uw-econ-481A.md` — renamed from `econ-481A-uw-2026.md`
-- `docs/source/iterations/2026-autumn-uw-econ-481A.md` — new, due date TBD
-- `docs/source/iterations/index.md` — toctree
-- `CLAUDE.md` — architecture, dependencies, verification, conventions
+- `docs/source/iterations/econ-481A-uw-2026.md` — deleted
+- `docs/source/iterations/index.md` — current delivery plus past-iterations table
+- `docs/source/allocate-resources/01-portfolio-optimization/lecture.ipynb` — paper link
+- `CLAUDE.md` — architecture, dependencies, push-to-main verification, conventions
 - `DESIGN.md` — architecture diagram, configuration table
 
 ## Verification
 
 1. `hatch run ruff check .` — pass
 2. `hatch run build` — pass
-3. CI (ci.yml, docs.yml) green on the PR
+3. CI (ci.yml, docs.yml) green on main

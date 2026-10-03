@@ -36,7 +36,7 @@ hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace pat
   - `evaluate-evidence/` — evidence quality lectures (evaluation framework, agentic systems, application)
   - `understand-domain/` — domain context lectures (catalog AI)
   - `allocate-resources/` — decision theory lectures (portfolio optimization)
-  - `iterations/` — one page per delivery, named `YYYY-term-institution-course.md` (e.g. `2026-autumn-uw-econ-481A.md`)
+  - `iterations/index.md` — current delivery's details plus a table of past iterations (new term: move the current one into the table)
   - `decision-loop/`, `build-systems/`, `guests/`, `projects/`, `software/` — supporting sections
   - `references.bib` — bibliography
 - `docs/source/_static/` — images and SVGs referenced by lectures and index pages
@@ -73,12 +73,12 @@ All installed via pip from GitHub (see pyproject.toml). Never use `sys.path.inse
 
 ## Verification
 
-All work happens on a feature branch. Push, wait for CI to pass, then merge to main.
+Push directly to main; no feature branches or PRs.
 
-1. Create a feature branch and do all work there: `git checkout -b feature/description`
-2. Commit, push, and open a PR: `git push -u origin feature/description && gh pr create`
-3. Wait for CI to pass (ci.yml: linting, docs.yml: Sphinx build): `gh pr checks --watch`
-4. Merge only after CI passes: `gh pr merge`
+1. Lint locally: `hatch run ruff check . && hatch run ruff format --check .`
+2. For lecture changes, execute the notebook: `hatch run notebook path/to/lecture.ipynb`
+3. Commit and push to main: `git push`
+4. Watch CI (ci.yml: linting, docs.yml: Sphinx build + deploy) and fix forward on failure: `gh run watch`
 
 ## Key conventions
 
