@@ -88,7 +88,7 @@ YAML files configure the external tools for each lecture's application section:
 | Workflow | Trigger | Steps |
 |----------|---------|-------|
 | `ci.yml` | Push/PR to main | Ruff lint + format check |
-| `docs.yml` | Push/PR to main | Sphinx build (all notebooks execute), deploy to GitHub Pages on main |
+| `docs.yml` | Push/PR to main, nightly 10:00 UTC | Sphinx build (all notebooks execute), deploy to GitHub Pages on main |
 
 ## Data flow
 

@@ -11,7 +11,7 @@ University of Washington. Related to BACKLOG Phase 0 — Polish.
 
 **In scope**:
 - Iteration pages: archive Winter 2026, add Autumn 2026
-- Pin tool dependencies for the duration of the term
+- Catch upstream tool breakage early (tools are developed alongside the course)
 - Bring CLAUDE.md and DESIGN.md in line with the current workspace layout
 - Check external links on student-facing pages
 
@@ -51,7 +51,9 @@ date TBD) and a table of past iterations. Delete the per-term pages.
 
 ### 2. Tool dependencies track `main`
 
-Pin each tool to its current commit SHA for the term.
+Keep tracking `main`: the tools are developed as the course progresses. Add a nightly
+scheduled run of `docs.yml` so a tool change that breaks a lecture fails CI within a
+day, even without a course push.
 
 ### 3. Root docs reference a removed layout
 
@@ -67,8 +69,8 @@ link to `eisenhauer.io` (domain gone) points to the public Drive PDF of the pape
 
 1. Collapse iteration pages into `iterations/index.md` with a past-iterations table — done
 2. Update CLAUDE.md and DESIGN.md — done
-3. Pin tool dependencies in `pyproject.toml` to commit SHAs
-4. Run link check and fix broken links — done (Slack invite still to confirm by hand)
+3. Add nightly scheduled docs build — done
+4. Run link check and fix broken links — done (Slack invite confirmed by hand)
 5. Set the project due date once known
 
 ## Files modified
@@ -77,7 +79,8 @@ link to `eisenhauer.io` (domain gone) points to the public Drive PDF of the pape
 - `docs/source/iterations/index.md` — current delivery plus past-iterations table
 - `docs/source/allocate-resources/01-portfolio-optimization/lecture.ipynb` — paper link
 - `CLAUDE.md` — architecture, dependencies, push-to-main verification, conventions
-- `DESIGN.md` — architecture diagram, configuration table
+- `DESIGN.md` — architecture diagram, configuration table, nightly build
+- `.github/workflows/docs.yml` — nightly schedule trigger
 
 ## Verification
 
