@@ -1,6 +1,6 @@
 # Autumn 2026 launch
 
-**Status**: executing
+**Status**: complete
 
 ## Goal
 
@@ -47,7 +47,7 @@ since Winter 2026.
 ### 1. Iteration page still describes Winter 2026
 
 Keep a single `iterations/index.md` with the current delivery's details (project due
-date TBD) and a table of past iterations. Delete the per-term pages.
+date December 15th) and a table of past iterations. Delete the per-term pages.
 
 ### 2. Tool dependencies track `main`
 
@@ -71,12 +71,12 @@ link to `eisenhauer.io` (domain gone) points to the public Drive PDF of the pape
 2. Update CLAUDE.md and DESIGN.md — done
 3. Add nightly scheduled docs build — done
 4. Run link check and fix broken links — done (Slack invite confirmed by hand)
-5. Set the project due date once known
+5. Set the project due date — done (December 15th, 11:59 PM PST)
 
 ## Files modified
 
 - `docs/source/iterations/econ-481A-uw-2026.md` — deleted
-- `docs/source/iterations/index.md` — current delivery plus past-iterations table
+- `docs/source/iterations/index.md` — current delivery (due December 15th) plus past-iterations table
 - `docs/source/allocate-resources/01-portfolio-optimization/lecture.ipynb` — paper link
 - `CLAUDE.md` — architecture, dependencies, push-to-main verification, conventions
 - `DESIGN.md` — architecture diagram, configuration table, nightly build
