@@ -61,7 +61,7 @@ Point CLAUDE.md at the workspace `../../tools/` clones, drop subagents, add
 ### 4. External links unverified since last term
 
 Run the link check from `bdc-review-course` and fix anything broken. The paper
-link to `eisenhauer.io` (domain gone) points to the homepage publications section.
+link to `eisenhauer.io` (domain gone) points to the public Drive PDF of the paper.
 
 ## Plan
 
