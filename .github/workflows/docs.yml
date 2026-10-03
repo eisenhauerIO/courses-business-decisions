@@ -8,6 +8,9 @@ on:
     branches:
       - main
   workflow_dispatch:
+  schedule:
+    # Nightly rebuild against tool repos' latest main, so upstream breaks surface within a day
+    - cron: "0 10 * * *"
 
 permissions:
   contents: read
