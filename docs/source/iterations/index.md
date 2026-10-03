@@ -12,5 +12,6 @@ University of Washington
 ```{toctree}
 :maxdepth: 1
 
-econ-481A-uw-2026
+2026-autumn-uw-econ-481A
+2026-winter-uw-econ-481A
 ```

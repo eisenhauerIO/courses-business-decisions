@@ -29,7 +29,8 @@ fail the build.
 │  External Tools (pip-installed from GitHub):            │
 │  ├── online-retail-simulator (data generation)         │
 │  ├── impact-engine-measure (causal estimation)         │
-│  └── impact-engine-evaluate (evidence review)          │
+│  ├── impact-engine-evaluate (evidence review)          │
+│  └── impact-engine-allocate (portfolio allocation)     │
 │                                                        │
 │  Build Pipeline:                                       │
 │  hatch run build → Sphinx + nbsphinx → GitHub Pages   │
@@ -80,6 +81,7 @@ YAML files configure the external tools for each lecture's application section:
 | `config_experiment.yaml` | Impact Engine Measure | Experimental estimator settings |
 | `config_allocation.yaml` | Impact Engine Allocate | Portfolio allocation settings |
 | `config_severity_*.yaml` | Impact Engine Evaluate | Evidence severity scenarios |
+| `review_config.yaml` | Impact Engine Evaluate | Review backend (model, temperature, token limit) |
 
 ### CI/CD pipelines
 
@@ -138,7 +140,7 @@ support.py plotting functions → visualizations
 ### Hatch (`pyproject.toml`)
 
 See Common commands in CLAUDE.md. The hatch environment manages all dependencies
-including the three GitHub-hosted packages.
+including the four GitHub-hosted packages.
 
 ### Ruff (`pyproject.toml`)
 

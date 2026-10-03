@@ -24,8 +24,8 @@ hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace pat
 - `hatch run notebook {path}` — execute a single notebook in place
 - `hatch run notebooks` — find and execute all notebooks
 - `hatch run slides` — convert lecture notebooks to reveal.js slides
-- `ruff check .` — lint all Python files
-- `ruff format --check .` — check formatting
+- `hatch run ruff check .` — lint all Python files
+- `hatch run ruff format --check .` — check formatting
 
 ## Architecture
 
@@ -35,20 +35,18 @@ hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace pat
   - `measure-impact/` — causal inference lectures (potential outcomes, DAGs, matching, synthetic control)
   - `evaluate-evidence/` — evidence quality lectures (evaluation framework, agentic systems, application)
   - `understand-domain/` — domain context lectures (catalog AI)
-  - `decision-loop/`, `build-systems/`, `guests/`, `projects/`, `software/`, `iterations/`, `allocate-resources/` — supporting sections
+  - `allocate-resources/` — decision theory lectures (portfolio optimization)
+  - `iterations/` — one page per delivery, named `YYYY-term-institution-course.md` (e.g. `2026-autumn-uw-econ-481A.md`)
+  - `decision-loop/`, `build-systems/`, `guests/`, `projects/`, `software/` — supporting sections
   - `references.bib` — bibliography
 - `docs/source/_static/` — images and SVGs referenced by lectures and index pages
-- `_external/` — local clones of dependency repos (read-only, do not modify)
-  - `tools-online-retail-simulator/` — simulator source
-  - `tools-impact-engine-measure/` — causal estimation source
-  - `tools-impact-engine-evaluate/` — evidence review source
-  - `tools-impact-engine-allocate/` — resource allocation source
-  - `utils-agentic-support/` — shared Claude Code skills and subagents
-  - `books-mixtape/` — Causal Inference: The Mixtape reference
+- `../../tools/` — workspace clones of the tool repos (separate projects, do not modify from here)
+  - `impact-engine-measure/` — causal estimation source
+  - `impact-engine-evaluate/` — evidence review source
+  - `impact-engine-allocate/` — resource allocation source
 - `.github/workflows/ci.yml` — ruff linting on push/PR
 - `.github/workflows/docs.yml` — Sphinx build + GitHub Pages deploy on push to main
-- `.claude/skills/` — Claude Code skill definitions
-- `.claude/subagents/` — symlinked subagent definitions (design-reviewer, doc-generator, test-writer)
+- `.claude/skills/` — course-specific skills (bdc-author-lecture, bdc-review-course, and course forks of bdc-review-code and bdc-review-writing); shared skills live in the workspace `.claude/skills/`
 
 ### Lecture directory convention
 
@@ -69,6 +67,7 @@ Evaluate-evidence and understand-domain lectures follow the same `lecture.ipynb`
 - `online-retail-simulator` — synthetic retail data generation (GitHub)
 - `impact-engine-measure` — causal effect estimation (GitHub)
 - `impact-engine-evaluate` — LLM-powered evidence review (GitHub)
+- `impact-engine-allocate` — portfolio allocation under uncertainty (GitHub)
 
 All installed via pip from GitHub (see pyproject.toml). Never use `sys.path.insert`.
 
@@ -77,16 +76,16 @@ All installed via pip from GitHub (see pyproject.toml). Never use `sys.path.inse
 All work happens on a feature branch. Push, wait for CI to pass, then merge to main.
 
 1. Create a feature branch and do all work there: `git checkout -b feature/description`
-2. Commit and push: `git push -u origin feature/description`
-3. Wait for CI to pass (ci.yml: linting, docs.yml: Sphinx build): `gh run watch`
-4. Merge to main only after CI passes: `git checkout main && git merge feature/description && git push`
+2. Commit, push, and open a PR: `git push -u origin feature/description && gh pr create`
+3. Wait for CI to pass (ci.yml: linting, docs.yml: Sphinx build): `gh pr checks --watch`
+4. Merge only after CI passes: `gh pr merge`
 
 ## Key conventions
 
 - Follow writing conventions in `docs/source/GUIDELINES.md` when editing lecture content
 - Notebooks execute during Sphinx build (`nbsphinx_execute = "always"`) — all cells must run cleanly
 - Part II imports: `from online_retail_simulator import simulate, load_job_results`
-- `_external/` contains reference repos — do not modify
+- Tool repos under `../../tools/` are separate projects — change them in their own repos, never from here
 - Ruff enforces D (docstrings), E, F (pyflakes), I (isort) rules; line length 120
 - NumPy-style docstrings for all Python functions
 - `print()` is allowed in `support.py` display functions and notebook cells for lecture output; avoid `print()` in library/utility code outside lecture directories

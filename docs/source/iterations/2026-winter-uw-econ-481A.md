@@ -1,4 +1,4 @@
-# ECON 481A — Data Science for Economists — University of Washington (2026)
+# ECON 481A — Data Science for Economists — University of Washington (Winter 2026)
 
 ## Frequently asked questions
 
