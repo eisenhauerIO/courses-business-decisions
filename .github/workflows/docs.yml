@@ -44,6 +44,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install hatch "virtualenv<21"
 
+    - name: Validate lecture configs against the simulator
+      # Catches simulator API changes in lectures the build does not execute (catalog AI needs a local LLM)
+      run: hatch run pytest tests/ -p no:nbmake -o addopts=""
+
     - name: Build documentation
       run: |
         MPLCONFIGDIR=$GITHUB_WORKSPACE/docs/configurations SPHINX_PROD=1 hatch run build
