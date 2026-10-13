@@ -26,7 +26,7 @@
 
   <!-- Step 2: Simulate Data -->
   <rect class="badge" x="265" y="38" width="150" height="22" rx="11"/>
-  <text class="badge-text" x="340" y="53" text-anchor="middle">SIMULATOR</text>
+  <text class="badge-text" x="340" y="53" text-anchor="middle">RETAIL SIMULATOR</text>
   <rect class="box" x="265" y="70" width="150" height="84" rx="8"/>
   <text class="title" x="340" y="108" text-anchor="middle">Simulate</text>
   <text class="title" x="340" y="128" text-anchor="middle">Data</text>
