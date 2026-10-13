@@ -149,7 +149,7 @@ Bad:  Set effect_size: 0.5 (not formatted)
 Format package/tool names with link on first mention:
 
 ```markdown
-Good: The [**Online Retail Simulator**](https://github.com/eisenhauerIO/tools-catalog-generator)
+Good: The [**Online Retail Simulator**](https://github.com/eisenhauerIO/tools-online-retail-simulator)
 Good: We use [GitHub Copilot](https://github.com/features/copilot) to generate code.
 ```
 
