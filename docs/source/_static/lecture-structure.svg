@@ -1,79 +1,64 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 200" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 230">
   <defs>
-    <marker id="arrow" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="10" markerHeight="6" orient="auto-start-reverse">
-      <path d="M0,0 L10,3 L0,6 Z" fill="#64748b"/>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+      .box { fill: #f8f9fa; stroke: #93c5fd; stroke-width: 2; }
+      .title { font-size: 16px; font-weight: 600; fill: #1a1a2e; }
+      .caption { font-size: 14px; fill: #6b7280; }
+      .arrow { stroke: #cbd5e1; stroke-width: 2; }
+      .arrow-head { fill: #cbd5e1; }
+      .badge { fill: #eff6ff; stroke: #bfdbfe; stroke-width: 1; }
+      .badge-text { font-size: 11px; font-weight: 600; fill: #1d4ed8; letter-spacing: 0.05em; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto">
+      <path class="arrow-head" d="M0,0 L10,4 L0,8 Z"/>
     </marker>
-    <filter id="shadow" x="-4%" y="-4%" width="108%" height="116%">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
-    </filter>
   </defs>
 
-  <!-- Background -->
-  <rect width="1080" height="200" rx="12" fill="#f8fafc"/>
-
   <!-- Step 1: Business Context -->
-  <g filter="url(#shadow)">
-    <rect x="40" y="60" width="140" height="80" rx="10" fill="#1e293b"/>
-    <text x="110" y="95" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Business</text>
-    <text x="110" y="114" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Context</text>
-  </g>
-  <text x="110" y="168" text-anchor="middle" font-size="10" fill="#64748b">Frame causal</text>
-  <text x="110" y="181" text-anchor="middle" font-size="10" fill="#64748b">question</text>
+  <rect class="box" x="65" y="70" width="150" height="84" rx="8"/>
+  <text class="title" x="140" y="108" text-anchor="middle">Business</text>
+  <text class="title" x="140" y="128" text-anchor="middle">Context</text>
+  <text class="caption" x="140" y="184" text-anchor="middle">Frame causal</text>
+  <text class="caption" x="140" y="202" text-anchor="middle">question</text>
 
-  <!-- Arrow 1→2 -->
-  <line x1="180" y1="100" x2="230" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
-
-  <!-- Tool badge: SIMULATOR -->
-  <rect x="252" y="39" width="116" height="18" rx="4" fill="#0f766e" opacity="0.15"/>
-  <text x="310" y="52" text-anchor="middle" font-size="9" fill="#0f766e" font-weight="600">SIMULATOR</text>
+  <line class="arrow" x1="219" y1="112" x2="259" y2="112" marker-end="url(#arrow)"/>
 
   <!-- Step 2: Simulate Data -->
-  <g filter="url(#shadow)">
-    <rect x="240" y="60" width="140" height="80" rx="10" fill="#0f766e"/>
-    <text x="310" y="95" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Simulate</text>
-    <text x="310" y="114" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Data</text>
-  </g>
-  <text x="310" y="168" text-anchor="middle" font-size="10" fill="#64748b">Generate data with</text>
-  <text x="310" y="181" text-anchor="middle" font-size="10" fill="#64748b">known ground truth</text>
+  <rect class="badge" x="265" y="38" width="150" height="22" rx="11"/>
+  <text class="badge-text" x="340" y="53" text-anchor="middle">SIMULATOR</text>
+  <rect class="box" x="265" y="70" width="150" height="84" rx="8"/>
+  <text class="title" x="340" y="108" text-anchor="middle">Simulate</text>
+  <text class="title" x="340" y="128" text-anchor="middle">Data</text>
+  <text class="caption" x="340" y="184" text-anchor="middle">Generate data with</text>
+  <text class="caption" x="340" y="202" text-anchor="middle">known ground truth</text>
 
-  <!-- Arrow 2→3 -->
-  <line x1="380" y1="100" x2="430" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
-
-  <!-- Tool badge: IMPACT ENGINE -->
-  <rect x="457" y="39" width="106" height="18" rx="4" fill="#2563eb" opacity="0.15"/>
-  <text x="510" y="52" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="600">IMPACT ENGINE</text>
+  <line class="arrow" x1="419" y1="112" x2="459" y2="112" marker-end="url(#arrow)"/>
 
   <!-- Step 3: Measure Impact -->
-  <g filter="url(#shadow)">
-    <rect x="440" y="60" width="140" height="80" rx="10" fill="#2563eb"/>
-    <text x="510" y="95" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Measure</text>
-    <text x="510" y="114" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Impact</text>
-  </g>
-  <text x="510" y="168" text-anchor="middle" font-size="10" fill="#64748b">Naive comparison</text>
-  <text x="510" y="181" text-anchor="middle" font-size="10" fill="#64748b">&#x2192; Causal method</text>
+  <rect class="badge" x="465" y="38" width="150" height="22" rx="11"/>
+  <text class="badge-text" x="540" y="53" text-anchor="middle">IMPACT ENGINE</text>
+  <rect class="box" x="465" y="70" width="150" height="84" rx="8"/>
+  <text class="title" x="540" y="108" text-anchor="middle">Measure</text>
+  <text class="title" x="540" y="128" text-anchor="middle">Impact</text>
+  <text class="caption" x="540" y="184" text-anchor="middle">Naive comparison</text>
+  <text class="caption" x="540" y="202" text-anchor="middle">&#x2192; Causal method</text>
 
-  <!-- Arrow 3→4 -->
-  <line x1="580" y1="100" x2="630" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line class="arrow" x1="619" y1="112" x2="659" y2="112" marker-end="url(#arrow)"/>
 
   <!-- Step 4: Evaluate Performance -->
-  <g filter="url(#shadow)">
-    <rect x="640" y="60" width="140" height="80" rx="10" fill="#7c3aed"/>
-    <text x="710" y="95" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Evaluate</text>
-    <text x="710" y="114" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Performance</text>
-  </g>
-  <text x="710" y="168" text-anchor="middle" font-size="10" fill="#64748b">Compare methods</text>
-  <text x="710" y="181" text-anchor="middle" font-size="10" fill="#64748b">to ground truth</text>
+  <rect class="box" x="665" y="70" width="150" height="84" rx="8"/>
+  <text class="title" x="740" y="108" text-anchor="middle">Evaluate</text>
+  <text class="title" x="740" y="128" text-anchor="middle">Performance</text>
+  <text class="caption" x="740" y="184" text-anchor="middle">Compare methods</text>
+  <text class="caption" x="740" y="202" text-anchor="middle">to ground truth</text>
 
-  <!-- Arrow 4→5 -->
-  <line x1="780" y1="100" x2="830" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line class="arrow" x1="819" y1="112" x2="859" y2="112" marker-end="url(#arrow)"/>
 
   <!-- Step 5: Tune Parameters -->
-  <g filter="url(#shadow)">
-    <rect x="840" y="60" width="140" height="80" rx="10" fill="#475569"/>
-    <text x="910" y="95" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Tune</text>
-    <text x="910" y="114" text-anchor="middle" font-size="13" font-weight="600" fill="#f8fafc">Parameters</text>
-  </g>
-  <text x="910" y="168" text-anchor="middle" font-size="10" fill="#64748b">Adjust method</text>
-  <text x="910" y="181" text-anchor="middle" font-size="10" fill="#64748b">configuration</text>
-
+  <rect class="box" x="865" y="70" width="150" height="84" rx="8"/>
+  <text class="title" x="940" y="108" text-anchor="middle">Tune</text>
+  <text class="title" x="940" y="128" text-anchor="middle">Parameters</text>
+  <text class="caption" x="940" y="184" text-anchor="middle">Adjust method</text>
+  <text class="caption" x="940" y="202" text-anchor="middle">configuration</text>
 </svg>
