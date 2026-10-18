@@ -4,7 +4,7 @@ Businesses face countless decisions with incomplete information. Which initiativ
 
 Economic thinking provides rigor for decision-making. First, measure impact—use causal inference to establish what is true. Then, evaluate the evidence—assess how reliable each estimate is based on methodology rigor and research design. Then, allocate resources—use decision theory to determine what to do. Done well, measurement, evaluation, and allocation create a learning loop: each action produces new evidence, which updates beliefs and informs the next allocation.
 
-Software engineering enables implementation. The [**Impact Engine**](https://eisenhauerio.github.io/tools-impact-engine-website) — an open-source Python ecosystem built alongside this material — provides the tools to measure impact, evaluate evidence, and allocate resources systematically. It turns economic thinking into a scalable, repeatable pipeline rather than one-off analyses.
+Software engineering enables implementation. The [**Impact Engine**](https://eisenhauerio.github.io/websites-impact-engine) — an open-source Python ecosystem built alongside this material — provides the tools to measure impact, evaluate evidence, and allocate resources systematically. It turns economic thinking into a scalable, repeatable pipeline rather than one-off analyses.
 
 ```{figure} ../_static/improve-decisions-framework.svg
 :alt: Improve Decisions Framework

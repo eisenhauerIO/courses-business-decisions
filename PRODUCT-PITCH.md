@@ -10,7 +10,7 @@ The methodology draws on the causal measurement framework behind Amazon Catalog 
 
 ## The system behind the course
 
-The course is built on the [Impact Engine](https://eisenhauerio.github.io/tools-impact-engine-website) — an open-source Python ecosystem that runs a complete measurement-to-allocation pipeline in a single call. Four components, each independently tested and deployable:
+The course is built on the [Impact Engine](https://eisenhauerio.github.io/websites-impact-engine) — an open-source Python ecosystem that runs a complete measurement-to-allocation pipeline in a single call. Four components, each independently tested and deployable:
 
 - **Measure** — Estimate causal impact using rigorous econometric methods (synthetic control, difference-in-differences, causal forests, and more)
 - **Evaluate** — Score how much to trust each estimate using an LLM-powered quality assurance system that applies structured diagnostics to measurement artifacts
