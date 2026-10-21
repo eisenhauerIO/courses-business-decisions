@@ -21,6 +21,7 @@ dependencies = [
     "sphinxcontrib-bibtex",
     "sphinxcontrib-mermaid",
     "sphinxcontrib-googleanalytics",
+    "setuptools<81",  # googleanalytics ships a pkg_resources namespace __init__ that breaks all sphinxcontrib.* imports otherwise
     "nbconvert",
     "nbmake",
     "pytest",
