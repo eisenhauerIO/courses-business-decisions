@@ -25,7 +25,7 @@ the Online Retail Simulator to answer: **[business question]?**
 
 ### Source Material
 
-The Mixtape chapters are available at `_external/books-mixtape/`. Use these PDF chapters as the primary source for the theory sections. The theory content should closely follow the book's:
+*Causal Inference: The Mixtape* is available at https://mixtape.scunning.com/. Use its chapters as the primary source for the theory sections. The theory content should closely follow the book's:
 - Notation and terminology
 - Order of topic presentation
 - Key examples and intuitions
@@ -45,18 +45,11 @@ The Mixtape chapters are available at `_external/books-mixtape/`. Use these PDF 
    - **Domain**: E-commerce product catalog
    - **Treatment**: Content optimization (better descriptions, images, metadata)
    - **Outcome**: Revenue
-   - **Selection mechanism**: Company prioritizes struggling products, creating negative selection bias
-   - **The paradox**: True effect is POSITIVE, but naive estimate is NEGATIVE because treated products were already underperforming
+   - **Selection mechanism**: product characteristics drive which products are treated
 
-   Include a **notation table** mapping variables to mathematical notation:
-
-   | Variable | Notation | Description |
-   |----------|----------|-------------|
-   | Treatment | $D=1$ | Product receives content optimization |
-   | Control | $D=0$ | Product keeps original content |
-   | Outcome | $Y$ | Product revenue |
-
-   The simulator provides both potential outcomes ("god's eye view"), enabling numerical verification of theoretical results from Part I. Frame this as a pedagogical advantage: in real data, we would not have this luxury.
+   State the selection paradox, include the notation table, and use the omniscient-view framing
+   for the simulator's potential outcomes — see `docs/source/GUIDELINES.md` (Business Context,
+   The Selection Paradox Frame, Omniscient view language).
 2. **Data Generation** — two-stage process:
    - **Baseline data:** config-driven simulation (`simulate()` → `load_job_results()`)
    - **Confounded treatment:** self-contained function in `support.py` that takes `metrics_df`
@@ -98,8 +91,7 @@ The Mixtape chapters are available at `_external/books-mixtape/`. Use these PDF 
      then conditioning on $X$ removes confounding (CIA). State this explicitly.
    - Visualize the assignment mechanism (e.g., treatment rates by covariate quintile)
      so students can see the selection pattern before encountering its consequences.
-   - Define `TRUE_EFFECT` as a named constant (not inlined in function calls) so it is
-     visible and reusable for later comparisons.
+   - Define `TRUE_EFFECT` per `docs/source/GUIDELINES.md` (Ground Truth).
 4. **Naive Comparison** — use the Impact Engine with a naive experimental estimator that ignores the treatment assignment mechanism; show the biased estimate and explain why it's wrong *as a consequence of the assignment mechanism*
 5. **Apply the Method** — use the Impact Engine with the lecture's causal method to recover the true effect; include an interface-to-theory mapping table when using production tools. Explain how the method addresses the specific confounding structure created by the assignment mechanism.
 6. **Validation Against Ground Truth** — leverage the simulator's full potential outcomes to verify the method works. Compute ground truth ATT from potential outcomes before comparing with method estimates.
@@ -116,23 +108,17 @@ Numbering restarts at 1 for Part II. The exact section titles may vary by lectur
 
 ### Source Code Display Convention
 
-Before calling any `support.py` function for the first time, display its source code so students can see the implementation:
-
-```python
-Code(inspect.getsource(function_name), language="python")
-```
-
-This applies to all public functions from `support.py` — not just the confounded treatment function. Show the source, then call the function in the next cell.
+Before calling any public `support.py` function for the first time, show its source, then call it in the next cell. Mechanics: `docs/source/GUIDELINES.md` (Source Code Visibility).
 
 ### Impact Engine Pipeline (Lectures 3+)
 
-Lectures that use the [**Impact Engine**](https://github.com/eisenhauerIO/impact-engine) follow a standard pipeline:
+Lectures that use the [**Impact Engine**](https://github.com/eisenhauerIO/tools-impact-engine-measure) follow a standard pipeline:
 
 1. **Save data**: `data.to_csv("filename.csv", index=False)` so the YAML config can reference the file
 2. **Display config**: `! cat "config_method.yaml"`
 3. **Run pipeline**:
    ```python
-   job = evaluate_impact("config_method.yaml", storage_url="./output/method_name")
+   job = measure_impact("config_method.yaml", storage_url="./output/method_name")
    result = load_results(job)
    ```
 4. **Extract and print results** from `result.impact_results["data"]`
@@ -180,34 +166,22 @@ Measure Impact Theory sections require detailed, textbook-quality exposition:
 
 ### No Summary Sections
 
-Lectures should focus purely on content. **Do NOT include:**
-- "Conclusion" sections
-- "Key Takeaways" sections
-- "What's Next" sections
-- "Summary" sections
-
-Let the content speak for itself. Students absorb concepts through the theory and application—wrap-up sections add length without value.
+No wrap-up sections — see `docs/source/GUIDELINES.md` (No Formulaic Summary Sections).
 
 ### Additional Resources Section
 
-Every lecture ends with an `## Additional resources` section (lowercase "r"). This is the final section of the notebook — nothing follows it. See `/review-writing` for the citation format standard.
+Every lecture ends with `## Additional resources` — format in `docs/source/GUIDELINES.md` (Additional Resources Section).
 
 ### Chapter-to-Lecture Mapping (Measure Impact)
 
 The measure-impact lectures each map to a specific Mixtape chapter as their primary source. Other lecture groups draw from numerous sources rather than a single textbook.
 
-| Lecture | Mixtape Chapter | Pages | Domain Example |
-|---------|-----------------|-------|----------------|
-| Potential Outcome Model | Ch 4: Potential Outcomes Causal Model | 119-174 | Product content optimization |
-| Causal Graphical Models | Ch 3: Directed Acyclic Graphs | 67-117 | TBD |
-| Matching & Propensity | Ch 5: Matching and Subclassification | 175-230 | TBD |
-| Regression Discontinuity | Ch 6: Regression Discontinuity | 231-288 | TBD |
-| Instrumental Variables | Ch 7: Instrumental Variables | 289-352 | TBD |
-| Panel Data | Ch 8: Panel Data | 353-398 | TBD |
-| Difference-in-Differences | Ch 9: Difference-in-Differences | 399-468 | TBD |
-| Synthetic Control | Ch 10: Synthetic Control | 469-516 | TBD |
-
-**Note:** Generalized Roy Model draws from external sources (Heckman & Vytlacil).
+| Lecture directory | Mixtape Chapter | Pages |
+|-------------------|-----------------|-------|
+| `01-potential-outcomes-model/` | Ch 4: Potential Outcomes Causal Model | 119-174 |
+| `02-directed-acyclic-graphs/` | Ch 3: Directed Acyclic Graphs | 67-117 |
+| `03-matching-subclassification/` | Ch 5: Matching and Subclassification | 175-230 |
+| `08-synthetic-control/` | Ch 10: Synthetic Control | 469-516 |
 
 ---
 
@@ -224,8 +198,8 @@ Different pattern—introduce tools/systems, not theory-first.
 ---
 
 ## Cross-References
-- **Code:** Use `/review-code` for Python standards
-- **Writing:** Use `/review-writing` for prose and formatting
+- **Code:** `bdc-review-code` for Python standards
+- **Writing:** `bdc-review-writing` for prose; course conventions in `docs/source/GUIDELINES.md`
 
 ---
 
@@ -323,11 +297,11 @@ When reviewing a measure-impact lecture, verify:
 **Impact Engine (Lectures 3+)**
 - [ ] Data saved to CSV before Impact Engine config references it
 - [ ] Interface-to-theory mapping table present before each config display
-- [ ] Impact Engine pipeline follows: display config → `evaluate_impact()` → `load_results()` → extract results
+- [ ] Impact Engine pipeline follows: display config → `measure_impact()` → `load_results()` → extract results
 - [ ] Ground truth ATT computed before method comparisons
 
 **Narrative**
 - [ ] Notation table in Business Context (Variable | Notation | Description)
-- [ ] Selection paradox explicit: positive true effect, negative/biased naive estimate
-- [ ] "God's eye view" framing used when introducing simulator potential outcomes
+- [ ] Selection paradox explicit: positive true effect, severely biased naive estimate
+- [ ] "Omniscient view" framing used when introducing simulator potential outcomes
 - [ ] Part II introduction references specific Part I concepts by name

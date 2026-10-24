@@ -6,8 +6,6 @@ description: Use when performing a comprehensive validation of course materials.
 
 Comprehensive validation of course materials. **If any step fails, stop and report findings before proceeding.**
 
-**Exclude:** `_external/` directory.
-
 ---
 
 ## Steps
@@ -89,7 +87,7 @@ For each lecture notebook, find local imports and verify the files exist:
 
 ```bash
 # Find local imports in notebooks
-grep -E "from support|from \." docs/source/**/lecture.ipynb
+grep -rE --include=lecture.ipynb "from support|from \." docs/source
 ```
 
 For each import like `from support import ...`, verify `support.py` exists in the same directory as the notebook.
@@ -98,7 +96,7 @@ For each import like `from support import ...`, verify `support.py` exists in th
 
 ```bash
 # Find config file references
-grep -E 'cat.*\.yaml|\.yaml' docs/source/**/lecture.ipynb
+grep -rE --include=lecture.ipynb 'cat.*\.yaml|\.yaml' docs/source
 ```
 
 For each config file reference like `config_simulation.yaml`, verify the file exists in the lecture directory.
@@ -148,13 +146,7 @@ For each notation element, verify:
 
 ---
 
-### 6. Run Technical Debt Scan
-
-Run the `/techdebt` skill to catch dead code, stray files, convention violations, and other accumulated debt.
-
----
-
-### 7. Check Git Status
+### 6. Check Git Status
 
 ```bash
 git status
@@ -171,7 +163,6 @@ Flag any untracked files in `docs/source/` that should be committed.
 - [ ] All image files exist at referenced paths
 - [ ] All internal notebook references resolve
 - [ ] Notation is consistent across all lectures
-- [ ] Technical debt scan passes (no dead code, stray files, or convention violations)
 - [ ] No untracked files that should be committed
 
 ---

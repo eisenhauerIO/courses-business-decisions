@@ -1,3 +1,5 @@
-# Courses family skills
+# Course skills
 
-Transplanted 2026-09-06 from billion-dollar-contributor's ecosystems/ overlay (evicted). bdc-review-code and bdc-review-writing here are project-local forks (base + the old courses override) that SHADOW the user-level skills inside this repo — family-owned; they no longer track the engine's base copies.
+Project skills for this repo: `bdc-author-lecture` and `bdc-review-course`. Code and prose
+reviews use the shared `bdc-review-code` and `bdc-review-writing` skills from the user's account;
+course-specific conventions live in `docs/source/GUIDELINES.md`.

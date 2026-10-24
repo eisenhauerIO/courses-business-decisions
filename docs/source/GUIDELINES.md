@@ -180,6 +180,7 @@ This section bridges the business context and the methodology.
 ## Omniscient view language
 
 - The simulator provides both potential outcomes for every unit
+- This enables numerical verification of theoretical decompositions
 - Use language like "the simulator gives us an omniscient view" or "we observe both potential outcomes"
 - Frame this as a pedagogical advantage: "In real data, we would not have this luxury"
 
@@ -202,3 +203,29 @@ Use `inspect.getsource()` and `Code()` from `IPython.display` to show key suppor
 - Key concepts from the chapter are covered
 - Notation follows the source material
 - No contradictions with established methodology
+
+## Simulation Pipeline
+
+Part II follows a standard sequence: `!cat` the config → `simulate()` → `load_job_results()` → print a verification of what was loaded.
+
+## Ground Truth
+
+- Define the true effect as a named constant, `TRUE_EFFECT`, not inlined in function calls
+- Compute and store the ground-truth ATT before any method comparison
+
+## Impact Engine Calls
+
+Lectures that use the Impact Engine import:
+
+```python
+from impact_engine_measure import measure_impact, load_results
+```
+
+Dynamic config generation adds `import yaml`. Each call follows: save the CSV → display the config → `measure_impact()` → `load_results()` → extract results.
+
+## Support Module (`support.py`)
+
+- Module-level docstring describing the file's purpose; imports grouped standard library / third-party / local
+- `plot_` prefix for plotting functions, `print_` prefix for formatted-output functions, `_` prefix for private helpers
+- Ground truth: `compute_ground_truth_att()` extracts the true ATT from potential outcomes
+- Functions that draw random numbers accept a `seed` parameter (default `42`)

@@ -46,7 +46,7 @@ hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace pat
   - `impact-engine-allocate/` — resource allocation source
 - `.github/workflows/ci.yml` — ruff linting on push/PR
 - `.github/workflows/docs.yml` — Sphinx build + GitHub Pages deploy on push to main
-- `.claude/skills/` — course-specific skills (bdc-author-lecture, bdc-review-course, and course forks of bdc-review-code and bdc-review-writing); shared skills live in the workspace `.claude/skills/`
+- `.claude/skills/` — course-specific skills (bdc-author-lecture, bdc-review-course); the shared bdc-review-code and bdc-review-writing skills apply, with course conventions in `docs/source/GUIDELINES.md`
 
 ### Lecture directory convention
 
@@ -76,15 +76,16 @@ All installed via pip from GitHub (see pyproject.toml). Never use `sys.path.inse
 Push directly to main; no feature branches or PRs.
 
 1. Lint locally: `hatch run ruff check . && hatch run ruff format --check .`
-2. For lecture changes, execute the notebook: `hatch run notebook path/to/lecture.ipynb`
-3. Commit and push to main: `git push`
-4. Watch CI (ci.yml: linting, docs.yml: Sphinx build + deploy) and fix forward on failure: `gh run watch`
+2. Run the config tests: `hatch run pytest tests/` (pytest's default testpaths cover only `docs/source`)
+3. For lecture changes, execute the notebook: `hatch run notebook path/to/lecture.ipynb`
+4. Commit and push to main: `git push`
+5. Watch CI (ci.yml: linting, docs.yml: Sphinx build + deploy) and fix forward on failure: `gh run watch`
 
 ## Key conventions
 
 - Follow writing conventions in `docs/source/GUIDELINES.md` when editing lecture content
 - Notebooks execute during Sphinx build (`nbsphinx_execute = "always"`) — all cells must run cleanly
-- Part II imports: `from online_retail_simulator import simulate, load_job_results`
+- Part II imports: `from online_retail_simulator import simulate, load_job_results`, plus `enrich` when the lecture applies a treatment
 - Tool repos under `../../tools/` are separate projects — change them in their own repos, never from here
 - Ruff enforces D (docstrings), E, F (pyflakes), I (isort) rules; line length 120
 - NumPy-style docstrings for all Python functions
