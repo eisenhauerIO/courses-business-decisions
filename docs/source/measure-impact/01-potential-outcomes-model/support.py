@@ -103,6 +103,59 @@ def print_balance_summary(df, covariates, treatment_col="D"):
 
 
 # =============================================================================
+# Estimation Functions
+# =============================================================================
+
+
+def random_assignment(n, n_treat, rng):
+    """
+    Assign treatment to a random subset of units.
+
+    Parameters
+    ----------
+    n : int
+        Number of units.
+    n_treat : int
+        Number of units to treat.
+    rng : numpy.random.Generator
+        Random number generator.
+
+    Returns
+    -------
+    numpy.ndarray
+        Boolean treatment indicator of length ``n``.
+    """
+    d = np.zeros(n, dtype=bool)
+    d[rng.choice(n, n_treat, replace=False)] = True
+    return d
+
+
+def difference_in_means(y1, y0, d):
+    """
+    Compute the naive estimate from the outcomes an assignment reveals.
+
+    Each unit reveals ``y1`` if treated and ``y0`` otherwise; the estimate is
+    the mean observed outcome of the treated minus that of the control group.
+
+    Parameters
+    ----------
+    y1 : numpy.ndarray
+        Potential outcomes under treatment.
+    y0 : numpy.ndarray
+        Potential outcomes under control.
+    d : numpy.ndarray
+        Boolean treatment indicator.
+
+    Returns
+    -------
+    float
+        Difference-in-means estimate.
+    """
+    y = np.where(d, y1, y0)
+    return y[d].mean() - y[~d].mean()
+
+
+# =============================================================================
 # Data Generation Functions
 # =============================================================================
 
@@ -124,8 +177,8 @@ def create_confounded_treatment(metrics_df, treatment_fraction=0.3, true_effect=
         Fraction of products to treat (selected from the bottom by quality).
     true_effect : float, optional
         True causal effect of treatment (proportional increase in revenue).
-    seed : int, optional
-        Random seed for reproducibility.
+    seed : int or numpy.random.Generator, optional
+        Random seed or generator for reproducibility.
 
     Returns
     -------
@@ -162,8 +215,8 @@ def generate_quality_score(revenue, seed=42, noise_std=0.5):
     ----------
     revenue : pandas.Series or numpy.ndarray
         Baseline revenue values.
-    seed : int, optional
-        Random seed for reproducibility. Default is 42.
+    seed : int or numpy.random.Generator, optional
+        Random seed or generator for reproducibility. Default is 42.
     noise_std : float, optional
         Standard deviation of noise. Default is 0.5.
 
@@ -216,40 +269,36 @@ def plot_individual_effects_distribution(effects, true_effect=None, title=None):
     plt.show()
 
 
-def plot_randomization_comparison(random_estimates, biased_estimates, true_ate):
+def plot_randomization_comparison(random_estimates, biased_estimate, true_ate):
     """
-    Create side-by-side histograms comparing random vs biased selection.
+    Plot the sampling distribution under random selection against the biased estimate.
 
     Parameters
     ----------
     random_estimates : array-like
         Estimates from random selection simulations.
-    biased_estimates : array-like
-        Estimates from biased selection simulations.
+    biased_estimate : float
+        Estimate from selection on quality, which is the same in every simulation.
     true_ate : float
         True Average Treatment Effect.
     """
-    _, axes = plt.subplots(1, 2, figsize=(14, 5))
+    _, ax = plt.subplots(figsize=(10, 6))
 
-    # Random selection (unbiased)
-    axes[0].hist(random_estimates, bins=30, alpha=0.7, color="#2ecc71", edgecolor="black")
-    axes[0].axvline(true_ate, color="red", linestyle="--", linewidth=2, label=f"True ATE = ${true_ate:,.0f}")
+    ax.hist(random_estimates, bins=30, alpha=0.7, color="#2ecc71", edgecolor="black", label="Random selection")
     random_mean = np.mean(random_estimates)
-    axes[0].axvline(random_mean, color="blue", linestyle="-", linewidth=2, label=f"Mean = ${random_mean:,.0f}")
-    axes[0].set_title("Random Selection (Unbiased)")
-    axes[0].set_xlabel("Estimated Treatment Effect ($)")
-    axes[0].set_ylabel("Frequency")
-    axes[0].legend()
-
-    # Biased selection
-    axes[1].hist(biased_estimates, bins=30, alpha=0.7, color="#e74c3c", edgecolor="black")
-    axes[1].axvline(true_ate, color="red", linestyle="--", linewidth=2, label=f"True ATE = ${true_ate:,.0f}")
-    biased_mean = np.mean(biased_estimates)
-    axes[1].axvline(biased_mean, color="blue", linestyle="-", linewidth=2, label=f"Mean = ${biased_mean:,.0f}")
-    axes[1].set_title("Selection on Quality (Biased)")
-    axes[1].set_xlabel("Estimated Treatment Effect ($)")
-    axes[1].set_ylabel("Frequency")
-    axes[1].legend()
+    ax.axvline(random_mean, color="blue", linestyle="-", linewidth=2, label=f"Random mean = ${random_mean:,.0f}")
+    ax.axvline(true_ate, color="red", linestyle="--", linewidth=2, label=f"True ATE = ${true_ate:,.0f}")
+    ax.axvline(
+        biased_estimate,
+        color="#e74c3c",
+        linestyle="-",
+        linewidth=3,
+        label=f"Selection on quality = ${biased_estimate:,.0f}",
+    )
+    ax.set_title("Random Selection (Unbiased) vs. Selection on Quality (Biased)")
+    ax.set_xlabel("Estimated Treatment Effect ($)")
+    ax.set_ylabel("Frequency")
+    ax.legend()
 
     plt.tight_layout()
     plt.show()
