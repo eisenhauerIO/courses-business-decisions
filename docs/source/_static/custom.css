@@ -53,3 +53,25 @@ figure.align-center {
     background-color: #f2dede;
     border-color: #ebccd1;
 }
+
+/* Let long table cells wrap. The theme sets nowrap, which pushes long text off the page. */
+.wy-table-responsive table td {
+    white-space: normal;
+}
+
+/* Collapsible answers on practice pages */
+details {
+    margin-bottom: 24px;
+}
+
+details > summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: #2980b9;
+    margin-bottom: 12px;
+}
+
+/* nbsphinx wraps the summary text in a paragraph; keep it on the marker's line */
+details > summary > p {
+    display: inline;
+}

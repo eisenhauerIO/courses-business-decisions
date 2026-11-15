@@ -9,7 +9,7 @@ Course materials for "Impact-Driven Business Decisions" — a university course 
 All commands use the hatch environment. Never use bare `python` or `pip`.
 
 ```bash
-pip install hatch "virtualenv<21"
+uv tool install hatch --with "virtualenv<21"
 ```
 
 Before editing a `.ipynb` file, strip its outputs first:
@@ -40,6 +40,7 @@ hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace pat
   - `decision-loop/`, `build-systems/`, `guests/`, `projects/`, `software/` — supporting sections
   - `references.bib` — bibliography
 - `docs/source/_static/` — images and SVGs referenced by lectures and index pages
+- `prep/` — instructor prep per lecture (LaTeX handouts and their compiled PDFs); not published or linked, but public on GitHub
 - `../../tools/` — workspace clones of the tool repos (separate projects, do not modify from here)
   - `impact-engine-measure/` — causal estimation source
   - `impact-engine-evaluate/` — evidence review source

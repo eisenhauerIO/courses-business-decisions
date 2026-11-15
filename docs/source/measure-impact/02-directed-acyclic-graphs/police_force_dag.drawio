@@ -15,8 +15,8 @@
           <mxGeometry x="350" y="30" width="100" height="60" as="geometry"/>
         </mxCell>
 
-        <!-- Stop (M) Node - Collider -->
-        <mxCell id="node-M" value="Stop&#xa;(M)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFD700;strokeColor=#333333;strokeWidth=2;fontStyle=1" vertex="1" parent="1">
+        <!-- Stop (S) Node - Collider -->
+        <mxCell id="node-M" value="Stop&#xa;(S)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFD700;strokeColor=#333333;strokeWidth=2;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="50" y="170" width="100" height="60" as="geometry"/>
         </mxCell>
 
@@ -30,12 +30,12 @@
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 
-        <!-- Edge: D → M -->
+        <!-- Edge: D → S -->
         <mxCell id="edge-DM" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#333333;endArrow=classic;endFill=1" edge="1" parent="1" source="node-D" target="node-M">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 
-        <!-- Edge: U → M -->
+        <!-- Edge: U → S -->
         <mxCell id="edge-UM" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#333333;endArrow=classic;endFill=1" edge="1" parent="1" source="node-U" target="node-M">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
@@ -46,7 +46,7 @@
         </mxCell>
 
         <!-- Legend -->
-        <mxCell id="legend" value="M is the collider: D → M ← U. Conditioning on M opens the path D ← M → U → Y" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666" vertex="1" parent="1">
+        <mxCell id="legend" value="S is a collider on D → S ← U → Y. Conditioning on S opens that path." style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666" vertex="1" parent="1">
           <mxGeometry x="100" y="260" width="300" height="20" as="geometry"/>
         </mxCell>
       </root>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 290" width="540" height="290">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="540" height="290" fill="white"/>
+
+  <!-- Edges -->
+  <!-- X → D -->
+  <line x1="242" y1="66" x2="118" y2="134" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- X → Y -->
+  <line x1="298" y1="66" x2="422" y2="134" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- D → Y -->
+  <line x1="122" y1="150" x2="418" y2="150" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- D → C -->
+  <line x1="118" y1="166" x2="242" y2="234" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- Y → C -->
+  <line x1="422" y1="166" x2="298" y2="234" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Nodes -->
+  <circle cx="270" cy="50" r="32" fill="#F4A460" stroke="#333" stroke-width="2"/>
+  <text x="270" y="57" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold">X</text>
+  <circle cx="90" cy="150" r="32" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="90" y="157" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold">D</text>
+  <circle cx="450" cy="150" r="32" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="450" y="157" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold">Y</text>
+  <circle cx="270" cy="250" r="32" fill="#F4A460" stroke="#333" stroke-width="2"/>
+  <text x="270" y="257" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold">C</text>
+</svg>

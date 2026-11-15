@@ -31,4 +31,5 @@ repos:
         language: system
         files: ^docs/source/.*\.ipynb$
         pass_filenames: true
+        require_serial: true  # one pytest process, so heavy notebooks do not compete for CPU
         types: [jupyter]

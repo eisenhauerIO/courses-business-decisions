@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 290" width="540" height="290">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="540" height="290" fill="white"/>
+
+  <!-- Edges -->
+  <!-- U → X -->
+  <line x1="240" y1="62" x2="120" y2="108" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- X → D -->
+  <line x1="90" y1="152" x2="90" y2="208" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- U → Y -->
+  <line x1="292" y1="73" x2="428" y2="217" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <!-- D → Y -->
+  <line x1="122" y1="240" x2="418" y2="240" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Nodes -->
+  <circle cx="270" cy="50" r="32" fill="#D3D3D3" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="270" y="57" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold">U</text>
+  <circle cx="90" cy="120" r="32" fill="#F4A460" stroke="#333" stroke-width="2"/>
+  <text x="90" y="127" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold">X</text>
+  <circle cx="90" cy="240" r="32" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="90" y="247" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold">D</text>
+  <circle cx="450" cy="240" r="32" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="450" y="247" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold">Y</text>
+</svg>

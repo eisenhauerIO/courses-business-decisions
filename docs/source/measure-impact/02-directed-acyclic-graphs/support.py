@@ -11,11 +11,11 @@ def simulate_police_force_data(n_population=5000, discrimination_effect=0.3, see
     Simulate police stop data with collider bias structure.
 
     The DAG structure:
-        Minority (D) → Stop (M) ← Suspicion (U)
+        Minority (D) → Stop (S) ← Suspicion (U)
         Minority (D) → Force (Y)
         Suspicion (U) → Force (Y)
 
-    Where Stop (M) is the collider that creates sample selection bias.
+    Where Stop (S) is the collider that creates sample selection bias.
 
     Parameters
     ----------
@@ -44,8 +44,8 @@ def simulate_police_force_data(n_population=5000, discrimination_effect=0.3, see
     suspicion = rng.normal(50, 15, n_population)
 
     # Stop probability depends on minority status AND suspicion
-    # Minorities are more likely to be stopped (D → M)
-    # Higher suspicion leads to more stops (U → M)
+    # Minorities are more likely to be stopped (D → S)
+    # Higher suspicion leads to more stops (U → S)
     stop_score = (
         0.3 * suspicion  # Suspicion affects stops
         + 15 * minority  # Minorities more likely stopped
@@ -118,7 +118,7 @@ def draw_police_force_example(df, figsize=(12, 5)):
     axes[0].text(0.05, 0.95, f"Correlation: {corr_full:.2f}", transform=axes[0].transAxes, va="top", fontsize=11)
     axes[0].legend(loc="lower right")
 
-    # Right: Stopped only (collider bias - conditioning on M)
+    # Right: Stopped only (collider bias - conditioning on S)
     minority_stopped = minority[is_stopped]
     force_stopped = force_score[is_stopped]
 

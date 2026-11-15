@@ -36,7 +36,7 @@ source_suffix = {
     ".md": "markdown",
 }
 templates_path = ["_templates"]
-exclude_patterns = ["build"]
+exclude_patterns = ["build", "GUIDELINES.md"]
 html_theme = "sphinx_rtd_theme"
 html_theme_options = {
     "navigation_depth": 2,
@@ -62,6 +62,16 @@ html_extra_path = []
 # nbsphinx settings: execute notebooks during build
 nbsphinx_execute = "always"
 nbsphinx_allow_errors = False
+
+# MathJax: nbsphinx's defaults, plus no line breaks inside inline math (MathJax 4 breaks e.g. D ← A ← B mid-path)
+mathjax3_config = {
+    "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": True},
+    "options": {
+        "ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document",
+        "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area",
+    },
+    "output": {"linebreaks": {"inline": False}},
+}
 
 # Add notebook info bar (applies to all notebooks)
 _gh_repo = "https://github.com/eisenhauerIO/courses-business-decisions"

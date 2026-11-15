@@ -22,5 +22,5 @@
   <line x1="145" y1="75" x2="245" y2="75" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
 
   <!-- Title -->
-  <text x="200" y="140" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">Simple Causal Relationship: D → Y</text>
+  <text x="200" y="140" text-anchor="middle" font-family="Arial" font-size="11" fill="#666">Simple Causal Relationship: D → Y</text>
 </svg>

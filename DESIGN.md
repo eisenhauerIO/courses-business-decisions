@@ -148,7 +148,7 @@ including the four GitHub-hosted packages.
 |---------|-------|
 | `line-length` | 120 |
 | `select` | D (docstrings), E, F (pyflakes), I (isort) |
-| `extend-exclude` | `_external` |
+| `extend-exclude` | `.claude` |
 | `*.ipynb` overrides | D, E402, F, I disabled |
 
 ## Future directions

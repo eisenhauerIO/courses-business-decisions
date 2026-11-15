@@ -14,3 +14,6 @@ docs/build/
 
 # Dynamic configs (generated at runtime)
 docs/source/measure-impact/08-synthetic-control/config_synthetic_control.yaml
+
+# matplotlib font cache (regenerated via MPLCONFIGDIR)
+docs/configurations/fontlist-*.json

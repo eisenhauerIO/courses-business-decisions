@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="M-Bias DAG" id="mbias-dag">
+    <mxGraphModel dx="1000" dy="600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="520" pageHeight="345">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="node-A" value="Engagement&#xa;(A)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#F4A460;strokeColor=#333333;strokeWidth=2;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="60" y="20" width="100" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="node-B" value="Fulfillment&#xa;(B)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#F4A460;strokeColor=#333333;strokeWidth=2;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="360" y="20" width="100" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="node-C" value="Tickets&#xa;(C)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFD700;strokeColor=#333333;strokeWidth=2;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="210" y="115" width="100" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="node-D" value="Optimization&#xa;(D)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#87CEEB;strokeColor=#333333;strokeWidth=2;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="60" y="210" width="100" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="node-Y" value="Sales&#xa;(Y)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#87CEEB;strokeColor=#333333;strokeWidth=2;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="360" y="210" width="100" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge-AD" style="strokeWidth=2;strokeColor=#333333;endArrow=classic;endFill=1" edge="1" parent="1" source="node-A" target="node-D">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge-AC" style="strokeWidth=2;strokeColor=#333333;endArrow=classic;endFill=1" edge="1" parent="1" source="node-A" target="node-C">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge-BC" style="strokeWidth=2;strokeColor=#333333;endArrow=classic;endFill=1" edge="1" parent="1" source="node-B" target="node-C">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge-BY" style="strokeWidth=2;strokeColor=#333333;endArrow=classic;endFill=1" edge="1" parent="1" source="node-B" target="node-Y">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge-DY" style="strokeWidth=2;strokeColor=#333333;endArrow=classic;endFill=1" edge="1" parent="1" source="node-D" target="node-Y">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend" value="Conditioning on C (boxed) opens the backdoor path D ← A → C ← B → Y." style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666" vertex="1" parent="1">
+          <mxGeometry x="60" y="320" width="400" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="box-C" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#333333;strokeWidth=2" vertex="1" parent="1">
+          <mxGeometry x="202" y="107" width="116" height="116" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

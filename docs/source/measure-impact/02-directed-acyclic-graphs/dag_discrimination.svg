@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 250" width="450" height="250">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 330" width="520" height="330">
   <defs>
     <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
       <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
@@ -6,32 +6,44 @@
   </defs>
 
   <!-- Background -->
-  <rect width="450" height="250" fill="white"/>
+  <rect width="520" height="330" fill="white"/>
 
   <!-- Gender Node - left -->
-  <circle cx="80" cy="120" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
-  <text x="80" y="125" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Gender</text>
+  <circle cx="115" cy="120" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="115" y="118" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Gender</text>
+  <text x="115" y="138" text-anchor="middle" font-family="Arial" font-size="12">(D)</text>
 
   <!-- Occupation Node - center -->
-  <circle cx="225" cy="120" r="45" fill="#98FB98" stroke="#333" stroke-width="2"/>
-  <text x="225" y="125" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Occupation</text>
+  <circle cx="260" cy="120" r="45" fill="#98FB98" stroke="#333" stroke-width="2"/>
+  <text x="260" y="118" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Occupation</text>
+  <text x="260" y="138" text-anchor="middle" font-family="Arial" font-size="12">(M)</text>
 
   <!-- Wages Node - right -->
-  <circle cx="370" cy="120" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
-  <text x="370" y="125" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Wages</text>
+  <circle cx="405" cy="120" r="45" fill="#87CEEB" stroke="#333" stroke-width="2"/>
+  <text x="405" y="118" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Wages</text>
+  <text x="405" y="138" text-anchor="middle" font-family="Arial" font-size="12">(Y)</text>
+
+  <!-- Ability Node - bottom, unobserved -->
+  <circle cx="332" cy="225" r="45" fill="#D3D3D3" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="332" y="223" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Ability</text>
+  <text x="332" y="243" text-anchor="middle" font-family="Arial" font-size="12">(A)</text>
 
   <!-- Edge: Gender → Occupation -->
-  <line x1="125" y1="120" x2="170" y2="120" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="160" y1="120" x2="205" y2="120" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
 
   <!-- Edge: Occupation → Wages -->
-  <line x1="270" y1="120" x2="315" y2="120" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="305" y1="120" x2="350" y2="120" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
 
   <!-- Edge: Gender → Wages (curved) -->
-  <path d="M 115 85 Q 225 20 335 85" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 150 85 Q 260 20 370 85" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
 
-  <!-- Title -->
-  <text x="225" y="220" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">Gender Discrimination: Direct vs. Total Effect</text>
+  <!-- Edge: Ability → Occupation -->
+  <line x1="307" y1="188" x2="286" y2="157" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Edge: Ability → Wages -->
+  <line x1="358" y1="188" x2="379" y2="157" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
 
   <!-- Legend -->
-  <text x="225" y="240" text-anchor="middle" font-family="Arial" font-size="10" fill="#666">Direct effect: Gender → Wages | Indirect effect: Gender → Occupation → Wages</text>
+  <text x="260" y="300" text-anchor="middle" font-family="Arial" font-size="11" fill="#666">M is a mediator on D → M → Y</text>
+  <text x="260" y="317" text-anchor="middle" font-family="Arial" font-size="11" fill="#666">and a collider on D → M ← A → Y</text>
 </svg>

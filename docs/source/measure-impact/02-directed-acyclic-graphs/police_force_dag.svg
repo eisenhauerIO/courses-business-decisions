@@ -19,10 +19,10 @@
   <text x="400" y="75" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Force</text>
   <text x="400" y="95" text-anchor="middle" font-family="Arial" font-size="12">(Y)</text>
 
-  <!-- Stop (M) - bottom left -->
+  <!-- Stop (S) - bottom left -->
   <circle cx="100" cy="220" r="45" fill="#FFD700" stroke="#333" stroke-width="2"/>
   <text x="100" y="215" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">Stop</text>
-  <text x="100" y="235" text-anchor="middle" font-family="Arial" font-size="12">(M)</text>
+  <text x="100" y="235" text-anchor="middle" font-family="Arial" font-size="12">(S)</text>
 
   <!-- Suspicion (U) - bottom right -->
   <circle cx="300" cy="220" r="45" fill="#D3D3D3" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
@@ -33,10 +33,10 @@
   <!-- D → Y (Minority to Force) -->
   <line x1="145" y1="80" x2="345" y2="80" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
 
-  <!-- D → M (Minority to Stop) -->
+  <!-- D → S (Minority to Stop) -->
   <line x1="100" y1="125" x2="100" y2="165" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
 
-  <!-- U → M (Suspicion to Stop) -->
+  <!-- U → S (Suspicion to Stop) -->
   <line x1="255" y1="220" x2="155" y2="220" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
 
   <!-- U → Y (Suspicion to Force) -->
@@ -44,6 +44,6 @@
 
   <!-- Legend -->
   <text x="250" y="285" text-anchor="middle" font-family="Arial" font-size="11" fill="#666">
-    M is the collider: D → M ← U. Conditioning on M opens the path D ← M → U → Y
+    S is a collider on D → S ← U → Y. Conditioning on S opens that path.
   </text>
 </svg>
