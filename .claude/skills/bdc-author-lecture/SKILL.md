@@ -199,7 +199,7 @@ Different pattern—introduce tools/systems, not theory-first.
 
 ## Cross-References
 - **Code:** `bdc-review-code` for Python standards
-- **Writing:** `bdc-review-writing` for prose; course conventions in `docs/source/GUIDELINES.md`
+- **Writing:** `bdc-review-writing` for formatting; course conventions in `docs/source/GUIDELINES.md`; teaching quality in `bdc-review-course`, step 7
 
 ---
 

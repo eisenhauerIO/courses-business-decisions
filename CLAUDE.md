@@ -47,7 +47,7 @@ hatch run jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace pat
   - `impact-engine-allocate/` — resource allocation source
 - `.github/workflows/ci.yml` — ruff linting on push/PR
 - `.github/workflows/docs.yml` — Sphinx build + GitHub Pages deploy on push to main
-- `.claude/skills/` — course-specific skills (bdc-author-lecture, bdc-review-course); the shared bdc-review-code and bdc-review-writing skills apply, with course conventions in `docs/source/GUIDELINES.md`
+- `.claude/skills/` — course-specific skills: `bdc-author-lecture` (lecture structure) and `bdc-review-course` (build, links, notation, and the teaching-quality review); the shared `bdc-review-code` and `bdc-review-writing` (formatting) skills apply, with course-only conventions in `docs/source/GUIDELINES.md`
 
 ### Lecture directory convention
 

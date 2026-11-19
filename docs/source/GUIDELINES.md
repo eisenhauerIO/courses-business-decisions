@@ -1,46 +1,18 @@
 # Writing Guidelines
 
-This document defines the formatting, style, and structural conventions for all course documentation. Both human authors and automated reviewers should use this as the single source of truth.
-
----
-
-## Inline Formatting
-
-### Code Elements
-
-| Element | Format | Example |
-|---------|--------|---------|
-| Column name | `` `name` `` | `product_identifier` |
-| Function | `` `function()` `` | `simulate()` |
-| Variable | `` `variable` `` | `job_info` |
-| Parameter | `` `parameter` `` | `effect_size` |
-| Config file | `` `"file.yaml"` `` | `"config_simulation.yaml"` |
-| Object type | `` `Type` `` | `DataFrame` |
-| Directory | `` `dir/` `` | `output/` |
-| Python module | `` `module` `` | `online_retail_simulator` |
-
-### Emphasis
-
-- **Bold** for concepts on first introduction. Plain text on subsequent mentions.
-- *Italics* sparingly, for meta-comments or subtle emphasis.
-- Important questions in **bold**.
-
-### Numbers and Values
-
-- Inline numbers in plain text: "Simulate 100 products"
-- Parameter values in code formatting: "Set `effect_size: 0.5`"
-- String values in backtick-quotes: `"2024-11-01"`
-
-### Links
-
-- Link package/tool names on first mention: `[**Online Retail Simulator**](url)`
-- Subsequent mentions: plain bold or plain text. Do not re-link.
+This document holds the conventions specific to this course. General formatting
+(code elements in backticks, emphasis, numbers, links, header hierarchy and
+sentence case, section headers as questions, no summary sections, active voice
+and present tense) follows the Billion-Dollar Contributor `bdc-review-writing`
+skill, and voice follows `bdc-writing-support`. Where this file and those
+skills disagree, this file wins for course material.
 
 ---
 
 ## Terminology
 
 - Use "shoppers" (not "customers") when referring to end-users in e-commerce context.
+- Link a package or tool on its first mention, e.g. `[**Online Retail Simulator**](url)`; plain text afterwards.
 
 ---
 
@@ -73,51 +45,16 @@ Bad:  The effect_size parameter controls...
 
 ---
 
-## Headers and Structure
+## Headers
 
-### Hierarchy
-
-```markdown
-# Main Title (once per document)
-## Major Section
-### Subsection
-#### Rare: only for deeply nested content
-```
-
-### Capitalization
-
-Use **sentence case** for all headers — capitalize the first word and proper nouns only:
-
-```markdown
-Good: ## Deterministic scoring
-Good: ### How is revenue distributed across categories?
-Good: ## The evaluation harness
-Bad:  ## Deterministic Scoring (title case)
-Bad:  ## The Evaluation Harness (title case)
-```
-
-Exception: acronyms and proper nouns retain their standard capitalization (e.g., "YAML", "Part I", "Potential Outcomes Model", "Directed Acyclic Graph", "Synthetic Control", "Bayesian").
-
-### Headers as Questions
-
-Use question-form headers when exploring data or posing analytical questions:
-
-```markdown
-Good: ### How is revenue distributed across categories?
-Bad:  ### Revenue Distribution
-```
-
-### No Formulaic Summary Sections
-
-Do **not** add structured summary sections at the end of documents. Avoid "Summary", "Key Concepts", "Key Takeaways", "Practical Implications", or "Looking Ahead" sections. Let the material speak for itself.
+Proper nouns of the course's methods keep their capitalization in otherwise
+sentence-case headers: "Potential Outcomes Model", "Directed Acyclic Graph",
+"Synthetic Control", "Bayesian", "Part I".
 
 ---
 
 ## Tone and Voice
 
-- **Active voice**: "The simulator generates a product catalog" (not passive)
-- **Present tense**: "The function writes the DataFrames to disk" (not future)
-- **Instructional but not condescending**: "Let's start by simulating 100 products" (not too casual, not too formal)
 - **Narrative prose over definition patterns**: Avoid colon-separated definition patterns ("X is Y: explanation"). Weave explanations into flowing narrative rather than glossary-style constructions. Possessive apostrophes are standard usage and not affected by this rule.
 - **Separate sentences over semicolons**: Prefer two sentences over a semicolon-joined clause. Semicolons make prose feel academic rather than accessible.
 
