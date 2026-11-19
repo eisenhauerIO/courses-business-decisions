@@ -4,7 +4,7 @@ This document holds the conventions specific to this course. General formatting
 (code elements in backticks, emphasis, numbers, links, header hierarchy and
 sentence case, section headers as questions, no summary sections, active voice
 and present tense) follows the Billion-Dollar Contributor `bdc-writing-mechanics`
-skill, and voice follows `bdc-writing-support`. Where this file and those
+skill, and voice follows the writing skills' shared `craft.md`. Where this file and those
 skills disagree, this file wins for course material.
 
 ---
