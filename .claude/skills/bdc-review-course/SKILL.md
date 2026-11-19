@@ -160,7 +160,7 @@ Flag any untracked files in `docs/source/` that should be committed.
 
 The mechanical steps above check that the course builds and links; this one
 checks that it teaches. Run it per lecture once steps 1–6 pass. Formatting is
-not repeated here: run `bdc-review-writing` for that, with this course's
+not repeated here: run `bdc-writing-mechanics` for that, with this course's
 conventions in `docs/source/GUIDELINES.md`.
 
 #### Content Accuracy
@@ -180,7 +180,7 @@ conventions in `docs/source/GUIDELINES.md`.
 
 #### Narrative Depth
 
-The reviewable form of `bdc-writing-support`'s three voice habits.
+The reviewable form of the three voice habits in the writing skills' shared `craft.md`.
 
 - [ ] Concepts are explained thoroughly with multiple paragraphs, not just stated
 - [ ] Mathematical derivations show intermediate steps, not just final results
